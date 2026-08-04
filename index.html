@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyclone — Deterministic Binary Wire Format Protocol</title>
+<meta name="description" content="An open, zero-overhead, bit-for-bit reproducible wire specification for systems programming.">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#top">Cyclone</a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#problem">0x01 · Problem</a>
+      <a href="#philosophy">0x02 · Philosophy</a>
+      <a href="#implementations">0x03 · Implementations</a>
+      <a href="#bytes">0x04 · Byte map</a>
+      <a href="#tradeoffs">0x05 · Trade-offs</a>
+    </nav>
+    <p class="lang-switch" aria-label="Language">
+      <span aria-current="true">EN</span><span class="sep">/</span><a href="vi/index.html" hreflang="vi" lang="vi">VI</a>
+    </p>
+    <button class="theme-btn" id="themeBtn" type="button">Theme</button>
+  </div>
+</header>
+
+<!-- ============ 0x00 · HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">0x00 · Wire format specification · v1</p>
+
+    <h1 class="h1">Deterministic <em>binary</em> wire format protocol.</h1>
+
+    <p class="hero-sub">
+      An open, zero-overhead, bit-for-bit reproducible wire specification for systems programming.
+      One value, one byte sequence — on every language, every runtime, every implementation.
+    </p>
+
+    <div class="badges">
+      <span class="badge">License · CC BY 4.0</span>
+      <span class="badge"><span class="dot"></span>Status · Draft specification v1.0</span>
+      <span class="badge">RFC-0001 / RFC-0002 / RFC-0003</span>
+    </div>
+
+    <div class="ctas">
+      <a class="btn btn-primary" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">Read the specifications <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="https://github.com/cyclone-protocol/spec">GitHub organization <span class="arrow">↗</span></a>
+      <a class="btn btn-ghost" href="https://github.com/cyclone-protocol/spec/discussions">Join the community <span class="arrow">↗</span></a>
+    </div>
+
+    <div class="strip-wrap">
+      <div class="strip-head">
+        <span>Encode</span>
+        <span class="val"><code>Player { Hp = 100, Name = "Alice" }</code></span>
+        <span>→ 13 bytes, identical on every conforming implementation</span>
+      </div>
+      <div class="strip" id="heroStrip">
+        <span class="cell" data-f="int">64</span><span class="cell" data-f="int">00</span><span class="cell" data-f="int">00</span><span class="cell" data-f="int">00</span>
+        <span class="cell" data-f="len">05</span><span class="cell" data-f="len">00</span><span class="cell" data-f="len">00</span><span class="cell" data-f="len">00</span>
+        <span class="cell" data-f="str">41</span><span class="cell" data-f="str">6C</span><span class="cell" data-f="str">69</span><span class="cell" data-f="str">63</span><span class="cell" data-f="str">65</span>
+      </div>
+      <div class="strip-legend">
+        <span><i class="swatch" style="color:var(--f-int)"></i>Hp · UInt32 · little-endian</span>
+        <span><i class="swatch" style="color:var(--f-len)"></i>Length · UInt32 · byte count</span>
+        <span><i class="swatch" style="color:var(--f-str)"></i>UTF-8 payload</span>
+        <span>No tag · no header · no padding · no terminator</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0x01 · PROBLEM ============ -->
+<section class="band" id="problem">
+  <div class="band-in">
+    <p class="offset"><b>0x01</b><span>Problem</span></p>
+    <div class="col">
+      <h2 class="h2">Why another protocol?</h2>
+      <p class="lede">
+        Because “the same data” and “the same bytes” are not the same requirement — and every
+        mainstream format solves only the first one.
+      </p>
+      <p class="body">
+        Protobuf, MessagePack and JSON were designed to be <strong>flexible</strong>. Flexible means more
+        than one valid encoding exists for a single value. For most systems that is a feature. For a
+        system that hashes, signs, replays or diffs its payloads, it is the entire problem.
+      </p>
+
+      <div class="cmp">
+        <div class="cmp-cell">
+          <h4>Protocol Buffers</h4>
+          <p>
+            The official documentation states serialization is <strong>not canonical</strong>: map ordering,
+            unknown-field retention and version differences can each change the output bytes of a
+            semantically identical message.
+          </p>
+          <p class="verdict">Same message → different bytes</p>
+        </div>
+        <div class="cmp-cell">
+          <h4>MessagePack</h4>
+          <p>
+            One integer has several valid representations — <code>int8</code>, <code>int16</code>,
+            <code>int32</code>. Two encoders that choose differently are both conformant, and produce
+            different streams.
+          </p>
+          <p class="verdict">Multiple valid encodings</p>
+        </div>
+        <div class="cmp-cell">
+          <h4>JSON</h4>
+          <p>
+            Key order is unspecified, float formatting differs between runtimes, whitespace is free.
+            Textual equality and byte equality drift apart immediately.
+          </p>
+          <p class="verdict">No byte-level contract</p>
+        </div>
+      </div>
+
+      <h3 class="h3">What that costs</h3>
+      <dl class="consequences">
+        <div class="consequence">
+          <dt>Hash / sign</dt>
+          <dd>A signature is computed over bytes. Re-encode the same object on another runtime and the signature stops verifying — although nothing about the data changed.</dd>
+        </div>
+        <div class="consequence">
+          <dt>Replay / lockstep</dt>
+          <dd>Two machines fed the same input log must reach the same world state. One divergent bit desynchronises the simulation, silently and unreproducibly.</dd>
+        </div>
+        <div class="consequence">
+          <dt>Cross-SDK tests</dt>
+          <dd>Byte comparison is the only honest proof that two SDKs are compatible. Without canonical output there is nothing to compare — the suite can only assert “it round-trips locally”.</dd>
+        </div>
+        <div class="consequence">
+          <dt>Content addressing</dt>
+          <dd>Identical content must produce an identical digest, or caching and deduplication quietly stop working.</dd>
+        </div>
+      </dl>
+
+      <p class="body">
+        Cyclone’s answer is not a smarter algorithm. It is the removal of every choice:
+        <strong>wherever an encoder can choose, two encoders eventually choose differently.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0x02 · PHILOSOPHY ============ -->
+<section class="band" id="philosophy">
+  <div class="band-in">
+    <p class="offset"><b>0x02</b><span>Philosophy</span></p>
+    <div class="col">
+      <h2 class="h2">Ten principles, one decision rule.</h2>
+      <p class="lede">
+        Every proposed change answers a single question: does it violate one of these? If yes, it is
+        not part of Cyclone.
+      </p>
+
+      <div class="principles">
+        <div class="principle key">
+          <span class="n">01</span>
+          <span class="t">Specification First
+            <span class="d">The spec is the single source of truth. It is never changed to accommodate an implementation.</span>
+          </span>
+        </div>
+        <div class="principle">
+          <span class="n">02</span>
+          <span class="t">Protocol over Framework
+            <span class="d">Cyclone defines how data appears on the wire — not an API, not a runtime.</span>
+          </span>
+        </div>
+        <div class="principle">
+          <span class="n">03</span>
+          <span class="t">User Owns the Model
+            <span class="d">No mandatory DTO layer, no base class. Cyclone reads the fields you mark, and ignores the rest.</span>
+          </span>
+        </div>
+        <div class="principle">
+          <span class="n">04</span>
+          <span class="t">Compile-time over Runtime
+            <span class="d">Anything decidable at build time is decided at build time.</span>
+          </span>
+        </div>
+        <div class="principle key">
+          <span class="n">05</span>
+          <span class="t">Zero Runtime Reflection
+            <span class="d">No runtime type inspection, no runtime schema parsing. AOT and bare-metal targets stay viable.</span>
+          </span>
+        </div>
+        <div class="principle key">
+          <span class="n">06</span>
+          <span class="t">Minimal Wire Format
+            <span class="d">Send the data, never a description of the data. No field names, no type info, no tags, no padding.</span>
+          </span>
+        </div>
+        <div class="principle">
+          <span class="n">07</span>
+          <span class="t">Deterministic by Design
+            <span class="d">One input, exactly one output byte sequence. No two valid encodings exist.</span>
+          </span>
+        </div>
+        <div class="principle">
+          <span class="n">08</span>
+          <span class="t">Language Neutral
+            <span class="d">No language is the reference language. The spec defines behaviour, not idiom.</span>
+          </span>
+        </div>
+        <div class="principle">
+          <span class="n">09</span>
+          <span class="t">Implementation Independent
+            <span class="d">Parser, macro, source generator, handwritten, FPGA — the spec cares only about the result.</span>
+          </span>
+        </div>
+        <div class="principle">
+          <span class="n">10</span>
+          <span class="t">Implementation Replaceable
+            <span class="d">Swap the whole implementation; the wire format does not move. The reference impl is not the standard.</span>
+          </span>
+        </div>
+      </div>
+
+      <p class="body">
+        The test applied to every sentence of the specification:
+        <strong>could somebody writing an encoder in assembly on an 8-bit microcontroller follow it?</strong>
+        If not, that sentence describes an implementation, and it does not belong in the spec.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0x03 · IMPLEMENTATIONS ============ -->
+<section class="band" id="implementations">
+  <div class="band-in">
+    <p class="offset"><b>0x03</b><span>Ecosystem</span></p>
+    <div class="col">
+      <h2 class="h2">Open call for implementations</h2>
+      <p class="call">
+        Cyclone is a protocol specification. We need your help to bring it to every language and platform.
+      </p>
+      <p class="body">
+        The wire format is stable enough to build against. What the project needs now is not more
+        specification — it is encoders, decoders and code generators, each proven against the same
+        conformance vectors.
+        <a href="https://github.com/cyclone-protocol/spec/issues">Open an issue</a> to claim a row.
+      </p>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Platform / Language</th>
+              <th scope="col">Component required</th>
+              <th scope="col">Status</th>
+              <th scope="col">Contributor / Maintainer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="lang">Specification / RFC</td>
+              <td class="comp">Core wire format (v1.0)</td>
+              <td><span class="status s-ok">Draft complete</span></td>
+              <td class="who">Ha Duy Thang</td>
+            </tr>
+            <tr>
+              <td class="lang">Rust</td>
+              <td class="comp">Reference SDK / CodeGen</td>
+              <td><span class="status s-wip">In progress · needs lead</span></td>
+              <td class="who open">[ You? ]</td>
+            </tr>
+            <tr>
+              <td class="lang">Go</td>
+              <td class="comp">Native encoder / decoder</td>
+              <td><span class="status s-todo">Planned</span></td>
+              <td class="who open">[ Help wanted ]</td>
+            </tr>
+            <tr>
+              <td class="lang">C# / Unity</td>
+              <td class="comp">Zero-allocation CodeGen (AOT)</td>
+              <td><span class="status s-todo">Planned</span></td>
+              <td class="who open">[ Help wanted ]</td>
+            </tr>
+            <tr>
+              <td class="lang">C / Embedded (MCU)</td>
+              <td class="comp">Bare-metal static library</td>
+              <td><span class="status s-todo">Planned</span></td>
+              <td class="who open">[ Help wanted ]</td>
+            </tr>
+            <tr>
+              <td class="lang">Zig / C++</td>
+              <td class="comp">Compile-time parser / CodeGen</td>
+              <td><span class="status s-todo">Planned</span></td>
+              <td class="who open">[ Help wanted ]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="body">
+        There is one acceptance criterion and it is mechanical: run the conformance vectors in
+        <a href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">RFC-0003</a>. A 100% pass, byte for byte, is
+        <strong>Cyclone Compatible</strong>. Anything less is not — there is no partial state.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0x04 · BYTE MAP ============ -->
+<section class="band" id="bytes">
+  <div class="band-in">
+    <p class="offset"><b>0x04</b><span>Byte map</span></p>
+    <div class="col stack-lg">
+
+      <div class="stack">
+        <h2 class="h2">Read the actual bytes</h2>
+        <p class="lede">
+          A full <code>Player</code> — nested struct, string, enum, bool, array of structs — encodes to
+          49 bytes. Hover a field to light up the bytes it owns, or hover a byte to find its owner.
+        </p>
+      </div>
+
+      <div class="map">
+        <div class="map-panel">
+          <div class="map-head">
+            <span>Hex dump · 49 bytes</span>
+            <span id="mapStatus">Position is the only identifier</span>
+          </div>
+          <div class="map-body">
+            <div class="rows" id="mapRows">
+              <div class="row">
+                <span class="addr">00000000</span>
+                <span class="cells">
+                  <span class="cell" data-i="0"  data-f="int">64</span><span class="cell" data-i="1"  data-f="int">00</span><span class="cell" data-i="2"  data-f="int">00</span><span class="cell" data-i="3"  data-f="int">00</span><span class="cell" data-i="4"  data-f="len">05</span><span class="cell" data-i="5"  data-f="len">00</span><span class="cell" data-i="6"  data-f="len">00</span><span class="cell" data-i="7"  data-f="len">00</span><span class="cell" data-i="8"  data-f="str">41</span><span class="cell" data-i="9"  data-f="str">6C</span><span class="cell" data-i="10" data-f="str">69</span><span class="cell" data-i="11" data-f="str">63</span><span class="cell" data-i="12" data-f="str">65</span><span class="cell" data-i="13" data-f="float">00</span><span class="cell" data-i="14" data-f="float">00</span><span class="cell" data-i="15" data-f="float">C0</span>
+                </span>
+              </div>
+              <div class="row">
+                <span class="addr">00000010</span>
+                <span class="cells">
+                  <span class="cell" data-i="16" data-f="float">3F</span><span class="cell" data-i="17" data-f="float">00</span><span class="cell" data-i="18" data-f="float">00</span><span class="cell" data-i="19" data-f="float">20</span><span class="cell" data-i="20" data-f="float">40</span><span class="cell" data-i="21" data-f="float">00</span><span class="cell" data-i="22" data-f="float">00</span><span class="cell" data-i="23" data-f="float">60</span><span class="cell" data-i="24" data-f="float">40</span><span class="cell" data-i="25" data-f="enum">01</span><span class="cell" data-i="26" data-f="enum">00</span><span class="cell" data-i="27" data-f="enum">00</span><span class="cell" data-i="28" data-f="enum">00</span><span class="cell" data-i="29" data-f="bool">01</span><span class="cell" data-i="30" data-f="len">01</span><span class="cell" data-i="31" data-f="len">00</span>
+                </span>
+              </div>
+              <div class="row">
+                <span class="addr">00000020</span>
+                <span class="cells">
+                  <span class="cell" data-i="32" data-f="len">00</span><span class="cell" data-i="33" data-f="len">00</span><span class="cell" data-i="34" data-f="int">07</span><span class="cell" data-i="35" data-f="int">00</span><span class="cell" data-i="36" data-f="int">00</span><span class="cell" data-i="37" data-f="int">00</span><span class="cell" data-i="38" data-f="len">05</span><span class="cell" data-i="39" data-f="len">00</span><span class="cell" data-i="40" data-f="len">00</span><span class="cell" data-i="41" data-f="len">00</span><span class="cell" data-i="42" data-f="str">53</span><span class="cell" data-i="43" data-f="str">77</span><span class="cell" data-i="44" data-f="str">6F</span><span class="cell" data-i="45" data-f="str">72</span><span class="cell" data-i="46" data-f="str">64</span><span class="cell" data-i="47" data-f="int">01</span>
+                </span>
+              </div>
+              <div class="row">
+                <span class="addr">00000030</span>
+                <span class="cells">
+                  <span class="cell" data-i="48" data-f="int">00</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="fields" id="fields">
+            <button class="field" type="button" data-range="0,4" data-f="int">
+              <span class="fa">0x00</span>
+              <span class="fn">Hp<span class="ft">UInt32 · 100</span></span>
+              <span class="fs">4 B</span>
+            </button>
+            <button class="field" type="button" data-range="4,4" data-f="len">
+              <span class="fa">0x04</span>
+              <span class="fn">Name.length<span class="ft">UInt32 · 5 · byte count, not characters</span></span>
+              <span class="fs">4 B</span>
+            </button>
+            <button class="field" type="button" data-range="8,5" data-f="str">
+              <span class="fa">0x08</span>
+              <span class="fn">Name.utf8<span class="ft">“Alice”</span></span>
+              <span class="fs">5 B</span>
+            </button>
+            <button class="field" type="button" data-range="13,12" data-f="float">
+              <span class="fa">0x0D</span>
+              <span class="fn">Position<span class="ft">Vector3 · 3 × Float32 · inline, no header</span></span>
+              <span class="fs">12 B</span>
+            </button>
+            <button class="field" type="button" data-range="25,4" data-f="enum">
+              <span class="fa">0x19</span>
+              <span class="fn">State<span class="ft">Enum → UInt32 · Walk (1)</span></span>
+              <span class="fs">4 B</span>
+            </button>
+            <button class="field" type="button" data-range="29,1" data-f="bool">
+              <span class="fa">0x1D</span>
+              <span class="fn">Alive<span class="ft">Bool · strictly 0x01</span></span>
+              <span class="fs">1 B</span>
+            </button>
+            <button class="field" type="button" data-range="30,4" data-f="len">
+              <span class="fa">0x1E</span>
+              <span class="fn">Inventory.count<span class="ft">UInt32 · 1 · elements, not bytes</span></span>
+              <span class="fs">4 B</span>
+            </button>
+            <button class="field" type="button" data-range="34,4" data-f="int">
+              <span class="fa">0x22</span>
+              <span class="fn">Item[0].Id<span class="ft">UInt32 · 7</span></span>
+              <span class="fs">4 B</span>
+            </button>
+            <button class="field" type="button" data-range="38,4" data-f="len">
+              <span class="fa">0x26</span>
+              <span class="fn">Item[0].Name.length<span class="ft">UInt32 · 5</span></span>
+              <span class="fs">4 B</span>
+            </button>
+            <button class="field" type="button" data-range="42,5" data-f="str">
+              <span class="fa">0x2A</span>
+              <span class="fn">Item[0].Name.utf8<span class="ft">“Sword”</span></span>
+              <span class="fs">5 B</span>
+            </button>
+            <button class="field" type="button" data-range="47,2" data-f="int">
+              <span class="fa">0x2F</span>
+              <span class="fn">Item[0].Count<span class="ft">UInt16 · 1</span></span>
+              <span class="fs">2 B</span>
+            </button>
+          </div>
+          <div class="total"><span>Total</span><span><b>49 bytes</b> · 0 bytes of metadata</span></div>
+        </div>
+      </div>
+
+      <p class="body">
+        Nothing separates the fields. No length prefix on the struct, no delimiter between
+        <code>Position</code> and <code>State</code>, no terminator at the end. The decoder knows which
+        field it is reading purely from how far the cursor has advanced — which is exactly why
+        <strong>reordering a field is a breaking change</strong>, and why renaming one is free.
+      </p>
+
+      <div class="stack">
+        <h3 class="h3">Edge cases, settled in the normative text</h3>
+        <div class="edges">
+          <div class="edge">
+            <h4>Float · bit-pattern preservation</h4>
+            <p>
+              Floats serialize their IEEE 754 bit representation exactly. No normalization, no
+              canonicalization. Two NaN payloads are two different values on the wire — an
+              implementation that rewrites them has modified user data.
+            </p>
+<pre>0x7FC00001 → <span class="good">[01 00 C0 7F]</span>   preserved
+0x7FC00001 → <span class="bad">[00 00 C0 7F]</span>   canonicalized ✗</pre>
+          </div>
+          <div class="edge">
+            <h4>Bool · strictly 0x00 / 0x01</h4>
+            <p>
+              An encoder may emit only <code>0x00</code> or <code>0x01</code>; a decoder rejects everything
+              else. “Non-zero means true” is not permitted, however truthy the source language
+              considers the value.
+            </p>
+<pre>[00] → false        [01] → true
+[02] → <span class="bad">reject</span>        [FF] → <span class="bad">reject</span></pre>
+          </div>
+          <div class="edge">
+            <h4>Enum · always UInt32</h4>
+            <p>
+              Every enum is four bytes, however few members it declares. A protocol decision, not a
+              storage optimization — there is nothing for two peers to negotiate. An undefined value is
+              a hard error, never a graceful skip.
+            </p>
+<pre>Walk (1)        → [01 00 00 00]
+99 ∉ {0,1,2,3}  → <span class="bad">reject</span></pre>
+          </div>
+          <div class="edge">
+            <h4>Length overflow · normative DoS guard</h4>
+            <p>
+              A length or count larger than the bytes actually remaining must be rejected
+              <strong>before any allocation</strong>. That check is normative and configuration-independent;
+              per-SDK limits only tighten it further.
+            </p>
+<pre>count = 4294967295, 0 bytes left
+  → <span class="bad">reject before allocating</span>
+
+effective = min(remaining, configured)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0x05 · TRADE-OFFS ============ -->
+<section class="band" id="tradeoffs">
+  <div class="band-in">
+    <p class="offset"><b>0x05</b><span>Trade-offs</span></p>
+    <div class="col">
+      <h2 class="h2">What Cyclone deliberately will not do</h2>
+      <p class="lede">
+        Determinism is bought with rigidity. Here is the invoice, in full, before you adopt anything.
+      </p>
+
+      <div class="tradeoffs">
+        <div class="tradeoff">
+          <span class="x">✕</span>
+          <div>
+            <h4>No schema evolution</h4>
+            <p>
+              There is no field ID, so there is no unknown-field skipping and nothing to reserve.
+              Adding, removing or reordering a field changes the byte stream. Every schema edit is a
+              breaking change, and the specification does not pretend otherwise.
+            </p>
+          </div>
+        </div>
+        <div class="tradeoff">
+          <span class="x">✕</span>
+          <div>
+            <h4>No backward / forward compatibility</h4>
+            <p>
+              Both peers upgrade together. If old clients must keep talking to a new server, Cyclone is
+              the wrong tool and a tagged format is the right one. Versioning, where you need it, is
+              negotiated above the protocol.
+            </p>
+          </div>
+        </div>
+        <div class="tradeoff">
+          <span class="x">✕</span>
+          <div>
+            <h4>No metadata, no self-description</h4>
+            <p>
+              The stream carries data and nothing else, so the receiver must already know the exact
+              field order and types. The dangerous corollary: decoding against the wrong definition
+              usually raises no error at all — it produces wrong values, quietly. Keeping both sides
+              in step is your responsibility.
+            </p>
+          </div>
+        </div>
+        <div class="tradeoff">
+          <span class="x">✕</span>
+          <div>
+            <h4>No schema definition layer</h4>
+            <p>
+              There is no IDL, no <code>.cyclone</code> file, no separate schema document to compile.
+              Your own annotated type <em>is</em> the definition — the single source of truth — and a
+              frontend needs to extract only three things from it: the type, its fields, and each
+              field’s Cyclone type. Everything else about your language stays your language’s business.
+            </p>
+          </div>
+        </div>
+        <div class="tradeoff">
+          <span class="x">✕</span>
+          <div>
+            <h4>No Optional, no nullable, no defaults</h4>
+            <p>
+              Every field carries a value. There is no absent-field encoding in v1 — which is precisely
+              why there is no ambiguity about how absence would be written.
+            </p>
+          </div>
+        </div>
+        <div class="tradeoff">
+          <span class="x">✕</span>
+          <div>
+            <h4>No transport, no framing, no crypto</h4>
+            <p>
+              Delivery, ordering, retransmission, integrity, encryption and compression belong to the
+              layers around Cyclone. The specification stops where the bytes are formed.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p class="verdict-line">
+        If your schema changes weekly and your clients update on their own schedule → use Protobuf.<br>
+        If a byte-identical encoding is a correctness requirement → keep reading.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 0x06 · DOCUMENTS ============ -->
+<section class="band" id="docs">
+  <div class="band-in">
+    <p class="offset"><b>0x06</b><span>Documents</span></p>
+    <div class="col">
+      <h2 class="h2">The specification</h2>
+      <p class="lede">Three documents. Each answers exactly one question.</p>
+      <div class="docs">
+        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0001.md">
+          <span class="id">RFC-0001</span>
+          <span class="t">What Cyclone is</span>
+          <span class="d">The problem, the design decisions, when to choose it — and when not to.</span>
+        </a>
+        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">
+          <span class="id">RFC-0002</span>
+          <span class="t">Wire format</span>
+          <span class="d">What shape the bytes must have: primitives, string, array, struct, enum, errors.</span>
+        </a>
+        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">
+          <span class="id">RFC-0003</span>
+          <span class="t">Conformance</span>
+          <span class="d">The test vectors. Run them, pass 100%, publish the report.</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span>Cyclone Binary Protocol · Draft specification v1.0</span>
+    <span>Specification first. <a href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0001.md">The reference implementation is not the standard.</a></span>
+  </div>
+  <p class="foot-copy">
+    Copyright © 2026 Ha Duy Thang ·
+    Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="assets/site.js"></script>
+
+</body>
+</html>
