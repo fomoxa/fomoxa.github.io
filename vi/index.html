@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cyclone Protocol - A deterministic binary wire format</title>
-<meta name="description" content="Cyclone is a protocol. It defines how logical data is transformed into bytes, and how bytes are transformed back into logical data. Nothing more, nothing less.">
+<title>Cyclone Protocol - Một binary wire format xác định</title>
+<meta name="description" content="Cyclone là một protocol. Nó định nghĩa dữ liệu logic được biến thành byte như thế nào, và byte được biến ngược lại thành dữ liệu logic như thế nào. Không hơn, không kém.">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="icon" type="image/png" href="/favicon.png">
 </head>
@@ -13,21 +13,21 @@
 <header class="topbar">
   <div class="topbar-in">
     <a class="brand" href="#top">
-      <img src="./cyclone-logo.png" alt="Cyclone Logo" class="brand-logo" />
+      <img src="/cyclone-logo.png" alt="Cyclone Logo" class="brand-logo" />
       Cyclone
     </a>
-    <nav class="topnav" aria-label="Sections">
-      <a href="#top">Home</a>
-      <a href="#philosophy">Philosophy</a>
-      <a href="#tradeoffs">Trade-offs</a>
+    <nav class="topnav" aria-label="Mục">
+      <a href="#top">Trang chủ</a>
+      <a href="#philosophy">Triết lý</a>
+      <a href="#tradeoffs">Đánh đổi</a>
       <a href="#spec">Specification</a>
       <a href="#wire">RFC-0002</a>
-      <a href="#vectors">Test vectors</a>
+      <a href="#vectors">Test vector</a>
       <a href="#conformance">Conformance</a>
       <a href="#github">GitHub</a>
     </nav>
-    <p class="lang-switch" aria-label="Language">
-      <span aria-current="true">EN</span><span class="sep">/</span><a href="/vi/" hreflang="vi" lang="vi">VI</a>
+    <p class="lang-switch" aria-label="Ngôn ngữ">
+      <a href="/" hreflang="en" lang="en">EN</a><span class="sep">/</span><span aria-current="true">VI</span>
     </p>
     <button class="theme-btn" id="themeBtn" type="button">Theme</button>
   </div>
@@ -41,17 +41,17 @@
     <h1 class="h1">Cyclone Protocol</h1>
 
     <p class="hero-line">
-      A deterministic binary wire format.<br>
-      <em>Nothing more. Nothing less.</em>
+      Một binary wire format xác định.<br>
+      <em>Không hơn. Không kém.</em>
     </p>
 
     <p class="hero-sub">
-      Cyclone defines how logical data is transformed into bytes,
-      and how bytes are transformed back into logical data.
+      Cyclone định nghĩa dữ liệu logic được biến thành byte như thế nào,
+      và byte được biến ngược lại thành dữ liệu logic như thế nào.
     </p>
 
     <div class="ctas">
-      <a class="btn btn-primary" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">Read Specification <span class="arrow">→</span></a>
+      <a class="btn btn-primary" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0002.md">Đọc specification <span class="arrow">→</span></a>
       <a class="btn btn-ghost" href="https://github.com/cyclone-protocol">GitHub <span class="arrow">↗</span></a>
     </div>
   </div>
@@ -60,17 +60,17 @@
 <!-- ============ SPECIFICATION FIRST ============ -->
 <section class="band band-flush" id="first">
   <div class="band-in">
-    <p class="offset">Order</p>
+    <p class="offset">Thứ tự</p>
     <div class="col">
       <h2 class="statement">Specification First</h2>
       <p class="lede">
-        The specification is the single source of truth. It is never changed to accommodate
-        an implementation. Everything else is downstream of it.
+        Specification là nguồn sự thật duy nhất. Không bao giờ sửa spec để chiều một implementation.
+        Mọi thứ khác đều nằm phía sau nó.
       </p>
 
       <div class="flow-pair">
         <div class="flow flow-right">
-          <p class="flow-cap">The order Cyclone follows</p>
+          <p class="flow-cap">Thứ tự Cyclone đi theo</p>
           <ol class="chain">
             <li><span class="node">RFC</span></li>
             <li><span class="node">Compiler</span></li>
@@ -79,19 +79,19 @@
           </ol>
         </div>
         <div class="flow flow-wrong">
-          <p class="flow-cap">Not this</p>
+          <p class="flow-cap">Không phải thế này</p>
           <ol class="chain">
             <li><span class="node">SDK</span></li>
             <li><span class="node">Protocol</span></li>
           </ol>
-          <p class="flow-note">A protocol shaped by whatever its first library happened to do.</p>
+          <p class="flow-note">Một protocol bị nắn theo bất kỳ thứ gì thư viện đầu tiên của nó tình cờ làm.</p>
         </div>
       </div>
 
       <p class="body">
-        The test applied to every sentence of the specification:
-        <strong>could somebody writing an encoder in assembly on an 8-bit microcontroller follow it?</strong>
-        If not, that sentence describes an implementation, and it does not belong in the spec.
+        Phép thử áp cho từng câu của specification:
+        <strong>một người viết encoder bằng assembly trên vi điều khiển 8-bit có làm theo được không?</strong>
+        Nếu không, câu đó đang mô tả một implementation, và nó không thuộc về spec.
       </p>
     </div>
   </div>
@@ -100,14 +100,14 @@
 <!-- ============ WHAT IS CYCLONE ============ -->
 <section class="band" id="what">
   <div class="band-in">
-    <p class="offset">Definition</p>
+    <p class="offset">Định nghĩa</p>
     <div class="col">
-      <h2 class="h2">What is Cyclone?</h2>
-      <p class="lede">Cyclone is a protocol.</p>
+      <h2 class="h2">Cyclone là gì?</h2>
+      <p class="lede">Cyclone là một protocol.</p>
 
       <div class="what-grid">
         <div class="nots">
-          <h3 class="h3">Cyclone is <em>not</em></h3>
+          <h3 class="h3">Cyclone <em>không phải</em></h3>
           <ul class="not-list">
             <li><span class="x">×</span> RPC</li>
             <li><span class="x">×</span> Networking</li>
@@ -117,7 +117,7 @@
         </div>
 
         <div class="only">
-          <h3 class="h3">Cyclone only specifies</h3>
+          <h3 class="h3">Cyclone chỉ quy định</h3>
           <ol class="chain chain-vert">
             <li><span class="node">Model</span></li>
             <li><span class="node node-accent">Bytes</span></li>
@@ -127,9 +127,9 @@
       </div>
 
       <p class="body">
-        Transport, retransmission, ordering, matchmaking, encryption, compression, checksums -
-        all of it is built <strong>on top of</strong> Cyclone. The specification stops exactly where
-        the bytes are formed.
+        Transport, retransmission, thứ tự gói, matchmaking, mã hoá, nén, checksum -
+        tất cả đều xây <strong>phía trên</strong> Cyclone. Specification dừng lại đúng ở chỗ
+        byte được hình thành.
       </p>
     </div>
   </div>
@@ -138,98 +138,98 @@
 <!-- ============ PHILOSOPHY ============ -->
 <section class="band" id="philosophy">
   <div class="band-in">
-    <p class="offset">Philosophy</p>
+    <p class="offset">Triết lý</p>
     <div class="col stack-lg">
 
       <div class="stack">
-        <h2 class="h2">Ten principles, two layers.</h2>
+        <h2 class="h2">Mười nguyên tắc, hai tầng.</h2>
         <p class="lede">
-          Seven are conformance conditions. Three are choices the Reference Implementation made.
-          Mixing the two is how a protocol quietly turns into a framework.
+          Bảy nguyên tắc là điều kiện tuân thủ. Ba nguyên tắc là lựa chọn của Reference Implementation.
+          Trộn lẫn hai thứ đó chính là cách một protocol âm thầm biến thành một framework.
         </p>
       </div>
 
       <div class="stack">
-        <h3 class="h3">Principles of the Specification</h3>
-        <p class="body">Violate one of these and it is not Cyclone.</p>
+        <h3 class="h3">Nguyên tắc của Specification</h3>
+        <p class="body">Vi phạm một trong số này thì không phải Cyclone.</p>
         <div class="principles">
           <div class="principle key">
             <span class="n">01</span>
             <span class="t">Specification First
-              <span class="d">The spec is the single source of truth. It is never changed to accommodate an implementation.</span>
+              <span class="d">Specification là nguồn sự thật duy nhất. Không bao giờ sửa spec để chiều một implementation.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">02</span>
             <span class="t">Protocol over Framework
-              <span class="d">Cyclone defines how data appears on the wire - not an API, not a runtime.</span>
+              <span class="d">Cyclone định nghĩa dữ liệu hiện ra trên wire như thế nào - không định nghĩa API, không định nghĩa runtime.</span>
             </span>
           </div>
           <div class="principle key">
             <span class="n">03</span>
             <span class="t">Minimal Wire Format
-              <span class="d">Send the data, never a description of the data. No field names, no type info, no tags, no padding.</span>
+              <span class="d">Gửi dữ liệu, không bao giờ gửi mô tả dữ liệu. Không tên field, không type info, không tag, không padding.</span>
             </span>
           </div>
           <div class="principle key">
             <span class="n">04</span>
             <span class="t">Deterministic by Design
-              <span class="d">One value, exactly one byte sequence. Two valid encodings of the same data must not exist.</span>
+              <span class="d">Một giá trị, đúng một chuỗi byte. Không được tồn tại hai cách encode hợp lệ cho cùng một dữ liệu.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">05</span>
             <span class="t">Language Neutral
-              <span class="d">No language is the reference language. Nothing in the format favours one type system.</span>
+              <span class="d">Không ngôn ngữ nào là ngôn ngữ chính. Không chi tiết nào trong format ưu ái một type system.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">06</span>
             <span class="t">Implementation Independent
-              <span class="d">No mandated parser, macro, or generator. The spec describes bytes and stops there.</span>
+              <span class="d">Không quy định parser, macro hay generator nào. Spec mô tả byte rồi dừng ở đó.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">07</span>
             <span class="t">Implementation Replaceable
-              <span class="d">The Reference Implementation is not the standard. Replace it entirely and the wire format does not move.</span>
+              <span class="d">Reference Implementation không phải chuẩn. Thay toàn bộ nó, wire format vẫn không đổi.</span>
             </span>
           </div>
         </div>
       </div>
 
       <div class="stack">
-        <h3 class="h3">Principles of the Reference Implementation</h3>
+        <h3 class="h3">Nguyên tắc của Reference Implementation</h3>
         <p class="body">
-          Design choices, not conformance conditions. Another implementation may choose differently,
-          as long as the bytes do not move.
+          Là lựa chọn thiết kế, không phải điều kiện tuân thủ. Một implementation khác được phép chọn
+          khác, miễn byte sinh ra không đổi.
         </p>
         <div class="principles">
           <div class="principle">
             <span class="n">08</span>
             <span class="t">User Owns the Model
-              <span class="d">No mandatory DTO layer, no base class - the RI reads the fields you mark and ignores the rest.</span>
+              <span class="d">Không bắt buộc tầng DTO, không base class - RI đọc những field bạn đánh dấu và bỏ qua phần còn lại.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">09</span>
             <span class="t">Compile-time over Runtime
-              <span class="d">Anything decidable at build time is decided at build time.</span>
+              <span class="d">Thứ gì xác định được lúc build thì xong lúc build.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">10</span>
             <span class="t">Zero Runtime Reflection
-              <span class="d">The wire format permits it; the spec does not require it. AOT and bare-metal targets stay viable.</span>
+              <span class="d">Wire format cho phép điều đó; spec không bắt buộc. AOT và bare-metal vẫn khả thi.</span>
             </span>
           </div>
         </div>
       </div>
 
       <p class="layer-note">
-        The decision rule, in two questions. <strong>One:</strong> is this statement observable from the
-        byte stream? If not, it belongs to the Reference Implementation and must not enter the spec.
-        <strong>Two:</strong> does it violate one of the seven above? If yes, it is not part of Cyclone.
+        Quy tắc quyết định, gồm hai câu hỏi. <strong>Một:</strong> phát biểu này có quan sát được từ
+        byte stream không? Không → nó thuộc về Reference Implementation và không được đưa vào spec.
+        <strong>Hai:</strong> nó có vi phạm một trong bảy nguyên tắc trên không? Có → không thuộc Cyclone.
       </p>
     </div>
   </div>
@@ -238,84 +238,83 @@
 <!-- ============ TRADE-OFFS ============ -->
 <section class="band" id="tradeoffs">
   <div class="band-in">
-    <p class="offset">Trade-offs</p>
+    <p class="offset">Đánh đổi</p>
     <div class="col">
-      <h2 class="h2">What Cyclone deliberately does not do</h2>
+      <h2 class="h2">Những gì Cyclone cố ý không làm</h2>
       <p class="lede">
-        Each of these is the direct cost of a guarantee above. None of them is on a roadmap.
+        Mỗi điều dưới đây đều là cái giá trực tiếp của một đảm bảo ở trên. Không điều nào nằm trong roadmap.
       </p>
 
       <div class="tradeoffs">
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No schema evolution</h4>
+            <h4>Không có schema evolution</h4>
             <p>
-              Position is the only field identifier, so adding, removing or reordering a field is a
-              breaking change. v1 has no version negotiation and no field migration.
+              Vị trí là định danh field duy nhất, nên thêm, bớt hay đổi thứ tự một field đều là
+              breaking change. v1 không có thương lượng phiên bản, không có migration cho field.
             </p>
           </div>
         </div>
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No backward or forward compatibility</h4>
+            <h4>Không backward / forward compatibility</h4>
             <p>
-              There is no unknown-field skipping and no defaults, so an old client cannot read a new
-              server's message. Both ends deploy together, or not at all.
+              Không có unknown-field skipping, không có default, nên client cũ không đọc được message
+              của server mới. Hai đầu deploy cùng nhau, hoặc không deploy.
             </p>
           </div>
         </div>
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No metadata, not self-describing</h4>
+            <h4>Không metadata, không tự mô tả</h4>
             <p>
-              The stream carries no field names, types or tags - the receiver must already know the
-              field order and types. The dangerous corollary: decoding against the wrong definition
-              usually raises no error at all. It produces wrong values, quietly.
+              Stream không mang tên field, kiểu hay tag - bên nhận bắt buộc phải biết trước thứ tự và
+              kiểu của từng field. Hệ quả nguy hiểm: decode sai định nghĩa thường
+              <em>không</em> báo lỗi gì cả. Nó sinh ra giá trị sai, im lặng.
             </p>
           </div>
         </div>
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No mandated IDL</h4>
+            <h4>Không có IDL bắt buộc</h4>
             <p>
-              The source of truth is the <strong>Schema</strong>, but the spec does not dictate how you
-              write it down - no mandatory IDL, no mandatory <code>.cyclone</code> file. The Reference
-              Implementation expresses the Schema as annotations on your existing type, extracting only
-              three things: the type, its fields, and each field's Cyclone type. The trade: there is no
-              standalone schema document to hand a third party - both ends are on their own to derive
-              the same Schema.
+              Nguồn sự thật là <strong>Schema</strong>, nhưng spec không quy định bạn phải viết nó ra
+              bằng cách nào - không IDL bắt buộc, không file <code>.cyclone</code> bắt buộc. Reference
+              Implementation diễn đạt Schema bằng annotation ngay trên type có sẵn của bạn, chỉ trích ra
+              ba thứ: tên type, các field, và Cyclone type của từng field. Đổi lại: không có một tài liệu
+              schema độc lập để đưa cho bên thứ ba - hai phía tự lo việc rút ra cùng một Schema.
             </p>
           </div>
         </div>
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No Optional, no nullable, no defaults</h4>
+            <h4>Không Optional, không nullable, không default</h4>
             <p>
-              Every field carries a value. There is no absent-field encoding in v1 - which is precisely
-              why there is no ambiguity about how absence would be written.
+              Mọi field đều mang giá trị. v1 không có cách encode field vắng mặt - và chính vì vậy
+              không có chỗ nào mơ hồ về việc sự vắng mặt sẽ được ghi ra sao.
             </p>
           </div>
         </div>
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No transport, no framing, no crypto</h4>
+            <h4>Không transport, không framing, không crypto</h4>
             <p>
-              Cyclone produces a byte sequence and stops. Message boundaries, retransmission, ordering,
-              encryption and compression are all yours to build on top.
+              Cyclone sinh ra một chuỗi byte rồi dừng. Ranh giới message, retransmission, thứ tự gói,
+              mã hoá và nén đều là phần bạn tự xây phía trên.
             </p>
           </div>
         </div>
       </div>
 
       <p class="body">
-        If any of these is unacceptable for your problem, a format with tag IDs and optional fields
-        will serve you better. That is the right call, not a failure of Cyclone.
+        Nếu có điều nào không chấp nhận được với bài toán của bạn, một format có tag ID và optional field
+        sẽ phục vụ tốt hơn. Đó là lựa chọn đúng, không phải thất bại của Cyclone.
       </p>
     </div>
   </div>
@@ -326,34 +325,33 @@
   <div class="band-in">
     <p class="offset">Specification</p>
     <div class="col">
-      <h2 class="h2">The specification</h2>
-      <p class="lede">Three documents. Each answers exactly one question.</p>
+      <h2 class="h2">Specification</h2>
+      <p class="lede">Ba tài liệu. Mỗi tài liệu trả lời đúng một câu hỏi.</p>
 
       <div class="docs">
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0001.md">
+        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0001.md">
           <span class="id">RFC-0001</span>
-          <span class="t">Introduction</span>
-          <span class="d">What Cyclone is, the problem it exists to solve, when to choose it - and when not to.</span>
-          <span class="go">Read <span class="arrow">→</span></span>
+          <span class="t">Giới thiệu</span>
+          <span class="d">Cyclone là gì, sinh ra để giải bài toán gì, khi nào nên chọn - và khi nào không.</span>
+          <span class="go">Đọc <span class="arrow">→</span></span>
         </a>
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">
+        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0002.md">
           <span class="id">RFC-0002</span>
           <span class="t">Wire Format</span>
-          <span class="d">What shape the bytes must have: primitives, string, bytes, model, array, enum, invalid streams.</span>
-          <span class="go">Read <span class="arrow">→</span></span>
+          <span class="d">Byte phải có hình dạng như thế nào: primitive, string, bytes, model, array, enum, stream không hợp lệ.</span>
+          <span class="go">Đọc <span class="arrow">→</span></span>
         </a>
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">
+        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0003.md">
           <span class="id">RFC-0003</span>
           <span class="t">Conformance</span>
-          <span class="d">How you know an implementation is correct. The test vectors, and the single pass mark.</span>
-          <span class="go">Read <span class="arrow">→</span></span>
+          <span class="d">Làm sao biết một implementation là đúng. Bộ test vector, và mốc pass duy nhất.</span>
+          <span class="go">Đọc <span class="arrow">→</span></span>
         </a>
       </div>
 
       <p class="body">
-        The Vietnamese text is the source of record. Where a translation disagrees with it,
-        the Vietnamese wins.
-        <a href="https://github.com/cyclone-protocol/spec">Browse the specification repository ↗</a>
+        Bản tiếng Việt là bản gốc. Chỗ nào bản dịch nói khác đi, bản tiếng Việt thắng.
+        <a href="https://github.com/cyclone-protocol/spec">Xem repository specification ↗</a>
       </p>
     </div>
   </div>
@@ -368,61 +366,61 @@
       <div class="stack">
         <h2 class="h2">Wire format</h2>
         <p class="lede">
-          Little endian, always. Fixed widths, no varint. No tag, no header, no padding,
-          no terminator. Position is the only identifier.
+          Little endian, luôn luôn. Kích thước cố định, không varint. Không tag, không header, không padding,
+          không terminator. Vị trí là định danh duy nhất.
         </p>
       </div>
 
       <div class="wire">
         <article class="wf">
           <h3 class="wf-h">Primitive</h3>
-          <p class="wf-p">Fixed width, little endian. A <code>u32</code> is four bytes even when the value is zero.</p>
+          <p class="wf-p">Kích thước cố định, little endian. Một <code>u32</code> là bốn byte kể cả khi giá trị bằng không.</p>
 <pre class="wf-b">u32   100        → <span class="by">[64 00 00 00]</span>
 u32   0x12345678 → <span class="by">[78 56 34 12]</span>
 i32   -1         → <span class="by">[FF FF FF FF]</span>
 u16   300        → <span class="by">[2C 01]</span>
 bool  true       → <span class="by">[01]</span>
-bool  <span class="bad">0x02</span>       → <span class="bad">invalid</span>
+bool  <span class="bad">0x02</span>       → <span class="bad">không hợp lệ</span>
 f32   3.14       → <span class="by">[C3 F5 48 40]</span>
 f32   -0.0       → <span class="by">[00 00 00 80]</span></pre>
-          <p class="wf-n">Floats keep their IEEE 754 bit pattern exactly. No normalization, no canonical NaN.</p>
+          <p class="wf-n">Float giữ nguyên bit pattern IEEE 754. Không normalize, không canonical NaN.</p>
         </article>
 
         <article class="wf">
           <h3 class="wf-h">String</h3>
-          <p class="wf-p"><code>UInt32</code> length, then UTF-8 bytes. Length counts <strong>bytes</strong>, never characters.</p>
+          <p class="wf-p">Độ dài <code>UInt32</code>, rồi tới byte UTF-8. Độ dài đếm <strong>byte</strong>, không bao giờ đếm ký tự.</p>
 <pre class="wf-b">"abc"      → <span class="by">[03 00 00 00]</span> <span class="by">[61 62 63]</span>
 "中"        → <span class="by">[03 00 00 00]</span> <span class="by">[E4 B8 AD]</span>
 "Xin chào" → <span class="by">[09 00 00 00]</span> <span class="by">[58 69 6E 20 63 68 C3 A0 6F]</span>
 ""         → <span class="by">[00 00 00 00]</span></pre>
-          <p class="wf-n">“中” is one character and three bytes. Length MUST be 3. The byte region must be valid UTF-8.</p>
+          <p class="wf-n">“中” là một ký tự và ba byte. Độ dài MUST là 3. Vùng byte phải là UTF-8 hợp lệ.</p>
         </article>
 
         <article class="wf">
           <h3 class="wf-h">Bytes</h3>
-          <p class="wf-p"><code>UInt32</code> length, then raw bytes. Identical to String, minus the UTF-8 constraint.</p>
+          <p class="wf-p">Độ dài <code>UInt32</code>, rồi tới byte thô. Giống hệt String, trừ ràng buộc UTF-8.</p>
 <pre class="wf-b">[]         → <span class="by">[00 00 00 00]</span>
 [FF FE]    → <span class="by">[02 00 00 00]</span> <span class="by">[FF FE]</span>
 [00 00]    → <span class="by">[02 00 00 00]</span> <span class="by">[00 00]</span></pre>
-          <p class="wf-n">The same bytes a String must reject. Type comes from the schema - never inferred from content.</p>
+          <p class="wf-n">Đúng những byte mà String phải từ chối. Kiểu đến từ schema - không bao giờ suy ra từ nội dung.</p>
         </article>
 
         <article class="wf">
           <h3 class="wf-h">Model</h3>
-          <p class="wf-p">Fields concatenated in <strong>declaration</strong> order. No metadata, no field ID, no padding.</p>
+          <p class="wf-p">Các field nối liền nhau theo thứ tự <strong>khai báo</strong>. Không metadata, không field ID, không padding.</p>
 <pre class="wf-b">model Item { id: u32; name: String }
 Item{ 42, "Sword" }
   → <span class="by">[2A 00 00 00]</span> <span class="by">[05 00 00 00]</span> <span class="by">[53 77 6F 72 64]</span>
 
 model Mixed { a: u8; b: u32; c: u8 }
-Mixed{ 1, 2, 3 } → <span class="by">[01 02 00 00 00 03]</span>   6 bytes
-                   <span class="bad">12 bytes = copying memory layout</span></pre>
-          <p class="wf-n">A compiler may reorder fields in RAM. That must not change a single byte of output.</p>
+Mixed{ 1, 2, 3 } → <span class="by">[01 02 00 00 00 03]</span>   6 byte
+                   <span class="bad">12 byte = đang chép layout bộ nhớ</span></pre>
+          <p class="wf-n">Compiler được phép sắp xếp lại field trong RAM. Việc đó không được đổi một byte nào của output.</p>
         </article>
 
         <article class="wf">
           <h3 class="wf-h">Array</h3>
-          <p class="wf-p"><code>UInt32</code> count, then each element in the byte shape of <code>T</code>. Count is <strong>elements</strong>, not bytes.</p>
+          <p class="wf-p">Số lượng <code>UInt32</code>, rồi từng phần tử theo hình dạng byte của <code>T</code>. Đếm <strong>phần tử</strong>, không đếm byte.</p>
 <pre class="wf-b">Array&lt;u32&gt; [1,2,3]
   → <span class="by">[03 00 00 00]</span> <span class="by">[01 00 00 00]</span> <span class="by">[02 00 00 00]</span> <span class="by">[03 00 00 00]</span>
 
@@ -431,27 +429,27 @@ Array&lt;String&gt; ["a","bc"]
 
 Array&lt;Array&lt;u8&gt;&gt; [[1,2],[]]
   → <span class="by">[02 00 00 00]</span> <span class="by">[02 00 00 00 01 02]</span> <span class="by">[00 00 00 00]</span></pre>
-          <p class="wf-n">Count for <code>[1,2,3]</code> is 3, not 12. An empty inner array is a count of 0 and no further bytes.</p>
+          <p class="wf-n">Số lượng của <code>[1,2,3]</code> là 3, không phải 12. Mảng con rỗng là số lượng 0 và không byte nào thêm.</p>
         </article>
 
         <article class="wf">
           <h3 class="wf-h">Enum</h3>
-          <p class="wf-p">Always <code>UInt32</code>. Four bytes, regardless of how few members it declares.</p>
+          <p class="wf-p">Luôn là <code>UInt32</code>. Bốn byte, bất kể nó khai báo ít thành viên tới đâu.</p>
 <pre class="wf-b">enum PlayerState { Idle=0, Walk=1, Run=2, Jump=3 }
 
 Idle → <span class="by">[00 00 00 00]</span>
 Walk → <span class="by">[01 00 00 00]</span>
 Jump → <span class="by">[03 00 00 00]</span>
-99   → <span class="bad">invalid - outside the defined set</span></pre>
-          <p class="wf-n">A protocol decision, not a storage optimization. There is nothing for two peers to negotiate.</p>
+99   → <span class="bad">không hợp lệ - ngoài tập đã định nghĩa</span></pre>
+          <p class="wf-n">Đây là quyết định của protocol, không phải tối ưu lưu trữ. Không có gì để hai đầu thương lượng.</p>
         </article>
       </div>
 
       <div class="stack">
-        <h3 class="h3">A complete message, byte by byte</h3>
+        <h3 class="h3">Một message đầy đủ, từng byte một</h3>
         <p class="lede">
-          The example from RFC-0002 §15 - nested model, string, integers, bool - encodes to 31 bytes.
-          Hover a field to light up the bytes it owns, or hover a byte to find its owner.
+          Ví dụ từ RFC-0002 §15 - Model lồng, string, số nguyên, bool - encode ra 31 byte.
+          Rê chuột lên một field để làm sáng những byte nó sở hữu, hoặc rê lên một byte để tìm chủ của nó.
         </p>
       </div>
 
@@ -468,8 +466,8 @@ model GameMessage {
       <div class="map">
         <div class="map-panel">
           <div class="map-head">
-            <span>Hex dump · 31 bytes</span>
-            <span id="mapStatus">Position is the only identifier</span>
+            <span>Hex dump · 31 byte</span>
+            <span id="mapStatus">Vị trí là định danh duy nhất</span>
           </div>
           <div class="map-body">
             <div class="rows" id="mapRows">
@@ -498,7 +496,7 @@ model GameMessage {
             </button>
             <button class="field" type="button" data-range="4,4" data-f="len">
               <span class="fa">0x04</span>
-              <span class="fn">playerName.length<span class="ft">u32 · 6 · byte count, not characters</span></span>
+              <span class="fn">playerName.length<span class="ft">u32 · 6 · đếm byte, không đếm ký tự</span></span>
               <span class="fs">4 B</span>
             </button>
             <button class="field" type="button" data-range="8,6" data-f="str">
@@ -508,7 +506,7 @@ model GameMessage {
             </button>
             <button class="field" type="button" data-range="14,4" data-f="float">
               <span class="fa">0x0E</span>
-              <span class="fn">position.x<span class="ft">f32 · 10.5 · inline, no header</span></span>
+              <span class="fn">position.x<span class="ft">f32 · 10.5 · nằm thẳng, không header</span></span>
               <span class="fs">4 B</span>
             </button>
             <button class="field" type="button" data-range="18,4" data-f="float">
@@ -528,19 +526,19 @@ model GameMessage {
             </button>
             <button class="field" type="button" data-range="30,1" data-f="bool">
               <span class="fa">0x1E</span>
-              <span class="fn">isAlive<span class="ft">bool · strictly 0x01</span></span>
+              <span class="fn">isAlive<span class="ft">bool · đúng 0x01</span></span>
               <span class="fs">1 B</span>
             </button>
           </div>
-          <div class="total"><span>Total</span><span><b>31 bytes</b> · 0 bytes of metadata</span></div>
+          <div class="total"><span>Tổng</span><span><b>31 byte</b> · 0 byte metadata</span></div>
         </div>
       </div>
 
       <p class="body">
-        Nothing separates the fields. No length prefix on the nested model, no delimiter between
-        <code>position</code> and <code>health</code>, no terminator at the end. The decoder knows which
-        field it is reading purely from how far the cursor has advanced - which is exactly why
-        <strong>reordering a field is a breaking change</strong>, and why renaming one is free.
+        Không có gì ngăn cách các field. Không length prefix cho Model lồng, không dấu phân cách giữa
+        <code>position</code> và <code>health</code>, không terminator ở cuối. Decoder biết đang đọc field
+        nào thuần tuý nhờ con trỏ đã đi được bao xa - và đó chính là lý do
+        <strong>đổi thứ tự field là breaking change</strong>, còn đổi tên field thì miễn phí.
       </p>
     </div>
   </div>
@@ -553,19 +551,19 @@ model GameMessage {
     <div class="col stack-lg">
 
       <div class="stack">
-        <h2 class="h2">Test vectors</h2>
+        <h2 class="h2">Test vector</h2>
         <p class="lede">
-          A test vector is a pair of <strong>(logical value, byte sequence)</strong>. Never a pair of
-          (function call, return value) - a vector names no method, no language, no API.
+          Một test vector là một cặp <strong>(giá trị logic, chuỗi byte)</strong>. Không bao giờ là cặp
+          (lời gọi hàm, giá trị trả về) - một vector không nêu tên method nào, ngôn ngữ nào, API nào.
         </p>
-        <p class="tv-legend"><span>Input</span><span class="arrow">→</span><span>Expected Bytes</span></p>
+        <p class="tv-legend"><span>Input</span><span class="arrow">→</span><span>Byte mong đợi</span></p>
       </div>
 
       <div class="tv-group">
         <h3 class="tv-h">Primitive</h3>
         <div class="table-scroll">
           <table class="tv">
-            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Expected bytes</th></tr></thead>
+            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Byte mong đợi</th></tr></thead>
             <tbody>
               <tr><td class="vid">P-002</td><td class="vin"><code>bool</code> true</td><td class="vout">01</td></tr>
               <tr><td class="vid">P-011</td><td class="vin"><code>u8</code> 255</td><td class="vout">FF</td></tr>
@@ -582,8 +580,8 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          P-032 catches endianness: a big-endian implementation writes <code>12 34 56 78</code> and fails here.
-          F-031 catches NaN canonicalization - producing <code>00 00 C0 7F</code> means user data was modified.
+          P-032 bắt lỗi endianness: một implementation big-endian sẽ ghi <code>12 34 56 78</code> và trượt ở đây.
+          F-031 bắt lỗi canonical hoá NaN - cho ra <code>00 00 C0 7F</code> nghĩa là dữ liệu người dùng đã bị sửa.
         </p>
       </div>
 
@@ -591,10 +589,10 @@ model GameMessage {
         <h3 class="tv-h">Model</h3>
         <div class="table-scroll">
           <table class="tv">
-            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Expected bytes</th></tr></thead>
+            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Byte mong đợi</th></tr></thead>
             <tbody>
               <tr><td class="vid">T-001</td><td class="vin"><code>Item{ id=42, name="Sword" }</code></td><td class="vout">2A 00 00 00 05 00 00 00 53 77 6F 72 64</td></tr>
-              <tr><td class="vid">T-002</td><td class="vin"><code>Empty{}</code></td><td class="vout"><span class="nil">- 0 bytes</span></td></tr>
+              <tr><td class="vid">T-002</td><td class="vin"><code>Empty{}</code></td><td class="vout"><span class="nil">- 0 byte</span></td></tr>
               <tr><td class="vid">T-003</td><td class="vin"><code>Vector3{1.5, 2.5, 3.5}</code></td><td class="vout">00 00 C0 3F 00 00 20 40 00 00 60 40</td></tr>
               <tr><td class="vid">T-004</td><td class="vin"><code>Body{ pos=Vector3{1.5,2.5,3.5}, hp=100 }</code></td><td class="vout">00 00 C0 3F 00 00 20 40 00 00 60 40 64 00 00 00</td></tr>
               <tr><td class="vid">T-010</td><td class="vin"><code>Mixed{ a=1, b=2, c=3 }</code></td><td class="vout">01 02 00 00 00 03</td></tr>
@@ -603,8 +601,8 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          T-010 catches memory-layout copying (12 bytes) and compiler field reordering.
-          T-011 catches implementations that sort fields alphabetically “for stability” - <code>02 01</code> is a bug.
+          T-010 bắt lỗi chép layout bộ nhớ (12 byte) và lỗi compiler sắp xếp lại field.
+          T-011 bắt những implementation sắp field theo thứ tự chữ cái “cho ổn định” - <code>02 01</code> là bug.
         </p>
       </div>
 
@@ -612,7 +610,7 @@ model GameMessage {
         <h3 class="tv-h">Array</h3>
         <div class="table-scroll">
           <table class="tv">
-            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Expected bytes</th></tr></thead>
+            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Byte mong đợi</th></tr></thead>
             <tbody>
               <tr><td class="vid">A-001</td><td class="vin"><code>Array&lt;u32&gt; []</code></td><td class="vout">00 00 00 00</td></tr>
               <tr><td class="vid">A-002</td><td class="vin"><code>Array&lt;u32&gt; [1,2,3]</code></td><td class="vout">03 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00</td></tr>
@@ -622,53 +620,53 @@ model GameMessage {
             </tbody>
           </table>
         </div>
-        <p class="tv-note">A-002 catches the count-versus-byte-length bug: the correct count is 3, not 12.</p>
+        <p class="tv-note">A-002 bắt lỗi nhầm số lượng với độ dài byte: số lượng đúng là 3, không phải 12.</p>
       </div>
 
       <div class="tv-group">
         <h3 class="tv-h">Enum</h3>
         <div class="table-scroll">
           <table class="tv">
-            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Expected bytes</th></tr></thead>
+            <thead><tr><th scope="col">ID</th><th scope="col">Input</th><th scope="col">Byte mong đợi</th></tr></thead>
             <tbody>
               <tr><td class="vid">E-001</td><td class="vin"><code>PlayerState::Idle</code></td><td class="vout">00 00 00 00</td></tr>
               <tr><td class="vid">E-002</td><td class="vin"><code>PlayerState::Walk</code></td><td class="vout">01 00 00 00</td></tr>
               <tr><td class="vid">E-003</td><td class="vin"><code>PlayerState::Jump</code></td><td class="vout">03 00 00 00</td></tr>
-              <tr><td class="vid">E-010</td><td class="vin">Encoded size of any enum</td><td class="vout"><span class="nil">always 4 bytes</span></td></tr>
+              <tr><td class="vid">E-010</td><td class="vin">Kích thước encode của mọi enum</td><td class="vout"><span class="nil">luôn 4 byte</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="tv-note">E-010 catches implementations that “optimize” a four-member enum down to one byte.</p>
+        <p class="tv-note">E-010 bắt những implementation “tối ưu” một enum bốn thành viên xuống còn một byte.</p>
       </div>
 
       <div class="tv-group">
-        <h3 class="tv-h">Invalid Stream</h3>
+        <h3 class="tv-h">Stream không hợp lệ</h3>
         <div class="table-scroll">
           <table class="tv tv-reject">
-            <thead><tr><th scope="col">ID</th><th scope="col">Input bytes</th><th scope="col">Expected result</th></tr></thead>
+            <thead><tr><th scope="col">ID</th><th scope="col">Byte đầu vào</th><th scope="col">Kết quả mong đợi</th></tr></thead>
             <tbody>
-              <tr><td class="vid">N-001</td><td class="vout"><code>bool</code> · 02</td><td class="vin"><span class="rej">reject</span> · not 00/01</td></tr>
-              <tr><td class="vid">N-010</td><td class="vout"><code>u32</code> · 00 00 00</td><td class="vin"><span class="rej">reject</span> · unexpected EOF</td></tr>
-              <tr><td class="vid">N-020</td><td class="vout"><code>String</code> · 02 00 00 00 FF FE</td><td class="vin"><span class="rej">reject</span> · invalid UTF-8</td></tr>
-              <tr><td class="vid">N-021</td><td class="vout"><code>String</code> · 03 00 00 00 ED A0 80</td><td class="vin"><span class="rej">reject</span> · encoded surrogate</td></tr>
-              <tr><td class="vid">N-023</td><td class="vout"><code>String</code> · 64 00 00 00 41 6C 69 63 65</td><td class="vin"><span class="rej">reject</span> · length 100, 5 bytes remain</td></tr>
-              <tr><td class="vid">N-030</td><td class="vout"><code>Array&lt;u32&gt;</code> · 03 00 00 00 01 00 00 00</td><td class="vin"><span class="rej">reject</span> · count 3, one element</td></tr>
-              <tr><td class="vid">N-031</td><td class="vout"><code>Array&lt;u32&gt;</code> · FF FF FF FF</td><td class="vin"><span class="rej">reject</span> · before allocating</td></tr>
-              <tr><td class="vid">N-040</td><td class="vout"><code>enum{0,1}</code> · 63 00 00 00</td><td class="vin"><span class="rej">reject</span> · value 99 undefined</td></tr>
+              <tr><td class="vid">N-001</td><td class="vout"><code>bool</code> · 02</td><td class="vin"><span class="rej">từ chối</span> · không phải 00/01</td></tr>
+              <tr><td class="vid">N-010</td><td class="vout"><code>u32</code> · 00 00 00</td><td class="vin"><span class="rej">từ chối</span> · EOF bất ngờ</td></tr>
+              <tr><td class="vid">N-020</td><td class="vout"><code>String</code> · 02 00 00 00 FF FE</td><td class="vin"><span class="rej">từ chối</span> · UTF-8 không hợp lệ</td></tr>
+              <tr><td class="vid">N-021</td><td class="vout"><code>String</code> · 03 00 00 00 ED A0 80</td><td class="vin"><span class="rej">từ chối</span> · surrogate bị encode</td></tr>
+              <tr><td class="vid">N-023</td><td class="vout"><code>String</code> · 64 00 00 00 41 6C 69 63 65</td><td class="vin"><span class="rej">từ chối</span> · độ dài 100, còn 5 byte</td></tr>
+              <tr><td class="vid">N-030</td><td class="vout"><code>Array&lt;u32&gt;</code> · 03 00 00 00 01 00 00 00</td><td class="vin"><span class="rej">từ chối</span> · số lượng 3, có một phần tử</td></tr>
+              <tr><td class="vid">N-031</td><td class="vout"><code>Array&lt;u32&gt;</code> · FF FF FF FF</td><td class="vin"><span class="rej">từ chối</span> · trước khi cấp phát</td></tr>
+              <tr><td class="vid">N-040</td><td class="vout"><code>enum{0,1}</code> · 63 00 00 00</td><td class="vin"><span class="rej">từ chối</span> · giá trị 99 không định nghĩa</td></tr>
             </tbody>
           </table>
         </div>
         <p class="tv-note">
-          Rejection is <strong>MUST</strong>; the error name is only SHOULD. N-023 and N-031 check one thing:
-          is the length validated <em>before</em> allocating? Passing N-031 by crashing and catching the
-          exception does not count as a pass.
+          Từ chối là <strong>MUST</strong>; tên lỗi chỉ là SHOULD. N-023 và N-031 kiểm đúng một thứ:
+          độ dài có được kiểm tra <em>trước khi</em> cấp phát không? Pass N-031 bằng cách crash rồi bắt
+          exception thì không tính là pass.
         </p>
       </div>
 
       <p class="body">
-        The full set - including 8-byte integers, <code>f64</code>, round-trip and cross-implementation
-        checks - is in
-        <a href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">RFC-0003</a>.
+        Bộ đầy đủ - gồm số nguyên 8 byte, <code>f64</code>, kiểm tra round-trip và kiểm tra chéo giữa các
+        implementation - nằm trong
+        <a href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0003.md">RFC-0003</a>.
       </p>
     </div>
   </div>
@@ -683,24 +681,24 @@ model GameMessage {
 
       <div class="conform">
         <p class="conform-def">
-          An implementation is <strong>Cyclone Compatible</strong> if and only if it passes
-          100% of the test vectors.
+          Một implementation là <strong>Cyclone Compatible</strong> khi và chỉ khi nó pass
+          100% test vector.
         </p>
         <ul class="reqs">
           <li><span class="tick">✓</span> RFC-0002</li>
-          <li><span class="tick">✓</span> Test Vectors</li>
-          <li><span class="tick">✓</span> Deterministic Output</li>
+          <li><span class="tick">✓</span> Test Vector</li>
+          <li><span class="tick">✓</span> Output xác định</li>
         </ul>
       </div>
 
       <p class="body">
-        There is no “partially compatible”. There is no 98%. One failing vector means there exists
-        data on which this implementation and another disagree - silently, in production.
+        Không có “tương thích một phần”. Không có 98%. Một vector trượt nghĩa là tồn tại một dữ liệu mà
+        implementation này và một implementation khác bất đồng - im lặng, trên production.
       </p>
 
       <p class="verdict-line">
-        An implementation 10× slower that passes 100% of the vectors <strong>is</strong> Cyclone Compatible.<br>
-        The fastest implementation in the world that fails one vector <strong>is not</strong>.
+        Một implementation chậm gấp 10 lần nhưng pass 100% vector <strong>là</strong> Cyclone Compatible.<br>
+        Implementation nhanh nhất thế giới mà trượt một vector <strong>thì không</strong>.
       </p>
     </div>
   </div>
@@ -709,7 +707,7 @@ model GameMessage {
 <!-- ============ GITHUB ============ -->
 <section class="band" id="github">
   <div class="band-in">
-    <p class="offset">Source</p>
+    <p class="offset">Mã nguồn</p>
     <div class="col">
       <h2 class="h2">GitHub</h2>
       <div class="repos">
@@ -720,12 +718,12 @@ model GameMessage {
         </a>
         <a class="repo" href="https://github.com/cyclone-protocol/compiler">
           <span class="repo-t">Compiler</span>
-          <span class="repo-d">Reference schema compiler</span>
+          <span class="repo-d">Schema compiler tham chiếu</span>
           <span class="arrow">↗</span>
         </a>
         <a class="repo" href="https://github.com/cyclone-protocol/cli">
           <span class="repo-t">CLI</span>
-          <span class="repo-d">Byte inspection and conformance runner</span>
+          <span class="repo-d">Soi byte và chạy conformance</span>
           <span class="arrow">↗</span>
         </a>
       </div>
@@ -736,87 +734,87 @@ model GameMessage {
 <!-- ============ OFFICIAL TOOLS ============ -->
 <section class="band" id="tools">
   <div class="band-in">
-    <p class="offset">Tools</p>
+    <p class="offset">Công cụ</p>
     <div class="col">
-      <h2 class="h2">Official tools</h2>
+      <h2 class="h2">Công cụ chính thức</h2>
 
       <div class="tools">
         <div class="tool">
-          <span class="tool-t">Official Compiler</span>
-          <span class="tool-d">Reads a schema, emits a codec. One of many valid ways to satisfy RFC-0002.</span>
-          <span class="status s-wip">In progress</span>
+          <span class="tool-t">Compiler chính thức</span>
+          <span class="tool-d">Đọc một schema, sinh ra codec. Một trong nhiều cách hợp lệ để thoả RFC-0002.</span>
+          <span class="status s-wip">Đang làm</span>
         </div>
         <div class="tool">
-          <span class="tool-t">Official CLI</span>
-          <span class="tool-d">Inspect a byte stream, run the conformance vectors, produce a report.</span>
-          <span class="status s-wip">In progress</span>
+          <span class="tool-t">CLI chính thức</span>
+          <span class="tool-d">Soi một byte stream, chạy bộ vector conformance, xuất báo cáo.</span>
+          <span class="status s-wip">Đang làm</span>
         </div>
         <div class="tool">
-          <span class="tool-t">Reference SDK</span>
-          <span class="tool-d">A worked encoder/decoder to read alongside the spec, not a dependency the spec assumes.</span>
-          <span class="status s-wip">In progress</span>
+          <span class="tool-t">SDK tham chiếu</span>
+          <span class="tool-d">Một encoder/decoder mẫu để đọc song song với spec, không phải thứ spec phụ thuộc vào.</span>
+          <span class="status s-wip">Đang làm</span>
         </div>
       </div>
 
       <p class="disclaimer">
-        These tools are reference implementations of the Cyclone Protocol.
-        <strong>They are not part of the protocol itself.</strong>
+        Những công cụ này là reference implementation của Cyclone Protocol.
+        <strong>Chúng không phải là một phần của protocol.</strong>
       </p>
 
       <p class="body">
-        Replace all three and the wire format does not move. Nothing in Cyclone requires you to use
-        them - they exist to be read, and to be beaten.
+        Thay cả ba, wire format không đổi. Không có gì trong Cyclone bắt bạn phải dùng chúng -
+        chúng tồn tại để được đọc, và để bị vượt qua.
       </p>
     </div>
   </div>
 </section>
 
 <!--
-  Implementations table - do NOT add until real implementations exist,
-  including at least one from outside this project. Shape when that day comes:
+  Bảng implementation - KHÔNG thêm cho tới khi có implementation thật,
+  trong đó ít nhất một cái đến từ bên ngoài dự án này. Hình dạng khi ngày đó tới:
 
-    Language | Status    | Compatible
-    Go       | Official  | ✅
-    Rust     | Community | ✅
-    Java     | Community | ✅
+    Ngôn ngữ | Trạng thái | Compatible
+    Go       | Official   | ✅
+    Rust     | Community  | ✅
+    Java     | Community  | ✅
 
-  A list of "Coming Soon" SDKs teaches newcomers that Cyclone = a set of SDKs.
-  It does not.
+  Một danh sách SDK "Coming Soon" dạy người mới rằng Cyclone = một bộ SDK.
+  Không phải vậy.
 -->
 
 <!-- ============ THE PATH ============ -->
 <section class="band band-close" id="path">
   <div class="band-in">
-    <p class="offset">Start here</p>
+    <p class="offset">Bắt đầu</p>
     <div class="col">
-      <h2 class="h2">Where to begin</h2>
+      <h2 class="h2">Bắt đầu từ đâu</h2>
       <ol class="path">
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0001.md">
+          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0001.md">
             <span class="step-n">01</span>
-            <span class="step-t">Read the Specification</span>
-            <span class="step-d">What Cyclone is, and what it refuses to be.</span>
+            <span class="step-t">Đọc Specification</span>
+            <span class="step-d">Cyclone là gì, và nó từ chối trở thành cái gì.</span>
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">
+          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0002.md">
             <span class="step-n">02</span>
-            <span class="step-t">View RFC</span>
-            <span class="step-d">RFC-0002 - the exact shape the bytes must have.</span>
+            <span class="step-t">Xem RFC</span>
+            <span class="step-d">RFC-0002 - hình dạng chính xác mà byte phải có.</span>
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">
+          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0003.md">
             <span class="step-n">03</span>
-            <span class="step-t">Run Test Vectors</span>
-            <span class="step-d">RFC-0003 - the only thing that decides correctness.</span>
+            <span class="step-t">Chạy Test Vector</span>
+            <span class="step-d">RFC-0003 - thứ duy nhất quyết định đúng hay sai.</span>
           </a>
         </li>
         <li>
           <a class="step step-last" href="https://github.com/cyclone-protocol/spec">
             <span class="step-n">04</span>
-            <span class="step-t">Build Your Own Implementation</span>
-            <span class="step-d">Any language, any technique. Pass 100% and it is Cyclone Compatible.</span>
+            <span class="step-t">Tự viết Implementation của bạn</span>
+            <span class="step-d">Ngôn ngữ nào cũng được, kỹ thuật nào cũng được. Pass 100% là Cyclone Compatible.</span>
           </a>
         </li>
       </ol>
@@ -827,15 +825,15 @@ model GameMessage {
 <footer>
   <div class="foot-in">
     <span class="foot-brand">Cyclone Protocol</span>
-    <span>Created by <strong>Ha Duy Thang</strong></span>
+    <span>Tác giả <strong>Hà Duy Thắng</strong></span>
   </div>
   <p class="foot-copy">
     Draft specification v1.0.0 · Copyright © 2026 Ha Duy Thang ·
-    Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
   </p>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="/assets/site.js"></script>
 
 </body>
 </html>

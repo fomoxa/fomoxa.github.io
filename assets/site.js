@@ -1,25 +1,22 @@
 (function () {
   var root = document.documentElement;
   var btn = document.getElementById('themeBtn');
-  btn.addEventListener('click', function () {
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var current = root.getAttribute('data-theme') || (prefersDark ? 'dark' : 'light');
-    root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
-  });
-
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reduce) {
-    var heroCells = document.querySelectorAll('#heroStrip .cell');
-    for (var i = 0; i < heroCells.length; i++) {
-      heroCells[i].style.animationDelay = (0.2 + i * 0.045) + 's';
-    }
+  if (btn) {
+    btn.addEventListener('click', function () {
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var current = root.getAttribute('data-theme') || (prefersDark ? 'dark' : 'light');
+      root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    });
   }
 
-  var cells = Array.prototype.slice.call(document.querySelectorAll('#mapRows .cell'));
-  var fields = Array.prototype.slice.call(document.querySelectorAll('#fields .field'));
+  var mapRows = document.getElementById('mapRows');
   var status = document.getElementById('mapStatus');
+  if (!mapRows || !status) { return; }
+
+  var cells = Array.prototype.slice.call(mapRows.querySelectorAll('.cell'));
+  var fields = Array.prototype.slice.call(document.querySelectorAll('#fields .field'));
   /* Shared by every language edition: the idle text comes from the page itself. */
-  var idle = status ? status.textContent : '';
+  var idle = status.textContent;
 
   function clear() {
     cells.forEach(function (c) { c.classList.remove('dim', 'hot'); });
@@ -64,5 +61,5 @@
     });
   });
 
-  document.getElementById('mapRows').addEventListener('mouseleave', clear);
+  mapRows.addEventListener('mouseleave', clear);
 })();

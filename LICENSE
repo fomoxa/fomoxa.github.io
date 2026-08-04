@@ -2,8 +2,8 @@ Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 Copyright (c) 2026 Ha Duy Thang
 
-This work — the Cyclone Binary Protocol specification, including this
-repository's README, the documents under rfcs/, and the accompanying web page —
+This work - the Cyclone Binary Protocol specification, including this
+repository's README, the documents under rfcs/, and the accompanying web page -
 is licensed under the Creative Commons Attribution 4.0 International License.
 
 To view a copy of this license, visit:
@@ -23,19 +23,19 @@ SUMMARY (not a substitute for the license)
 
 You are free to:
 
-  Share  — copy and redistribute the material in any medium or format
-  Adapt  — remix, transform, and build upon the material
+  Share  - copy and redistribute the material in any medium or format
+  Adapt  - remix, transform, and build upon the material
 
 for any purpose, even commercially.
 
 Under the following term:
 
-  Attribution — You must give appropriate credit, provide a link to the
+  Attribution - You must give appropriate credit, provide a link to the
   license, and indicate if changes were made. You may do so in any reasonable
   manner, but not in any way that suggests the licensor endorses you or your
   use.
 
-No additional restrictions — You may not apply legal terms or technological
+No additional restrictions - You may not apply legal terms or technological
 measures that legally restrict others from doing anything the license permits.
 
 The full legal code at the URL above is the authoritative text. This summary
@@ -53,6 +53,12 @@ SUGGESTED ATTRIBUTION
 NOTE ON IMPLEMENTATIONS
 --------------------------------------------------------------------------------
 
-This repository contains a specification, not software. An implementation of
-the Cyclone Binary Protocol is a separate work: it is not a derivative of this
-specification, and its author is free to license it under any terms they choose.
+This repository contains the Cyclone Binary Protocol specification only.
+
+This license applies to the specification document and its accompanying
+documentation.
+
+Software implementations of the Cyclone Binary Protocol are independent
+projects. Authors of such implementations may choose any license for their
+software, provided they do not misrepresent the origin of this specification
+or remove the required attribution when redistributing the specification itself.
