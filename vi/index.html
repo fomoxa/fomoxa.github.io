@@ -249,20 +249,22 @@
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>Không có schema evolution</h4>
+            <h4>Schema evolution chỉ ở cuối</h4>
             <p>
-              Vị trí là định danh field duy nhất, nên thêm, bớt hay đổi thứ tự một field đều là
-              breaking change. v1 không có thương lượng phiên bản, không có migration cho field.
+              Vị trí là định danh field duy nhất. Một field có thể được thêm hoặc bớt ở
+              <strong>cuối</strong> Model mà không phá wire (Version Skew, RFC-0002 §9.1) - nhưng chèn
+              field vào giữa, đổi thứ tự field, hay đổi type của field vẫn là breaking change.
             </p>
           </div>
         </div>
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>Không backward / forward compatibility</h4>
+            <h4>Compatibility chỉ ở phần đuôi</h4>
             <p>
-              Không có unknown-field skipping, không có default, nên client cũ không đọc được message
-              của server mới. Hai đầu deploy cùng nhau, hoặc không deploy.
+              Client cũ đọc được message của server mới nếu thay đổi duy nhất là một field được thêm
+              ở cuối - byte thừa bị bỏ qua (Version Skew, RFC-0002 §9.1). Một field bị chèn hoặc đổi ở
+              giữa vẫn là breaking hoàn toàn: hai đầu phải deploy cùng nhau, hoặc không deploy.
             </p>
           </div>
         </div>
@@ -293,10 +295,12 @@
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>Không Optional, không nullable, không default</h4>
+            <h4>Không Optional, không nullable, không default tường minh</h4>
             <p>
-              Mọi field đều mang giá trị. v1 không có cách encode field vắng mặt - và chính vì vậy
-              không có chỗ nào mơ hồ về việc sự vắng mặt sẽ được ghi ra sao.
+              Không có dấu hiệu nào ở mức wire cho sự vắng mặt - không tag, không null byte. Một field
+              ở cuối có thể không có dữ liệu do Version Skew (§9.1), nhưng implementation biểu diễn
+              điều đó ra sao - default value, <code>Option&lt;T&gt;</code>, hay exception - hoàn toàn
+              do implementation quyết định, không phải wire format.
             </p>
           </div>
         </div>
@@ -443,6 +447,33 @@ Jump → <span class="by">[03 00 00 00]</span>
 99   → <span class="bad">không hợp lệ - ngoài tập đã định nghĩa</span></pre>
           <p class="wf-n">Đây là quyết định của protocol, không phải tối ưu lưu trữ. Không có gì để hai đầu thương lượng.</p>
         </article>
+      </div>
+
+      <div class="stack">
+        <h3 class="h3">Version skew</h3>
+        <p class="lede">
+          Writer và reader có thể đang chạy hai phiên bản khác nhau của cùng một Model, miễn là khác
+          biệt duy nhất là một field được thêm hoặc bớt ngay ở cuối.
+        </p>
+<pre class="wf-b">model ItemV1 { id: u32 }
+model ItemV2 { id: u32; name: String }
+
+ghi bằng ItemV1, đọc bằng ItemV2
+  [2A 00 00 00] → id=42, byte hết đúng ranh giới trước name
+                  → <span class="by">hợp lệ</span> - name không có dữ liệu
+
+ghi bằng ItemV2, đọc bằng ItemV1
+  [2A 00 00 00 05 00 00 00 53 77 6F 72 64] → id=42, còn dư 9 byte
+                  → <span class="by">hợp lệ</span> - phần dư bị bỏ qua
+
+ghi bằng ItemV2, đọc bằng ItemV2, bị cắt giữa field
+  [2A 00 00 00 05 00 00 00 53 77] → length=5, chỉ còn 2 byte dữ liệu
+                  → <span class="bad">không hợp lệ</span> - Unexpected EOF, KHÔNG phải version skew</pre>
+        <p class="wf-n">
+          Quy tắc dừng là “phần thiếu hay dư có rơi đúng ranh giới field không?” - không bao giờ là
+          “có thiếu dữ liệu không?”. Chèn field vào giữa Model, đổi thứ tự field, hay đổi type của
+          field vẫn là breaking change. Xem RFC-0002 §9.1.
+        </p>
       </div>
 
       <div class="stack">
@@ -640,6 +671,25 @@ model GameMessage {
       </div>
 
       <div class="tv-group">
+        <h3 class="tv-h">Version Skew</h3>
+        <div class="table-scroll">
+          <table class="tv">
+            <thead><tr><th scope="col">ID</th><th scope="col">Ghi</th><th scope="col">Đọc</th><th scope="col">Byte</th><th scope="col">Kỳ vọng</th></tr></thead>
+            <tbody>
+              <tr><td class="vid">V-001</td><td class="vin"><code>ItemV1{ id: u32 }</code></td><td class="vin"><code>ItemV2{ id: u32; name: String }</code></td><td class="vout">2A 00 00 00</td><td class="vin"><span class="tick">✓</span> không bị từ chối · <code>name</code> không có dữ liệu</td></tr>
+              <tr><td class="vid">V-002</td><td class="vin"><code>ItemV2{ id: u32; name: String }</code></td><td class="vin"><code>ItemV1{ id: u32 }</code></td><td class="vout">2A 00 00 00 05 00 00 00 53 77 6F 72 64</td><td class="vin"><span class="tick">✓</span> không bị từ chối · 9 byte dư bị bỏ qua</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tv-note">
+          Chỉ hợp lệ khi phần thiếu hay dư rơi đúng <strong>ranh giới field</strong> - so với N-022 bên
+          dưới, thiếu byte ngay giữa field nên vẫn MUST bị từ chối. Coi mọi byte thiếu hay dư là
+          version skew, kể cả giữa field, là lỗi conformance phổ biến nhất khi thêm hỗ trợ này
+          (RFC-0002 §9.1).
+        </p>
+      </div>
+
+      <div class="tv-group">
         <h3 class="tv-h">Stream không hợp lệ</h3>
         <div class="table-scroll">
           <table class="tv tv-reject">
@@ -649,6 +699,7 @@ model GameMessage {
               <tr><td class="vid">N-010</td><td class="vout"><code>u32</code> · 00 00 00</td><td class="vin"><span class="rej">từ chối</span> · EOF bất ngờ</td></tr>
               <tr><td class="vid">N-020</td><td class="vout"><code>String</code> · 02 00 00 00 FF FE</td><td class="vin"><span class="rej">từ chối</span> · UTF-8 không hợp lệ</td></tr>
               <tr><td class="vid">N-021</td><td class="vout"><code>String</code> · 03 00 00 00 ED A0 80</td><td class="vin"><span class="rej">từ chối</span> · surrogate bị encode</td></tr>
+              <tr><td class="vid">N-022</td><td class="vout"><code>String</code> · 05 00 00 00 41 6C 69</td><td class="vin"><span class="rej">từ chối</span> · độ dài 5, còn 3 byte</td></tr>
               <tr><td class="vid">N-023</td><td class="vout"><code>String</code> · 64 00 00 00 41 6C 69 63 65</td><td class="vin"><span class="rej">từ chối</span> · độ dài 100, còn 5 byte</td></tr>
               <tr><td class="vid">N-030</td><td class="vout"><code>Array&lt;u32&gt;</code> · 03 00 00 00 01 00 00 00</td><td class="vin"><span class="rej">từ chối</span> · số lượng 3, có một phần tử</td></tr>
               <tr><td class="vid">N-031</td><td class="vout"><code>Array&lt;u32&gt;</code> · FF FF FF FF</td><td class="vin"><span class="rej">từ chối</span> · trước khi cấp phát</td></tr>

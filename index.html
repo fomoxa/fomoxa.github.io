@@ -249,20 +249,23 @@
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No schema evolution</h4>
+            <h4>Schema evolution only at the end</h4>
             <p>
-              Position is the only field identifier, so adding, removing or reordering a field is a
-              breaking change. v1 has no version negotiation and no field migration.
+              Position is the only field identifier. A field may be appended or removed at the
+              <strong>end</strong> of a Model without breaking the wire (Version Skew, RFC-0002 §9.1) -
+              but inserting a field in the middle, reordering fields, or changing a field's type is
+              still a breaking change.
             </p>
           </div>
         </div>
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No backward or forward compatibility</h4>
+            <h4>Compatibility only at the trailing edge</h4>
             <p>
-              There is no unknown-field skipping and no defaults, so an old client cannot read a new
-              server's message. Both ends deploy together, or not at all.
+              An old client can read a new server's message if the only change is a field appended at
+              the end - the extra bytes are discarded (Version Skew, RFC-0002 §9.1). A field inserted
+              or changed in the middle is still a hard break: both ends deploy together, or not at all.
             </p>
           </div>
         </div>
@@ -294,10 +297,12 @@
         <div class="tradeoff">
           <span class="x">✕</span>
           <div>
-            <h4>No Optional, no nullable, no defaults</h4>
+            <h4>No Optional, no nullable, no explicit default</h4>
             <p>
-              Every field carries a value. There is no absent-field encoding in v1 - which is precisely
-              why there is no ambiguity about how absence would be written.
+              There is no wire-level marker for absence - no tag, no null byte. A trailing field can
+              end up with no data through Version Skew (§9.1), but how an implementation represents
+              that - a default value, <code>Option&lt;T&gt;</code>, an exception - is left entirely to
+              it, not to the wire format.
             </p>
           </div>
         </div>
@@ -445,6 +450,33 @@ Jump → <span class="by">[03 00 00 00]</span>
 99   → <span class="bad">invalid - outside the defined set</span></pre>
           <p class="wf-n">A protocol decision, not a storage optimization. There is nothing for two peers to negotiate.</p>
         </article>
+      </div>
+
+      <div class="stack">
+        <h3 class="h3">Version skew</h3>
+        <p class="lede">
+          The writer and the reader may run two different versions of the same Model, as long as the
+          only difference is a field appended or removed at the very end.
+        </p>
+<pre class="wf-b">model ItemV1 { id: u32 }
+model ItemV2 { id: u32; name: String }
+
+written ItemV1, read ItemV2
+  [2A 00 00 00] → id=42, bytes end exactly on the boundary before name
+                  → <span class="by">valid</span> - name has no data
+
+written ItemV2, read ItemV1
+  [2A 00 00 00 05 00 00 00 53 77 6F 72 64] → id=42, 9 bytes remain
+                  → <span class="by">valid</span> - the leftover is discarded
+
+written ItemV2, read ItemV2, truncated mid-field
+  [2A 00 00 00 05 00 00 00 53 77] → length=5, only 2 bytes of data remain
+                  → <span class="bad">invalid</span> - Unexpected EOF, NOT version skew</pre>
+        <p class="wf-n">
+          The stopping rule is “does the shortfall or surplus fall exactly on a field boundary?” -
+          never “is data missing?”. Inserting a field mid-Model, reordering fields, or changing a
+          field's type is still a breaking change. See RFC-0002 §9.1.
+        </p>
       </div>
 
       <div class="stack">
@@ -642,6 +674,25 @@ model GameMessage {
       </div>
 
       <div class="tv-group">
+        <h3 class="tv-h">Version Skew</h3>
+        <div class="table-scroll">
+          <table class="tv">
+            <thead><tr><th scope="col">ID</th><th scope="col">Written</th><th scope="col">Read</th><th scope="col">Bytes</th><th scope="col">Expectation</th></tr></thead>
+            <tbody>
+              <tr><td class="vid">V-001</td><td class="vin"><code>ItemV1{ id: u32 }</code></td><td class="vin"><code>ItemV2{ id: u32; name: String }</code></td><td class="vout">2A 00 00 00</td><td class="vin"><span class="tick">✓</span> not rejected · <code>name</code> has no data</td></tr>
+              <tr><td class="vid">V-002</td><td class="vin"><code>ItemV2{ id: u32; name: String }</code></td><td class="vin"><code>ItemV1{ id: u32 }</code></td><td class="vout">2A 00 00 00 05 00 00 00 53 77 6F 72 64</td><td class="vin"><span class="tick">✓</span> not rejected · 9 leftover bytes discarded</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tv-note">
+          Valid only when the shortfall or surplus lands exactly on a <strong>field boundary</strong> -
+          compare with N-022 below, which goes missing mid-field and MUST still be rejected. Treating
+          every missing or extra byte as version skew, even mid-field, is the most common conformance
+          bug when adding this support (RFC-0002 §9.1).
+        </p>
+      </div>
+
+      <div class="tv-group">
         <h3 class="tv-h">Invalid Stream</h3>
         <div class="table-scroll">
           <table class="tv tv-reject">
@@ -651,6 +702,7 @@ model GameMessage {
               <tr><td class="vid">N-010</td><td class="vout"><code>u32</code> · 00 00 00</td><td class="vin"><span class="rej">reject</span> · unexpected EOF</td></tr>
               <tr><td class="vid">N-020</td><td class="vout"><code>String</code> · 02 00 00 00 FF FE</td><td class="vin"><span class="rej">reject</span> · invalid UTF-8</td></tr>
               <tr><td class="vid">N-021</td><td class="vout"><code>String</code> · 03 00 00 00 ED A0 80</td><td class="vin"><span class="rej">reject</span> · encoded surrogate</td></tr>
+              <tr><td class="vid">N-022</td><td class="vout"><code>String</code> · 05 00 00 00 41 6C 69</td><td class="vin"><span class="rej">reject</span> · length 5, 3 bytes remain</td></tr>
               <tr><td class="vid">N-023</td><td class="vout"><code>String</code> · 64 00 00 00 41 6C 69 63 65</td><td class="vin"><span class="rej">reject</span> · length 100, 5 bytes remain</td></tr>
               <tr><td class="vid">N-030</td><td class="vout"><code>Array&lt;u32&gt;</code> · 03 00 00 00 01 00 00 00</td><td class="vin"><span class="rej">reject</span> · count 3, one element</td></tr>
               <tr><td class="vid">N-031</td><td class="vout"><code>Array&lt;u32&gt;</code> · FF FF FF FF</td><td class="vin"><span class="rej">reject</span> · before allocating</td></tr>
