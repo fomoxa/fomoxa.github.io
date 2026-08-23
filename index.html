@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cyclone Protocol - A deterministic binary wire format</title>
-<meta name="description" content="Cyclone is a protocol. It defines how logical data is transformed into bytes, and how bytes are transformed back into logical data. Nothing more, nothing less.">
+<title>Fomoxa Protocol - A deterministic binary wire format</title>
+<meta name="description" content="Fomoxa is a protocol. It defines how logical data becomes bytes, and how bytes become logical data. Nothing more, nothing less.">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="icon" type="image/png" href="/favicon.png">
 </head>
@@ -13,8 +13,8 @@
 <header class="topbar">
   <div class="topbar-in">
     <a class="brand" href="#top">
-      <img src="./cyclone-logo.png" alt="Cyclone Logo" class="brand-logo" />
-      Cyclone
+      <img src="./logo.png" alt="Fomoxa Logo" class="brand-logo" />
+      Fomoxa
     </a>
     <nav class="topnav" aria-label="Sections">
       <a href="#top">Home</a>
@@ -38,7 +38,7 @@
   <div class="hero-in">
     <p class="eyebrow">Wire format specification · v1.0.0 · Draft</p>
 
-    <h1 class="h1">Cyclone Protocol</h1>
+    <h1 class="h1">Fomoxa Protocol</h1>
 
     <p class="hero-line">
       A deterministic binary wire format.<br>
@@ -46,13 +46,13 @@
     </p>
 
     <p class="hero-sub">
-      Cyclone defines how logical data is transformed into bytes,
-      and how bytes are transformed back into logical data.
+      Fomoxa defines how logical data becomes bytes.
+      And how bytes become logical data.
     </p>
 
     <div class="ctas">
-      <a class="btn btn-primary" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">Read Specification <span class="arrow">→</span></a>
-      <a class="btn btn-ghost" href="https://github.com/cyclone-protocol">GitHub <span class="arrow">↗</span></a>
+      <a class="btn btn-primary" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">Read Specification <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="https://github.com/fomoxa">GitHub <span class="arrow">↗</span></a>
     </div>
   </div>
 </section>
@@ -64,13 +64,13 @@
     <div class="col">
       <h2 class="statement">Specification First</h2>
       <p class="lede">
-        The specification is the single source of truth. It is never changed to accommodate
-        an implementation. Everything else is downstream of it.
+        The specification is the single source of truth. Never change the spec to accommodate an
+        implementation. Everything else sits downstream of it.
       </p>
 
       <div class="flow-pair">
         <div class="flow flow-right">
-          <p class="flow-cap">The order Cyclone follows</p>
+          <p class="flow-cap">The order Fomoxa follows</p>
           <ol class="chain">
             <li><span class="node">RFC</span></li>
             <li><span class="node">Compiler</span></li>
@@ -84,30 +84,30 @@
             <li><span class="node">SDK</span></li>
             <li><span class="node">Protocol</span></li>
           </ol>
-          <p class="flow-note">A protocol shaped by whatever its first library happened to do.</p>
+          <p class="flow-note">A protocol shaped by the first library that wrote it.</p>
         </div>
       </div>
 
       <p class="body">
         The test applied to every sentence of the specification:
         <strong>could somebody writing an encoder in assembly on an 8-bit microcontroller follow it?</strong>
-        If not, that sentence describes an implementation, and it does not belong in the spec.
+        If not, that sentence describes an implementation. Cut it from the spec.
       </p>
     </div>
   </div>
 </section>
 
-<!-- ============ WHAT IS CYCLONE ============ -->
+<!-- ============ WHAT IS FOMOXA ============ -->
 <section class="band" id="what">
   <div class="band-in">
     <p class="offset">Definition</p>
     <div class="col">
-      <h2 class="h2">What is Cyclone?</h2>
-      <p class="lede">Cyclone is a protocol.</p>
+      <h2 class="h2">What is Fomoxa?</h2>
+      <p class="lede">Fomoxa is a protocol.</p>
 
       <div class="what-grid">
         <div class="nots">
-          <h3 class="h3">Cyclone is <em>not</em></h3>
+          <h3 class="h3">Fomoxa is <em>not</em></h3>
           <ul class="not-list">
             <li><span class="x">×</span> RPC</li>
             <li><span class="x">×</span> Networking</li>
@@ -117,7 +117,7 @@
         </div>
 
         <div class="only">
-          <h3 class="h3">Cyclone only specifies</h3>
+          <h3 class="h3">Fomoxa only specifies</h3>
           <ol class="chain chain-vert">
             <li><span class="node">Model</span></li>
             <li><span class="node node-accent">Bytes</span></li>
@@ -128,7 +128,7 @@
 
       <p class="body">
         Transport, retransmission, ordering, matchmaking, encryption, compression, checksums -
-        all of it is built <strong>on top of</strong> Cyclone. The specification stops exactly where
+        build all of it <strong>on top of</strong> Fomoxa. The specification stops exactly where
         the bytes are formed.
       </p>
     </div>
@@ -145,24 +145,24 @@
         <h2 class="h2">Ten principles, two layers.</h2>
         <p class="lede">
           Seven are conformance conditions. Three are choices the Reference Implementation made.
-          Mixing the two is how a protocol quietly turns into a framework.
+          Mix the two and a protocol quietly turns into a framework.
         </p>
       </div>
 
       <div class="stack">
         <h3 class="h3">Principles of the Specification</h3>
-        <p class="body">Violate one of these and it is not Cyclone.</p>
+        <p class="body">Violate one of these and it is not Fomoxa.</p>
         <div class="principles">
           <div class="principle key">
             <span class="n">01</span>
             <span class="t">Specification First
-              <span class="d">The spec is the single source of truth. It is never changed to accommodate an implementation.</span>
+              <span class="d">The spec is the single source of truth. Never change it to accommodate an implementation.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">02</span>
             <span class="t">Protocol over Framework
-              <span class="d">Cyclone defines how data appears on the wire - not an API, not a runtime.</span>
+              <span class="d">Fomoxa defines how data appears on the wire. Not an API, not a runtime.</span>
             </span>
           </div>
           <div class="principle key">
@@ -186,13 +186,13 @@
           <div class="principle">
             <span class="n">06</span>
             <span class="t">Implementation Independent
-              <span class="d">No mandated parser, macro, or generator. The spec describes bytes and stops there.</span>
+              <span class="d">No mandated parser, macro, or generator. The spec describes bytes and stops.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">07</span>
             <span class="t">Implementation Replaceable
-              <span class="d">The Reference Implementation is not the standard. Replace it entirely and the wire format does not move.</span>
+              <span class="d">The Reference Implementation is not the standard. Replace it entirely and the wire format holds.</span>
             </span>
           </div>
         </div>
@@ -201,14 +201,14 @@
       <div class="stack">
         <h3 class="h3">Principles of the Reference Implementation</h3>
         <p class="body">
-          Design choices, not conformance conditions. Another implementation may choose differently,
-          as long as the bytes do not move.
+          Design choices, not conformance conditions. Another implementation may choose differently.
+          The bytes must not move.
         </p>
         <div class="principles">
           <div class="principle">
             <span class="n">08</span>
             <span class="t">User Owns the Model
-              <span class="d">No mandatory DTO layer, no base class - the RI reads the fields you mark and ignores the rest.</span>
+              <span class="d">No mandatory DTO layer, no base class. The RI reads the fields you mark and ignores the rest.</span>
             </span>
           </div>
           <div class="principle">
@@ -220,7 +220,7 @@
           <div class="principle">
             <span class="n">10</span>
             <span class="t">Zero Runtime Reflection
-              <span class="d">The wire format permits it; the spec does not require it. AOT and bare-metal targets stay viable.</span>
+              <span class="d">The wire format permits it. The spec does not require it. AOT and bare-metal targets stay viable.</span>
             </span>
           </div>
         </div>
@@ -229,7 +229,7 @@
       <p class="layer-note">
         The decision rule, in two questions. <strong>One:</strong> is this statement observable from the
         byte stream? If not, it belongs to the Reference Implementation and must not enter the spec.
-        <strong>Two:</strong> does it violate one of the seven above? If yes, it is not part of Cyclone.
+        <strong>Two:</strong> does it violate one of the seven above? If yes, it is not part of Fomoxa.
       </p>
     </div>
   </div>
@@ -240,7 +240,7 @@
   <div class="band-in">
     <p class="offset">Trade-offs</p>
     <div class="col">
-      <h2 class="h2">What Cyclone deliberately does not do</h2>
+      <h2 class="h2">What Fomoxa deliberately does not do</h2>
       <p class="lede">
         Each of these is the direct cost of a guarantee above. None of them is on a roadmap.
       </p>
@@ -251,10 +251,9 @@
           <div>
             <h4>Schema evolution only at the end</h4>
             <p>
-              Position is the only field identifier. A field may be appended or removed at the
-              <strong>end</strong> of a Model without breaking the wire (Version Skew, RFC-0002 §9.1) -
-              but inserting a field in the middle, reordering fields, or changing a field's type is
-              still a breaking change.
+              Position is the only field identifier. Append or remove a field at the
+              <strong>end</strong> of a Model and the wire holds (Version Skew, RFC-0002 §9.1).
+              Inserting a field in the middle, reordering fields, changing a field's type: breaking change.
             </p>
           </div>
         </div>
@@ -263,9 +262,10 @@
           <div>
             <h4>Compatibility only at the trailing edge</h4>
             <p>
-              An old client can read a new server's message if the only change is a field appended at
-              the end - the extra bytes are discarded (Version Skew, RFC-0002 §9.1). A field inserted
-              or changed in the middle is still a hard break: both ends deploy together, or not at all.
+              An old client reads a new server's message under one condition. The only change is a
+              field appended at the end. The extra bytes are discarded (Version Skew, RFC-0002 §9.1).
+              A field inserted or changed in the middle is a hard break. Both ends deploy together,
+              or not at all.
             </p>
           </div>
         </div>
@@ -274,7 +274,7 @@
           <div>
             <h4>No metadata, not self-describing</h4>
             <p>
-              The stream carries no field names, types or tags - the receiver must already know the
+              The stream carries no field names, types or tags. The receiver must already know the
               field order and types. The dangerous corollary: decoding against the wrong definition
               usually raises no error at all. It produces wrong values, quietly.
             </p>
@@ -285,12 +285,12 @@
           <div>
             <h4>No mandated IDL</h4>
             <p>
-              The source of truth is the <strong>Schema</strong>, but the spec does not dictate how you
-              write it down - no mandatory IDL, no mandatory <code>.cyclone</code> file. The Reference
-              Implementation expresses the Schema as annotations on your existing type, extracting only
-              three things: the type, its fields, and each field's Cyclone type. The trade: there is no
-              standalone schema document to hand a third party - both ends are on their own to derive
-              the same Schema.
+              The source of truth is the <strong>Schema</strong>. The spec does not dictate how you
+              write the Schema down. No mandatory IDL, no mandatory <code>.fomoxa</code> file. The
+              Reference Implementation expresses the Schema as annotations on your existing type. It
+              extracts exactly three things: the type, its fields, and each field's Fomoxa type. The
+              cost: no standalone Schema document to hand a third party. Both ends are on their own
+              to derive the same Schema.
             </p>
           </div>
         </div>
@@ -299,10 +299,10 @@
           <div>
             <h4>No Optional, no nullable, no explicit default</h4>
             <p>
-              There is no wire-level marker for absence - no tag, no null byte. A trailing field can
-              end up with no data through Version Skew (§9.1), but how an implementation represents
-              that - a default value, <code>Option&lt;T&gt;</code>, an exception - is left entirely to
-              it, not to the wire format.
+              There is no wire-level marker for absence. No tag, no null byte. A trailing field can
+              end up with no data through Version Skew (§9.1). How an implementation represents that
+              - a default value, <code>Option&lt;T&gt;</code>, an exception - is left to the
+              implementation. Not to the wire format.
             </p>
           </div>
         </div>
@@ -311,16 +311,16 @@
           <div>
             <h4>No transport, no framing, no crypto</h4>
             <p>
-              Cyclone produces a byte sequence and stops. Message boundaries, retransmission, ordering,
-              encryption and compression are all yours to build on top.
+              Fomoxa produces a byte sequence and stops. Message boundaries, retransmission, ordering,
+              encryption, compression: build them yourself, on top.
             </p>
           </div>
         </div>
       </div>
 
       <p class="body">
-        If any of these is unacceptable for your problem, a format with tag IDs and optional fields
-        will serve you better. That is the right call, not a failure of Cyclone.
+        Is any of these unacceptable for your problem? A format with tag IDs and optional fields will
+        serve you better. That is the right call, not a failure of Fomoxa.
       </p>
     </div>
   </div>
@@ -335,19 +335,19 @@
       <p class="lede">Three documents. Each answers exactly one question.</p>
 
       <div class="docs">
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0001.md">
+        <a class="doc" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0001.md">
           <span class="id">RFC-0001</span>
           <span class="t">Introduction</span>
-          <span class="d">What Cyclone is, the problem it exists to solve, when to choose it - and when not to.</span>
+          <span class="d">What Fomoxa is, the problem it solves, when to choose it - and when not to.</span>
           <span class="go">Read <span class="arrow">→</span></span>
         </a>
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">
+        <a class="doc" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">
           <span class="id">RFC-0002</span>
           <span class="t">Wire Format</span>
-          <span class="d">What shape the bytes must have: primitives, string, bytes, model, array, enum, invalid streams.</span>
+          <span class="d">The shape the bytes must have: primitives, string, bytes, model, array, enum, invalid streams.</span>
           <span class="go">Read <span class="arrow">→</span></span>
         </a>
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">
+        <a class="doc" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">
           <span class="id">RFC-0003</span>
           <span class="t">Conformance</span>
           <span class="d">How you know an implementation is correct. The test vectors, and the single pass mark.</span>
@@ -356,9 +356,8 @@
       </div>
 
       <p class="body">
-        The Vietnamese text is the source of record. Where a translation disagrees with it,
-        the Vietnamese wins.
-        <a href="https://github.com/cyclone-protocol/spec">Browse the specification repository ↗</a>
+        The Vietnamese text is the source of record. Where a translation disagrees, the Vietnamese wins.
+        <a href="https://github.com/fomoxa/specification">Browse the specification repository ↗</a>
       </p>
     </div>
   </div>
@@ -381,7 +380,7 @@
       <div class="wire">
         <article class="wf">
           <h3 class="wf-h">Primitive</h3>
-          <p class="wf-p">Fixed width, little endian. A <code>u32</code> is four bytes even when the value is zero.</p>
+          <p class="wf-p">Fixed width, little endian. A <code>u32</code> is four bytes, even when the value is zero.</p>
 <pre class="wf-b">u32   100        → <span class="by">[64 00 00 00]</span>
 u32   0x12345678 → <span class="by">[78 56 34 12]</span>
 i32   -1         → <span class="by">[FF FF FF FF]</span>
@@ -400,7 +399,7 @@ f32   -0.0       → <span class="by">[00 00 00 80]</span></pre>
 "中"        → <span class="by">[03 00 00 00]</span> <span class="by">[E4 B8 AD]</span>
 "Xin chào" → <span class="by">[09 00 00 00]</span> <span class="by">[58 69 6E 20 63 68 C3 A0 6F]</span>
 ""         → <span class="by">[00 00 00 00]</span></pre>
-          <p class="wf-n">“中” is one character and three bytes. Length MUST be 3. The byte region must be valid UTF-8.</p>
+          <p class="wf-n">“中” is one character, three bytes. Length MUST be 3. The byte region MUST be valid UTF-8.</p>
         </article>
 
         <article class="wf">
@@ -409,7 +408,7 @@ f32   -0.0       → <span class="by">[00 00 00 80]</span></pre>
 <pre class="wf-b">[]         → <span class="by">[00 00 00 00]</span>
 [FF FE]    → <span class="by">[02 00 00 00]</span> <span class="by">[FF FE]</span>
 [00 00]    → <span class="by">[02 00 00 00]</span> <span class="by">[00 00]</span></pre>
-          <p class="wf-n">The same bytes a String must reject. Type comes from the schema - never inferred from content.</p>
+          <p class="wf-n">The same bytes a String must reject. Type comes from the Schema, never inferred from content.</p>
         </article>
 
         <article class="wf">
@@ -455,8 +454,8 @@ Jump → <span class="by">[03 00 00 00]</span>
       <div class="stack">
         <h3 class="h3">Version skew</h3>
         <p class="lede">
-          The writer and the reader may run two different versions of the same Model, as long as the
-          only difference is a field appended or removed at the very end.
+          The writer and the reader may run two different versions of the same Model. One condition:
+          the only difference is a field appended or removed at the very end.
         </p>
 <pre class="wf-b">model ItemV1 { id: u32 }
 model ItemV2 { id: u32; name: String }
@@ -473,17 +472,17 @@ written ItemV2, read ItemV2, truncated mid-field
   [2A 00 00 00 05 00 00 00 53 77] → length=5, only 2 bytes of data remain
                   → <span class="bad">invalid</span> - Unexpected EOF, NOT version skew</pre>
         <p class="wf-n">
-          The stopping rule is “does the shortfall or surplus fall exactly on a field boundary?” -
-          never “is data missing?”. Inserting a field mid-Model, reordering fields, or changing a
-          field's type is still a breaking change. See RFC-0002 §9.1.
+          The stopping rule is “does the shortfall or surplus fall exactly on a field boundary?”.
+          Never “is data missing?”. Inserting a field mid-Model, reordering fields, changing a
+          field's type: still a breaking change. See RFC-0002 §9.1.
         </p>
       </div>
 
       <div class="stack">
         <h3 class="h3">A complete message, byte by byte</h3>
         <p class="lede">
-          The example from RFC-0002 §15 - nested model, string, integers, bool - encodes to 31 bytes.
-          Hover a field to light up the bytes it owns, or hover a byte to find its owner.
+          The example from RFC-0002 §15. Nested model, string, integers, bool. It encodes to 31 bytes.
+          Hover a field to light up the bytes it owns. Hover a byte to find its owner.
         </p>
       </div>
 
@@ -569,9 +568,9 @@ model GameMessage {
       </div>
 
       <p class="body">
-        Nothing separates the fields. No length prefix on the nested model, no delimiter between
-        <code>position</code> and <code>health</code>, no terminator at the end. The decoder knows which
-        field it is reading purely from how far the cursor has advanced - which is exactly why
+        Nothing separates the fields. No length prefix on the nested model. No delimiter between
+        <code>position</code> and <code>health</code>. No terminator at the end. The decoder knows
+        which field it is reading from how far the cursor has advanced. That is why
         <strong>reordering a field is a breaking change</strong>, and why renaming one is free.
       </p>
     </div>
@@ -588,7 +587,7 @@ model GameMessage {
         <h2 class="h2">Test vectors</h2>
         <p class="lede">
           A test vector is a pair of <strong>(logical value, byte sequence)</strong>. Never a pair of
-          (function call, return value) - a vector names no method, no language, no API.
+          (function call, return value). A vector names no method, no language, no API.
         </p>
         <p class="tv-legend"><span>Input</span><span class="arrow">→</span><span>Expected Bytes</span></p>
       </div>
@@ -614,8 +613,8 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          P-032 catches endianness: a big-endian implementation writes <code>12 34 56 78</code> and fails here.
-          F-031 catches NaN canonicalization - producing <code>00 00 C0 7F</code> means user data was modified.
+          P-032 catches endianness. A big-endian implementation writes <code>12 34 56 78</code> and fails here.
+          F-031 catches NaN canonicalization. Producing <code>00 00 C0 7F</code> means user data was modified.
         </p>
       </div>
 
@@ -636,7 +635,7 @@ model GameMessage {
         </div>
         <p class="tv-note">
           T-010 catches memory-layout copying (12 bytes) and compiler field reordering.
-          T-011 catches implementations that sort fields alphabetically “for stability” - <code>02 01</code> is a bug.
+          T-011 catches implementations that sort fields alphabetically “for stability”. <code>02 01</code> is a bug.
         </p>
       </div>
 
@@ -654,7 +653,7 @@ model GameMessage {
             </tbody>
           </table>
         </div>
-        <p class="tv-note">A-002 catches the count-versus-byte-length bug: the correct count is 3, not 12.</p>
+        <p class="tv-note">A-002 catches the count-versus-byte-length bug. The correct count is 3, not 12.</p>
       </div>
 
       <div class="tv-group">
@@ -685,8 +684,8 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          Valid only when the shortfall or surplus lands exactly on a <strong>field boundary</strong> -
-          compare with N-022 below, which goes missing mid-field and MUST still be rejected. Treating
+          Valid only when the shortfall or surplus lands exactly on a <strong>field boundary</strong>.
+          Compare with N-022 below: bytes go missing mid-field, and it MUST still be rejected. Treating
           every missing or extra byte as version skew, even mid-field, is the most common conformance
           bug when adding this support (RFC-0002 §9.1).
         </p>
@@ -711,16 +710,16 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          Rejection is <strong>MUST</strong>; the error name is only SHOULD. N-023 and N-031 check one thing:
-          is the length validated <em>before</em> allocating? Passing N-031 by crashing and catching the
-          exception does not count as a pass.
+          Rejection is <strong>MUST</strong>. The error name is only SHOULD. N-023 and N-031 check one
+          thing: is the length validated <em>before</em> allocating? Crashing and catching the exception
+          does not count as a pass.
         </p>
       </div>
 
       <p class="body">
-        The full set - including 8-byte integers, <code>f64</code>, round-trip and cross-implementation
-        checks - is in
-        <a href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">RFC-0003</a>.
+        The full set is in
+        <a href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">RFC-0003</a>.
+        It covers 8-byte integers, <code>f64</code>, round-trip checks, and cross-implementation checks.
       </p>
     </div>
   </div>
@@ -731,11 +730,11 @@ model GameMessage {
   <div class="band-in">
     <p class="offset">Conformance</p>
     <div class="col">
-      <h2 class="h2">Cyclone Compatible</h2>
+      <h2 class="h2">Fomoxa Compatible</h2>
 
       <div class="conform">
         <p class="conform-def">
-          An implementation is <strong>Cyclone Compatible</strong> if and only if it passes
+          An implementation is <strong>Fomoxa Compatible</strong> if and only if it passes
           100% of the test vectors.
         </p>
         <ul class="reqs">
@@ -746,12 +745,12 @@ model GameMessage {
       </div>
 
       <p class="body">
-        There is no “partially compatible”. There is no 98%. One failing vector means there exists
-        data on which this implementation and another disagree - silently, in production.
+        There is no “partially compatible”. There is no 98%. One failing vector means data exists on
+        which two implementations disagree. Silently, in production.
       </p>
 
       <p class="verdict-line">
-        An implementation 10× slower that passes 100% of the vectors <strong>is</strong> Cyclone Compatible.<br>
+        An implementation 10× slower that passes 100% of the vectors <strong>is</strong> Fomoxa Compatible.<br>
         The fastest implementation in the world that fails one vector <strong>is not</strong>.
       </p>
     </div>
@@ -765,19 +764,19 @@ model GameMessage {
     <div class="col">
       <h2 class="h2">GitHub</h2>
       <div class="repos">
-        <a class="repo" href="https://github.com/cyclone-protocol/spec">
+        <a class="repo" href="https://github.com/fomoxa/specification">
           <span class="repo-t">Specification</span>
           <span class="repo-d">RFC-0001 · RFC-0002 · RFC-0003</span>
           <span class="arrow">↗</span>
         </a>
-        <a class="repo" href="https://github.com/cyclone-protocol/compiler">
-          <span class="repo-t">Compiler</span>
-          <span class="repo-d">Reference schema compiler</span>
+        <a class="repo" href="https://github.com/fomoxa/fomoxac">
+          <span class="repo-t">Fomoxac</span>
+          <span class="repo-d">Reference Schema compiler</span>
           <span class="arrow">↗</span>
         </a>
-        <a class="repo" href="https://github.com/cyclone-protocol/cli">
-          <span class="repo-t">CLI</span>
-          <span class="repo-d">Byte inspection and conformance runner</span>
+        <a class="repo" href="https://github.com/fomoxa/implementation-guide">
+          <span class="repo-t">Implementation Guide</span>
+          <span class="repo-d">Fomoxa implementation guide</span>
           <span class="arrow">↗</span>
         </a>
       </div>
@@ -795,29 +794,29 @@ model GameMessage {
       <div class="tools">
         <div class="tool">
           <span class="tool-t">Official Compiler</span>
-          <span class="tool-d">Reads a schema, emits a codec. One of many valid ways to satisfy RFC-0002.</span>
+          <span class="tool-d">Reads a Schema, emits a codec. One of many valid ways to satisfy RFC-0002.</span>
           <span class="status s-wip">In progress</span>
         </div>
         <div class="tool">
-          <span class="tool-t">Official CLI</span>
-          <span class="tool-d">Inspect a byte stream, run the conformance vectors, produce a report.</span>
+          <span class="tool-t">Implementation Guide</span>
+          <span class="tool-d">Read to implement a Fomoxa-compatible implementation.</span>
           <span class="status s-wip">In progress</span>
         </div>
         <div class="tool">
           <span class="tool-t">Reference SDK</span>
-          <span class="tool-d">A worked encoder/decoder to read alongside the spec, not a dependency the spec assumes.</span>
+          <span class="tool-d">A worked encoder/decoder to read alongside the spec. The spec does not depend on it.</span>
           <span class="status s-wip">In progress</span>
         </div>
       </div>
 
       <p class="disclaimer">
-        These tools are reference implementations of the Cyclone Protocol.
+        These tools are reference implementations of the Fomoxa Protocol.
         <strong>They are not part of the protocol itself.</strong>
       </p>
 
       <p class="body">
-        Replace all three and the wire format does not move. Nothing in Cyclone requires you to use
-        them - they exist to be read, and to be beaten.
+        Replace all three and the wire format holds. Nothing in Fomoxa requires you to use them.
+        They exist to be read, and to be beaten.
       </p>
     </div>
   </div>
@@ -832,7 +831,7 @@ model GameMessage {
     Rust     | Community | ✅
     Java     | Community | ✅
 
-  A list of "Coming Soon" SDKs teaches newcomers that Cyclone = a set of SDKs.
+  A list of "Coming Soon" SDKs teaches newcomers that Fomoxa = a set of SDKs.
   It does not.
 -->
 
@@ -844,31 +843,31 @@ model GameMessage {
       <h2 class="h2">Where to begin</h2>
       <ol class="path">
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0001.md">
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0001.md">
             <span class="step-n">01</span>
             <span class="step-t">Read the Specification</span>
-            <span class="step-d">What Cyclone is, and what it refuses to be.</span>
+            <span class="step-d">What Fomoxa is, and what it refuses to be.</span>
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0002.md">
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">
             <span class="step-n">02</span>
             <span class="step-t">View RFC</span>
             <span class="step-d">RFC-0002 - the exact shape the bytes must have.</span>
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/en/RFC-0003.md">
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">
             <span class="step-n">03</span>
             <span class="step-t">Run Test Vectors</span>
             <span class="step-d">RFC-0003 - the only thing that decides correctness.</span>
           </a>
         </li>
         <li>
-          <a class="step step-last" href="https://github.com/cyclone-protocol/spec">
+          <a class="step step-last" href="https://github.com/fomoxa/specification">
             <span class="step-n">04</span>
             <span class="step-t">Build Your Own Implementation</span>
-            <span class="step-d">Any language, any technique. Pass 100% and it is Cyclone Compatible.</span>
+            <span class="step-d">Any language, any technique. Pass 100% and it is Fomoxa Compatible.</span>
           </a>
         </li>
       </ol>
@@ -878,7 +877,7 @@ model GameMessage {
 
 <footer>
   <div class="foot-in">
-    <span class="foot-brand">Cyclone Protocol</span>
+    <span class="foot-brand">Fomoxa Protocol</span>
     <span>Created by <strong>Ha Duy Thang</strong></span>
   </div>
   <p class="foot-copy">

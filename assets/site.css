@@ -276,7 +276,7 @@
   .chain-vert .node { min-width: 9rem; text-align: center; }
   .node-accent { color: var(--accent); border-color: var(--accent); background: var(--accent-wash); }
 
-  /* ---------- what is cyclone ---------- */
+  /* ---------- what is fomoxa ---------- */
 
   .what-grid { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
   @media (min-width: 780px) { .what-grid { grid-template-columns: 1fr 1fr; } }
