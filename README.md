@@ -1,8 +1,8 @@
-# Cyclone Protocol
+# Fomoxa Protocol
 
 **English** · [Tiếng Việt](vi/README.md)
 
-Cyclone is a way of specifying **how data is written as bytes**.
+Fomoxa is a way of specifying **how data is written as bytes**.
 
 That's all it is.
 
@@ -17,7 +17,7 @@ Hp   = 100
 Name = "Alice"
 ```
 
-Cyclone specifies that it becomes exactly this byte sequence:
+Fomoxa specifies that it becomes exactly this byte sequence:
 
 ```
 64 00 00 00   05 00 00 00   41 6C 69 63 65
@@ -38,11 +38,11 @@ With JSON or Protobuf, the same data can produce different bytes depending on th
 - You run **replay or lockstep** - two machines must reach the same result from the same input sequence.
 - You want to **prove two SDKs are compatible** - the only way is to compare bytes.
 
-Cyclone solves this by removing every choice: wherever an encoder is allowed to choose, two encoders will eventually choose differently.
+Fomoxa solves this by removing every choice: wherever an encoder is allowed to choose, two encoders will eventually choose differently.
 
 ---
 
-## What Cyclone is not
+## What Fomoxa is not
 
 ```
 ✗ Networking framework    ✗ RPC
@@ -50,7 +50,7 @@ Cyclone solves this by removing every choice: wherever an encoder is allowed to 
 ✗ Encryption              ✗ Compression
 ```
 
-Those are built **on top of** Cyclone. Cyclone stands exactly where data changes shape:
+Those are built **on top of** Fomoxa. Fomoxa stands exactly where data changes shape:
 
 ```
 Model  →  Bytes
@@ -81,17 +81,17 @@ Wrong definition  →  usually NO error, just silently wrong data
 
 ---
 
-## Cyclone does not mandate an IDL
+## Fomoxa does not mandate an IDL
 
-The source of truth is the **Schema** - the type names, field names, Cyclone types, and field order. The bytes come from the Schema, and from nothing else.
+The source of truth is the **Schema** - the type names, field names, Fomoxa types, and field order. The bytes come from the Schema, and from nothing else.
 
-But Cyclone does not dictate how you **write** that Schema down:
+But Fomoxa does not dictate how you **write** that Schema down:
 
 ```
 Many ways of expressing it   →   one Schema   →   exactly one byte sequence
 ```
 
-No mandatory `.cyclone` file. No mandatory IDL compiler. As long as both ends derive the same Schema, the bytes match.
+No mandatory `.fomoxa` file. No mandatory IDL compiler. As long as both ends derive the same Schema, the bytes match.
 
 The Reference Implementation expresses it with annotations on your existing model - in C#, for example:
 
@@ -112,10 +112,10 @@ It does not need to understand `public`, `partial`, `class`, `uint`, or whether 
 ```
 Type Name    →  Player
 Field Name   →  Hp
-Cyclone Type →  UInt32
+Fomoxa Type →  UInt32
 ```
 
-The Cyclone type comes from the annotation; it is never inferred from the language's own type. Writing `[Network(UInt32)]` on an incompatible field is a declaration error and is reported as one - Cyclone does not guess on your behalf.
+The Fomoxa type comes from the annotation; it is never inferred from the language's own type. Writing `[Network(UInt32)]` on an incompatible field is a declaration error and is reported as one - Fomoxa does not guess on your behalf.
 
 The consequence: adding a new language is very light. A frontend only needs to read the annotation, the type name and the field name - no semantic analysis, no understanding of that language's type system.
 
@@ -127,16 +127,16 @@ Another implementation is free to choose a different route entirely - a separate
 
 Stated up front:
 
-- You need old clients to talk to new servers → **Cyclone is a poor fit**. v1 has no schema evolution.
+- You need old clients to talk to new servers → **Fomoxa is a poor fit**. v1 has no schema evolution.
 - Your schema changes constantly → every change requires deploying both sides together.
-- You need to read the data by eye → Cyclone is pure binary.
+- You need to read the data by eye → Fomoxa is pure binary.
 - You have many "may not be present" fields → v1 has no Optional/Nullable.
 
 If any of these describe you, Protobuf is the better choice.
 
 ---
 
-## What Cyclone guarantees
+## What Fomoxa guarantees
 
 ```
 Same schema, same values
@@ -156,21 +156,21 @@ Read in this order:
 
 | Document | Answers |
 |----------|---------|
-| [RFC-0001 - What Cyclone is](en/RFC-0001.md) | What problem it solves, why choose it, when **not** to |
+| [RFC-0001 - What Fomoxa is](en/RFC-0001.md) | What problem it solves, why choose it, when **not** to |
 | [RFC-0002 - Wire Format](en/RFC-0002.md) | What shape the bytes must have |
 | [RFC-0003 - Conformance](en/RFC-0003.md) | How do I know my implementation is correct (test vectors) |
 
 Vietnamese source of record: [`vi/RFC-0001.md`](vi/RFC-0001.md) · [`vi/RFC-0002.md`](vi/RFC-0002.md) · [`vi/RFC-0003.md`](vi/RFC-0003.md)
 
-Landing page: [cyclone-protocol.github.io/cyclone](https://cyclone-protocol.github.io/cyclone/) - source in [`index.html`](index.html) (English) and [`vi/index.html`](vi/index.html) (Vietnamese)
+Landing page: [fomoxa-protocol.github.io/fomoxa](https://fomoxa-protocol.github.io/fomoxa/) - source in [`index.html`](index.html) (English) and [`vi/index.html`](vi/index.html) (Vietnamese)
 
 ---
 
 ## Contributing
 
-Cyclone is a **specification**, not a library. Implementations are needed for Rust, Go, C#/Unity, C/embedded, Zig/C++.
+Fomoxa is a **specification**, not a library. Implementations are needed for Rust, Go, C#/Unity, C/embedded, Zig/C++.
 
-The single criterion for being called **Cyclone Compatible**:
+The single criterion for being called **Fomoxa Compatible**:
 
 ```
 Run the test vectors in RFC-0003
@@ -182,7 +182,7 @@ Pass 100%
 
 There is no 98%. One failing vector means there exists data on which your implementation and another disagree.
 
-See the [ecosystem status table](https://cyclone-protocol.github.io/cyclone/#implementations) for which languages are still open.
+See the [ecosystem status table](https://fomoxa-protocol.github.io/fomoxa/#implementations) for which languages are still open.
 
 ### Translations
 
@@ -202,7 +202,7 @@ Vietnamese is the source of record; English is a translation. The workflow is de
 ├── vi/                  Vietnamese - source of record
 │   ├── README.md
 │   ├── index.html
-│   ├── RFC-0001.md      What Cyclone is
+│   ├── RFC-0001.md      What Fomoxa is
 │   ├── RFC-0002.md      Wire Format Specification
 │   └── RFC-0003.md      Conformance
 │

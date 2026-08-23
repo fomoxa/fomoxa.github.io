@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cyclone Protocol - Một binary wire format xác định</title>
-<meta name="description" content="Cyclone là một protocol. Nó định nghĩa dữ liệu logic được biến thành byte như thế nào, và byte được biến ngược lại thành dữ liệu logic như thế nào. Không hơn, không kém.">
+<title>Fomoxa Protocol - Một binary wire format xác định</title>
+<meta name="description" content="Fomoxa là một protocol. Nó định nghĩa cách dữ liệu logic thành byte, và cách byte thành dữ liệu logic. Không hơn, không kém.">
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="icon" type="image/png" href="/favicon.png">
 </head>
@@ -13,8 +13,8 @@
 <header class="topbar">
   <div class="topbar-in">
     <a class="brand" href="#top">
-      <img src="/cyclone-logo.png" alt="Cyclone Logo" class="brand-logo" />
-      Cyclone
+      <img src="/logo.png" alt="Fomoxa Logo" class="brand-logo" />
+      Fomoxa
     </a>
     <nav class="topnav" aria-label="Mục">
       <a href="#top">Trang chủ</a>
@@ -38,7 +38,7 @@
   <div class="hero-in">
     <p class="eyebrow">Wire format specification · v1.0.0 · Draft</p>
 
-    <h1 class="h1">Cyclone Protocol</h1>
+    <h1 class="h1">Fomoxa Protocol</h1>
 
     <p class="hero-line">
       Một binary wire format xác định.<br>
@@ -46,13 +46,13 @@
     </p>
 
     <p class="hero-sub">
-      Cyclone định nghĩa dữ liệu logic được biến thành byte như thế nào,
-      và byte được biến ngược lại thành dữ liệu logic như thế nào.
+      Fomoxa định nghĩa cách dữ liệu logic thành byte.
+      Và cách byte thành dữ liệu logic.
     </p>
 
     <div class="ctas">
-      <a class="btn btn-primary" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0002.md">Đọc specification <span class="arrow">→</span></a>
-      <a class="btn btn-ghost" href="https://github.com/cyclone-protocol">GitHub <span class="arrow">↗</span></a>
+      <a class="btn btn-primary" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">Đọc specification <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="https://github.com/fomoxa">GitHub <span class="arrow">↗</span></a>
     </div>
   </div>
 </section>
@@ -64,13 +64,13 @@
     <div class="col">
       <h2 class="statement">Specification First</h2>
       <p class="lede">
-        Specification là nguồn sự thật duy nhất. Không bao giờ sửa spec để chiều một implementation.
-        Mọi thứ khác đều nằm phía sau nó.
+        Specification là nguồn sự thật duy nhất. Không sửa spec để chiều một implementation.
+        Mọi thứ khác đứng sau nó.
       </p>
 
       <div class="flow-pair">
         <div class="flow flow-right">
-          <p class="flow-cap">Thứ tự Cyclone đi theo</p>
+          <p class="flow-cap">Thứ tự Fomoxa đi theo</p>
           <ol class="chain">
             <li><span class="node">RFC</span></li>
             <li><span class="node">Compiler</span></li>
@@ -84,30 +84,30 @@
             <li><span class="node">SDK</span></li>
             <li><span class="node">Protocol</span></li>
           </ol>
-          <p class="flow-note">Một protocol bị nắn theo bất kỳ thứ gì thư viện đầu tiên của nó tình cờ làm.</p>
+          <p class="flow-note">Protocol bị nắn theo thư viện đầu tiên viết ra nó.</p>
         </div>
       </div>
 
       <p class="body">
-        Phép thử áp cho từng câu của specification:
+        Phép thử cho từng câu trong specification:
         <strong>một người viết encoder bằng assembly trên vi điều khiển 8-bit có làm theo được không?</strong>
-        Nếu không, câu đó đang mô tả một implementation, và nó không thuộc về spec.
+        Không → câu đó đang mô tả một implementation. Cắt khỏi spec.
       </p>
     </div>
   </div>
 </section>
 
-<!-- ============ WHAT IS CYCLONE ============ -->
+<!-- ============ WHAT IS FOMOXA ============ -->
 <section class="band" id="what">
   <div class="band-in">
     <p class="offset">Định nghĩa</p>
     <div class="col">
-      <h2 class="h2">Cyclone là gì?</h2>
-      <p class="lede">Cyclone là một protocol.</p>
+      <h2 class="h2">Fomoxa là gì?</h2>
+      <p class="lede">Fomoxa là một protocol.</p>
 
       <div class="what-grid">
         <div class="nots">
-          <h3 class="h3">Cyclone <em>không phải</em></h3>
+          <h3 class="h3">Fomoxa <em>không phải</em></h3>
           <ul class="not-list">
             <li><span class="x">×</span> RPC</li>
             <li><span class="x">×</span> Networking</li>
@@ -117,7 +117,7 @@
         </div>
 
         <div class="only">
-          <h3 class="h3">Cyclone chỉ quy định</h3>
+          <h3 class="h3">Fomoxa chỉ quy định</h3>
           <ol class="chain chain-vert">
             <li><span class="node">Model</span></li>
             <li><span class="node node-accent">Bytes</span></li>
@@ -128,8 +128,8 @@
 
       <p class="body">
         Transport, retransmission, thứ tự gói, matchmaking, mã hoá, nén, checksum -
-        tất cả đều xây <strong>phía trên</strong> Cyclone. Specification dừng lại đúng ở chỗ
-        byte được hình thành.
+        tất cả xây <strong>phía trên</strong> Fomoxa. Specification dừng đúng ở chỗ
+        byte hình thành.
       </p>
     </div>
   </div>
@@ -145,36 +145,36 @@
         <h2 class="h2">Mười nguyên tắc, hai tầng.</h2>
         <p class="lede">
           Bảy nguyên tắc là điều kiện tuân thủ. Ba nguyên tắc là lựa chọn của Reference Implementation.
-          Trộn lẫn hai thứ đó chính là cách một protocol âm thầm biến thành một framework.
+          Trộn hai thứ đó, protocol âm thầm biến thành framework.
         </p>
       </div>
 
       <div class="stack">
         <h3 class="h3">Nguyên tắc của Specification</h3>
-        <p class="body">Vi phạm một trong số này thì không phải Cyclone.</p>
+        <p class="body">Vi phạm một trong số này thì không phải Fomoxa.</p>
         <div class="principles">
           <div class="principle key">
             <span class="n">01</span>
             <span class="t">Specification First
-              <span class="d">Specification là nguồn sự thật duy nhất. Không bao giờ sửa spec để chiều một implementation.</span>
+              <span class="d">Specification là nguồn sự thật duy nhất. Không sửa spec để chiều một implementation.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">02</span>
             <span class="t">Protocol over Framework
-              <span class="d">Cyclone định nghĩa dữ liệu hiện ra trên wire như thế nào - không định nghĩa API, không định nghĩa runtime.</span>
+              <span class="d">Fomoxa định nghĩa dữ liệu hiện ra trên wire. Không định nghĩa API, không định nghĩa runtime.</span>
             </span>
           </div>
           <div class="principle key">
             <span class="n">03</span>
             <span class="t">Minimal Wire Format
-              <span class="d">Gửi dữ liệu, không bao giờ gửi mô tả dữ liệu. Không tên field, không type info, không tag, không padding.</span>
+              <span class="d">Gửi dữ liệu, không gửi mô tả dữ liệu. Không tên field, không type info, không tag, không padding.</span>
             </span>
           </div>
           <div class="principle key">
             <span class="n">04</span>
             <span class="t">Deterministic by Design
-              <span class="d">Một giá trị, đúng một chuỗi byte. Không được tồn tại hai cách encode hợp lệ cho cùng một dữ liệu.</span>
+              <span class="d">Một giá trị, đúng một chuỗi byte. Cấm hai cách encode hợp lệ cho cùng một dữ liệu.</span>
             </span>
           </div>
           <div class="principle">
@@ -186,13 +186,13 @@
           <div class="principle">
             <span class="n">06</span>
             <span class="t">Implementation Independent
-              <span class="d">Không quy định parser, macro hay generator nào. Spec mô tả byte rồi dừng ở đó.</span>
+              <span class="d">Không quy định parser, macro hay generator. Spec mô tả byte rồi dừng.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">07</span>
             <span class="t">Implementation Replaceable
-              <span class="d">Reference Implementation không phải chuẩn. Thay toàn bộ nó, wire format vẫn không đổi.</span>
+              <span class="d">Reference Implementation không phải chuẩn. Thay hết nó, wire format vẫn nguyên.</span>
             </span>
           </div>
         </div>
@@ -201,14 +201,14 @@
       <div class="stack">
         <h3 class="h3">Nguyên tắc của Reference Implementation</h3>
         <p class="body">
-          Là lựa chọn thiết kế, không phải điều kiện tuân thủ. Một implementation khác được phép chọn
-          khác, miễn byte sinh ra không đổi.
+          Là lựa chọn thiết kế, không phải điều kiện tuân thủ. Implementation khác được chọn khác.
+          Miễn byte sinh ra không đổi.
         </p>
         <div class="principles">
           <div class="principle">
             <span class="n">08</span>
             <span class="t">User Owns the Model
-              <span class="d">Không bắt buộc tầng DTO, không base class - RI đọc những field bạn đánh dấu và bỏ qua phần còn lại.</span>
+              <span class="d">Không bắt buộc tầng DTO, không base class. RI đọc field bạn đánh dấu, bỏ qua phần còn lại.</span>
             </span>
           </div>
           <div class="principle">
@@ -220,16 +220,16 @@
           <div class="principle">
             <span class="n">10</span>
             <span class="t">Zero Runtime Reflection
-              <span class="d">Wire format cho phép điều đó; spec không bắt buộc. AOT và bare-metal vẫn khả thi.</span>
+              <span class="d">Wire format cho phép điều đó. Spec không bắt buộc. AOT và bare-metal vẫn khả thi.</span>
             </span>
           </div>
         </div>
       </div>
 
       <p class="layer-note">
-        Quy tắc quyết định, gồm hai câu hỏi. <strong>Một:</strong> phát biểu này có quan sát được từ
-        byte stream không? Không → nó thuộc về Reference Implementation và không được đưa vào spec.
-        <strong>Hai:</strong> nó có vi phạm một trong bảy nguyên tắc trên không? Có → không thuộc Cyclone.
+        Quy tắc quyết định, hai câu hỏi. <strong>Một:</strong> phát biểu này có quan sát được từ
+        byte stream không? Không → nó thuộc Reference Implementation, không đưa vào spec.
+        <strong>Hai:</strong> nó có vi phạm một trong bảy nguyên tắc trên không? Có → không thuộc Fomoxa.
       </p>
     </div>
   </div>
@@ -240,9 +240,9 @@
   <div class="band-in">
     <p class="offset">Đánh đổi</p>
     <div class="col">
-      <h2 class="h2">Những gì Cyclone cố ý không làm</h2>
+      <h2 class="h2">Những gì Fomoxa cố ý không làm</h2>
       <p class="lede">
-        Mỗi điều dưới đây đều là cái giá trực tiếp của một đảm bảo ở trên. Không điều nào nằm trong roadmap.
+        Mỗi điều dưới đây là cái giá trực tiếp của một đảm bảo ở trên. Không điều nào nằm trong roadmap.
       </p>
 
       <div class="tradeoffs">
@@ -251,9 +251,9 @@
           <div>
             <h4>Schema evolution chỉ ở cuối</h4>
             <p>
-              Vị trí là định danh field duy nhất. Một field có thể được thêm hoặc bớt ở
-              <strong>cuối</strong> Model mà không phá wire (Version Skew, RFC-0002 §9.1) - nhưng chèn
-              field vào giữa, đổi thứ tự field, hay đổi type của field vẫn là breaking change.
+              Vị trí là định danh field duy nhất. Thêm hoặc bớt một field ở
+              <strong>cuối</strong> Model thì không phá wire (Version Skew, RFC-0002 §9.1).
+              Chèn field vào giữa, đổi thứ tự field, đổi type của field: breaking change.
             </p>
           </div>
         </div>
@@ -262,9 +262,9 @@
           <div>
             <h4>Compatibility chỉ ở phần đuôi</h4>
             <p>
-              Client cũ đọc được message của server mới nếu thay đổi duy nhất là một field được thêm
-              ở cuối - byte thừa bị bỏ qua (Version Skew, RFC-0002 §9.1). Một field bị chèn hoặc đổi ở
-              giữa vẫn là breaking hoàn toàn: hai đầu phải deploy cùng nhau, hoặc không deploy.
+              Client cũ đọc được message của server mới. Điều kiện: thay đổi duy nhất là một field
+              thêm ở cuối. Byte thừa bị bỏ qua (Version Skew, RFC-0002 §9.1). Một field bị chèn hoặc
+              đổi ở giữa thì breaking hoàn toàn. Hai đầu deploy cùng nhau, hoặc không deploy.
             </p>
           </div>
         </div>
@@ -273,7 +273,7 @@
           <div>
             <h4>Không metadata, không tự mô tả</h4>
             <p>
-              Stream không mang tên field, kiểu hay tag - bên nhận bắt buộc phải biết trước thứ tự và
+              Stream không mang tên field, kiểu hay tag. Bên nhận bắt buộc biết trước thứ tự và
               kiểu của từng field. Hệ quả nguy hiểm: decode sai định nghĩa thường
               <em>không</em> báo lỗi gì cả. Nó sinh ra giá trị sai, im lặng.
             </p>
@@ -284,11 +284,11 @@
           <div>
             <h4>Không có IDL bắt buộc</h4>
             <p>
-              Nguồn sự thật là <strong>Schema</strong>, nhưng spec không quy định bạn phải viết nó ra
-              bằng cách nào - không IDL bắt buộc, không file <code>.cyclone</code> bắt buộc. Reference
-              Implementation diễn đạt Schema bằng annotation ngay trên type có sẵn của bạn, chỉ trích ra
-              ba thứ: tên type, các field, và Cyclone type của từng field. Đổi lại: không có một tài liệu
-              schema độc lập để đưa cho bên thứ ba - hai phía tự lo việc rút ra cùng một Schema.
+              Nguồn sự thật là <strong>Schema</strong>. Spec không quy định bạn viết Schema ra bằng
+              cách nào. Không IDL bắt buộc, không file <code>.fomoxa</code> bắt buộc. Reference
+              Implementation diễn đạt Schema bằng annotation trên type có sẵn của bạn. Nó trích đúng
+              ba thứ: tên type, các field, Fomoxa type của từng field. Cái giá: không có tài liệu
+              Schema độc lập để đưa cho bên thứ ba. Hai phía tự lo việc rút ra cùng một Schema.
             </p>
           </div>
         </div>
@@ -297,10 +297,10 @@
           <div>
             <h4>Không Optional, không nullable, không default tường minh</h4>
             <p>
-              Không có dấu hiệu nào ở mức wire cho sự vắng mặt - không tag, không null byte. Một field
-              ở cuối có thể không có dữ liệu do Version Skew (§9.1), nhưng implementation biểu diễn
-              điều đó ra sao - default value, <code>Option&lt;T&gt;</code>, hay exception - hoàn toàn
-              do implementation quyết định, không phải wire format.
+              Không có dấu hiệu nào ở mức wire cho sự vắng mặt. Không tag, không null byte. Một field
+              ở cuối có thể không có dữ liệu do Version Skew (§9.1). Cách implementation biểu diễn
+              điều đó - default value, <code>Option&lt;T&gt;</code>, hay exception - do implementation
+              quyết định. Không phải wire format.
             </p>
           </div>
         </div>
@@ -309,16 +309,16 @@
           <div>
             <h4>Không transport, không framing, không crypto</h4>
             <p>
-              Cyclone sinh ra một chuỗi byte rồi dừng. Ranh giới message, retransmission, thứ tự gói,
-              mã hoá và nén đều là phần bạn tự xây phía trên.
+              Fomoxa sinh ra một chuỗi byte rồi dừng. Ranh giới message, retransmission, thứ tự gói,
+              mã hoá, nén: bạn tự xây phía trên.
             </p>
           </div>
         </div>
       </div>
 
       <p class="body">
-        Nếu có điều nào không chấp nhận được với bài toán của bạn, một format có tag ID và optional field
-        sẽ phục vụ tốt hơn. Đó là lựa chọn đúng, không phải thất bại của Cyclone.
+        Có điều nào không chấp nhận được với bài toán của bạn? Một format có tag ID và optional field
+        sẽ phục vụ tốt hơn. Đó là lựa chọn đúng, không phải thất bại của Fomoxa.
       </p>
     </div>
   </div>
@@ -333,19 +333,19 @@
       <p class="lede">Ba tài liệu. Mỗi tài liệu trả lời đúng một câu hỏi.</p>
 
       <div class="docs">
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0001.md">
+        <a class="doc" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0001.md">
           <span class="id">RFC-0001</span>
           <span class="t">Giới thiệu</span>
-          <span class="d">Cyclone là gì, sinh ra để giải bài toán gì, khi nào nên chọn - và khi nào không.</span>
+          <span class="d">Fomoxa là gì, giải bài toán gì, khi nào nên chọn - và khi nào không.</span>
           <span class="go">Đọc <span class="arrow">→</span></span>
         </a>
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0002.md">
+        <a class="doc" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">
           <span class="id">RFC-0002</span>
           <span class="t">Wire Format</span>
-          <span class="d">Byte phải có hình dạng như thế nào: primitive, string, bytes, model, array, enum, stream không hợp lệ.</span>
+          <span class="d">Hình dạng byte phải có: primitive, string, bytes, model, array, enum, stream không hợp lệ.</span>
           <span class="go">Đọc <span class="arrow">→</span></span>
         </a>
-        <a class="doc" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0003.md">
+        <a class="doc" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">
           <span class="id">RFC-0003</span>
           <span class="t">Conformance</span>
           <span class="d">Làm sao biết một implementation là đúng. Bộ test vector, và mốc pass duy nhất.</span>
@@ -354,8 +354,8 @@
       </div>
 
       <p class="body">
-        Bản tiếng Việt là bản gốc. Chỗ nào bản dịch nói khác đi, bản tiếng Việt thắng.
-        <a href="https://github.com/cyclone-protocol/spec">Xem repository specification ↗</a>
+        Bản tiếng Việt là bản gốc. Bản dịch nói khác đi thì bản tiếng Việt thắng.
+        <a href="https://github.com/fomoxa/specification">Xem repository specification ↗</a>
       </p>
     </div>
   </div>
@@ -378,7 +378,7 @@
       <div class="wire">
         <article class="wf">
           <h3 class="wf-h">Primitive</h3>
-          <p class="wf-p">Kích thước cố định, little endian. Một <code>u32</code> là bốn byte kể cả khi giá trị bằng không.</p>
+          <p class="wf-p">Kích thước cố định, little endian. Một <code>u32</code> là bốn byte, kể cả khi giá trị bằng không.</p>
 <pre class="wf-b">u32   100        → <span class="by">[64 00 00 00]</span>
 u32   0x12345678 → <span class="by">[78 56 34 12]</span>
 i32   -1         → <span class="by">[FF FF FF FF]</span>
@@ -392,21 +392,21 @@ f32   -0.0       → <span class="by">[00 00 00 80]</span></pre>
 
         <article class="wf">
           <h3 class="wf-h">String</h3>
-          <p class="wf-p">Độ dài <code>UInt32</code>, rồi tới byte UTF-8. Độ dài đếm <strong>byte</strong>, không bao giờ đếm ký tự.</p>
+          <p class="wf-p">Độ dài <code>UInt32</code>, rồi tới byte UTF-8. Độ dài đếm <strong>byte</strong>, không đếm ký tự.</p>
 <pre class="wf-b">"abc"      → <span class="by">[03 00 00 00]</span> <span class="by">[61 62 63]</span>
 "中"        → <span class="by">[03 00 00 00]</span> <span class="by">[E4 B8 AD]</span>
 "Xin chào" → <span class="by">[09 00 00 00]</span> <span class="by">[58 69 6E 20 63 68 C3 A0 6F]</span>
 ""         → <span class="by">[00 00 00 00]</span></pre>
-          <p class="wf-n">“中” là một ký tự và ba byte. Độ dài MUST là 3. Vùng byte phải là UTF-8 hợp lệ.</p>
+          <p class="wf-n">“中” là một ký tự, ba byte. Độ dài MUST là 3. Vùng byte MUST là UTF-8 hợp lệ.</p>
         </article>
 
         <article class="wf">
           <h3 class="wf-h">Bytes</h3>
-          <p class="wf-p">Độ dài <code>UInt32</code>, rồi tới byte thô. Giống hệt String, trừ ràng buộc UTF-8.</p>
+          <p class="wf-p">Độ dài <code>UInt32</code>, rồi tới byte thô. Giống String, trừ ràng buộc UTF-8.</p>
 <pre class="wf-b">[]         → <span class="by">[00 00 00 00]</span>
 [FF FE]    → <span class="by">[02 00 00 00]</span> <span class="by">[FF FE]</span>
 [00 00]    → <span class="by">[02 00 00 00]</span> <span class="by">[00 00]</span></pre>
-          <p class="wf-n">Đúng những byte mà String phải từ chối. Kiểu đến từ schema - không bao giờ suy ra từ nội dung.</p>
+          <p class="wf-n">Đúng những byte mà String phải từ chối. Kiểu đến từ Schema, không suy ra từ nội dung.</p>
         </article>
 
         <article class="wf">
@@ -419,7 +419,7 @@ Item{ 42, "Sword" }
 model Mixed { a: u8; b: u32; c: u8 }
 Mixed{ 1, 2, 3 } → <span class="by">[01 02 00 00 00 03]</span>   6 byte
                    <span class="bad">12 byte = đang chép layout bộ nhớ</span></pre>
-          <p class="wf-n">Compiler được phép sắp xếp lại field trong RAM. Việc đó không được đổi một byte nào của output.</p>
+          <p class="wf-n">Compiler được phép sắp xếp lại field trong RAM. Việc đó không đổi một byte nào của output.</p>
         </article>
 
         <article class="wf">
@@ -433,7 +433,7 @@ Array&lt;String&gt; ["a","bc"]
 
 Array&lt;Array&lt;u8&gt;&gt; [[1,2],[]]
   → <span class="by">[02 00 00 00]</span> <span class="by">[02 00 00 00 01 02]</span> <span class="by">[00 00 00 00]</span></pre>
-          <p class="wf-n">Số lượng của <code>[1,2,3]</code> là 3, không phải 12. Mảng con rỗng là số lượng 0 và không byte nào thêm.</p>
+          <p class="wf-n">Số lượng của <code>[1,2,3]</code> là 3, không phải 12. Mảng con rỗng: số lượng 0, không byte nào thêm.</p>
         </article>
 
         <article class="wf">
@@ -452,8 +452,8 @@ Jump → <span class="by">[03 00 00 00]</span>
       <div class="stack">
         <h3 class="h3">Version skew</h3>
         <p class="lede">
-          Writer và reader có thể đang chạy hai phiên bản khác nhau của cùng một Model, miễn là khác
-          biệt duy nhất là một field được thêm hoặc bớt ngay ở cuối.
+          Writer và reader có thể chạy hai phiên bản khác nhau của cùng một Model. Điều kiện: khác
+          biệt duy nhất là một field thêm hoặc bớt ngay ở cuối.
         </p>
 <pre class="wf-b">model ItemV1 { id: u32 }
 model ItemV2 { id: u32; name: String }
@@ -470,17 +470,17 @@ ghi bằng ItemV2, đọc bằng ItemV2, bị cắt giữa field
   [2A 00 00 00 05 00 00 00 53 77] → length=5, chỉ còn 2 byte dữ liệu
                   → <span class="bad">không hợp lệ</span> - Unexpected EOF, KHÔNG phải version skew</pre>
         <p class="wf-n">
-          Quy tắc dừng là “phần thiếu hay dư có rơi đúng ranh giới field không?” - không bao giờ là
-          “có thiếu dữ liệu không?”. Chèn field vào giữa Model, đổi thứ tự field, hay đổi type của
-          field vẫn là breaking change. Xem RFC-0002 §9.1.
+          Quy tắc dừng là “phần thiếu hay dư có rơi đúng ranh giới field không?”. Không bao giờ là
+          “có thiếu dữ liệu không?”. Chèn field vào giữa Model, đổi thứ tự field, đổi type của
+          field: vẫn breaking change. Xem RFC-0002 §9.1.
         </p>
       </div>
 
       <div class="stack">
         <h3 class="h3">Một message đầy đủ, từng byte một</h3>
         <p class="lede">
-          Ví dụ từ RFC-0002 §15 - Model lồng, string, số nguyên, bool - encode ra 31 byte.
-          Rê chuột lên một field để làm sáng những byte nó sở hữu, hoặc rê lên một byte để tìm chủ của nó.
+          Ví dụ từ RFC-0002 §15. Model lồng, string, số nguyên, bool. Encode ra 31 byte.
+          Rê chuột lên một field để làm sáng byte nó sở hữu. Rê lên một byte để tìm chủ của nó.
         </p>
       </div>
 
@@ -566,9 +566,9 @@ model GameMessage {
       </div>
 
       <p class="body">
-        Không có gì ngăn cách các field. Không length prefix cho Model lồng, không dấu phân cách giữa
-        <code>position</code> và <code>health</code>, không terminator ở cuối. Decoder biết đang đọc field
-        nào thuần tuý nhờ con trỏ đã đi được bao xa - và đó chính là lý do
+        Không có gì ngăn cách các field. Không length prefix cho Model lồng. Không dấu phân cách giữa
+        <code>position</code> và <code>health</code>. Không terminator ở cuối. Decoder biết đang đọc
+        field nào nhờ con trỏ đã đi được bao xa. Đó là lý do
         <strong>đổi thứ tự field là breaking change</strong>, còn đổi tên field thì miễn phí.
       </p>
     </div>
@@ -585,7 +585,7 @@ model GameMessage {
         <h2 class="h2">Test vector</h2>
         <p class="lede">
           Một test vector là một cặp <strong>(giá trị logic, chuỗi byte)</strong>. Không bao giờ là cặp
-          (lời gọi hàm, giá trị trả về) - một vector không nêu tên method nào, ngôn ngữ nào, API nào.
+          (lời gọi hàm, giá trị trả về). Một vector không nêu tên method, ngôn ngữ hay API nào.
         </p>
         <p class="tv-legend"><span>Input</span><span class="arrow">→</span><span>Byte mong đợi</span></p>
       </div>
@@ -611,8 +611,8 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          P-032 bắt lỗi endianness: một implementation big-endian sẽ ghi <code>12 34 56 78</code> và trượt ở đây.
-          F-031 bắt lỗi canonical hoá NaN - cho ra <code>00 00 C0 7F</code> nghĩa là dữ liệu người dùng đã bị sửa.
+          P-032 bắt lỗi endianness. Implementation big-endian ghi <code>12 34 56 78</code> và trượt.
+          F-031 bắt lỗi canonical hoá NaN. Cho ra <code>00 00 C0 7F</code> nghĩa là dữ liệu người dùng đã bị sửa.
         </p>
       </div>
 
@@ -633,7 +633,7 @@ model GameMessage {
         </div>
         <p class="tv-note">
           T-010 bắt lỗi chép layout bộ nhớ (12 byte) và lỗi compiler sắp xếp lại field.
-          T-011 bắt những implementation sắp field theo thứ tự chữ cái “cho ổn định” - <code>02 01</code> là bug.
+          T-011 bắt implementation sắp field theo thứ tự chữ cái “cho ổn định”. <code>02 01</code> là bug.
         </p>
       </div>
 
@@ -651,7 +651,7 @@ model GameMessage {
             </tbody>
           </table>
         </div>
-        <p class="tv-note">A-002 bắt lỗi nhầm số lượng với độ dài byte: số lượng đúng là 3, không phải 12.</p>
+        <p class="tv-note">A-002 bắt lỗi nhầm số lượng với độ dài byte. Số lượng đúng là 3, không phải 12.</p>
       </div>
 
       <div class="tv-group">
@@ -667,7 +667,7 @@ model GameMessage {
             </tbody>
           </table>
         </div>
-        <p class="tv-note">E-010 bắt những implementation “tối ưu” một enum bốn thành viên xuống còn một byte.</p>
+        <p class="tv-note">E-010 bắt implementation “tối ưu” một enum bốn thành viên xuống còn một byte.</p>
       </div>
 
       <div class="tv-group">
@@ -682,10 +682,9 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          Chỉ hợp lệ khi phần thiếu hay dư rơi đúng <strong>ranh giới field</strong> - so với N-022 bên
-          dưới, thiếu byte ngay giữa field nên vẫn MUST bị từ chối. Coi mọi byte thiếu hay dư là
-          version skew, kể cả giữa field, là lỗi conformance phổ biến nhất khi thêm hỗ trợ này
-          (RFC-0002 §9.1).
+          Chỉ hợp lệ khi phần thiếu hay dư rơi đúng <strong>ranh giới field</strong>. So với N-022 bên
+          dưới: thiếu byte ngay giữa field, MUST bị từ chối. Coi mọi byte thiếu hay dư là version skew,
+          kể cả giữa field, là lỗi conformance phổ biến nhất khi thêm hỗ trợ này (RFC-0002 §9.1).
         </p>
       </div>
 
@@ -708,16 +707,16 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          Từ chối là <strong>MUST</strong>; tên lỗi chỉ là SHOULD. N-023 và N-031 kiểm đúng một thứ:
-          độ dài có được kiểm tra <em>trước khi</em> cấp phát không? Pass N-031 bằng cách crash rồi bắt
-          exception thì không tính là pass.
+          Từ chối là <strong>MUST</strong>. Tên lỗi chỉ là SHOULD. N-023 và N-031 kiểm đúng một thứ:
+          độ dài có được kiểm tra <em>trước khi</em> cấp phát không? Crash rồi bắt exception không
+          tính là pass.
         </p>
       </div>
 
       <p class="body">
-        Bộ đầy đủ - gồm số nguyên 8 byte, <code>f64</code>, kiểm tra round-trip và kiểm tra chéo giữa các
-        implementation - nằm trong
-        <a href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0003.md">RFC-0003</a>.
+        Bộ đầy đủ nằm trong
+        <a href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">RFC-0003</a>.
+        Gồm số nguyên 8 byte, <code>f64</code>, kiểm tra round-trip, kiểm tra chéo giữa các implementation.
       </p>
     </div>
   </div>
@@ -728,11 +727,11 @@ model GameMessage {
   <div class="band-in">
     <p class="offset">Conformance</p>
     <div class="col">
-      <h2 class="h2">Cyclone Compatible</h2>
+      <h2 class="h2">Fomoxa Compatible</h2>
 
       <div class="conform">
         <p class="conform-def">
-          Một implementation là <strong>Cyclone Compatible</strong> khi và chỉ khi nó pass
+          Một implementation là <strong>Fomoxa Compatible</strong> khi và chỉ khi nó pass
           100% test vector.
         </p>
         <ul class="reqs">
@@ -743,12 +742,12 @@ model GameMessage {
       </div>
 
       <p class="body">
-        Không có “tương thích một phần”. Không có 98%. Một vector trượt nghĩa là tồn tại một dữ liệu mà
-        implementation này và một implementation khác bất đồng - im lặng, trên production.
+        Không có “tương thích một phần”. Không có 98%. Một vector trượt nghĩa là tồn tại một dữ liệu
+        mà hai implementation bất đồng. Im lặng, trên production.
       </p>
 
       <p class="verdict-line">
-        Một implementation chậm gấp 10 lần nhưng pass 100% vector <strong>là</strong> Cyclone Compatible.<br>
+        Implementation chậm gấp 10 lần nhưng pass 100% vector <strong>là</strong> Fomoxa Compatible.<br>
         Implementation nhanh nhất thế giới mà trượt một vector <strong>thì không</strong>.
       </p>
     </div>
@@ -762,19 +761,19 @@ model GameMessage {
     <div class="col">
       <h2 class="h2">GitHub</h2>
       <div class="repos">
-        <a class="repo" href="https://github.com/cyclone-protocol/spec">
+        <a class="repo" href="https://github.com/fomoxa/specification">
           <span class="repo-t">Specification</span>
           <span class="repo-d">RFC-0001 · RFC-0002 · RFC-0003</span>
           <span class="arrow">↗</span>
         </a>
-        <a class="repo" href="https://github.com/cyclone-protocol/compiler">
-          <span class="repo-t">Compiler</span>
+        <a class="repo" href="https://github.com/fomoxa/fomoxac">
+          <span class="repo-t">Fomoxac</span>
           <span class="repo-d">Schema compiler tham chiếu</span>
           <span class="arrow">↗</span>
         </a>
-        <a class="repo" href="https://github.com/cyclone-protocol/cli">
-          <span class="repo-t">CLI</span>
-          <span class="repo-d">Soi byte và chạy conformance</span>
+        <a class="repo" href="https://github.com/fomoxa/implementation-guide">
+          <span class="repo-t">Implementation Guide</span>
+          <span class="repo-d">Hướng dẫn triển khai Fomoxa</span>
           <span class="arrow">↗</span>
         </a>
       </div>
@@ -792,29 +791,29 @@ model GameMessage {
       <div class="tools">
         <div class="tool">
           <span class="tool-t">Compiler chính thức</span>
-          <span class="tool-d">Đọc một schema, sinh ra codec. Một trong nhiều cách hợp lệ để thoả RFC-0002.</span>
+          <span class="tool-d">Đọc một Schema, sinh ra codec. Một trong nhiều cách hợp lệ để thoả RFC-0002.</span>
           <span class="status s-wip">Đang làm</span>
         </div>
         <div class="tool">
-          <span class="tool-t">CLI chính thức</span>
-          <span class="tool-d">Soi một byte stream, chạy bộ vector conformance, xuất báo cáo.</span>
+          <span class="tool-t">Implementation Guide</span>
+          <span class="tool-d">Đọc để triển khai một Fomoxa tương thích với các bản phát hành.</span>
           <span class="status s-wip">Đang làm</span>
         </div>
         <div class="tool">
           <span class="tool-t">SDK tham chiếu</span>
-          <span class="tool-d">Một encoder/decoder mẫu để đọc song song với spec, không phải thứ spec phụ thuộc vào.</span>
+          <span class="tool-d">Một encoder/decoder mẫu để đọc song song với spec. Spec không phụ thuộc vào nó.</span>
           <span class="status s-wip">Đang làm</span>
         </div>
       </div>
 
       <p class="disclaimer">
-        Những công cụ này là reference implementation của Cyclone Protocol.
+        Những công cụ này là reference implementation của Fomoxa Protocol.
         <strong>Chúng không phải là một phần của protocol.</strong>
       </p>
 
       <p class="body">
-        Thay cả ba, wire format không đổi. Không có gì trong Cyclone bắt bạn phải dùng chúng -
-        chúng tồn tại để được đọc, và để bị vượt qua.
+        Thay cả ba, wire format không đổi. Không gì trong Fomoxa bắt bạn phải dùng chúng.
+        Chúng tồn tại để được đọc, và để bị vượt qua.
       </p>
     </div>
   </div>
@@ -829,7 +828,7 @@ model GameMessage {
     Rust     | Community  | ✅
     Java     | Community  | ✅
 
-  Một danh sách SDK "Coming Soon" dạy người mới rằng Cyclone = một bộ SDK.
+  Một danh sách SDK "Coming Soon" dạy người mới rằng Fomoxa = một bộ SDK.
   Không phải vậy.
 -->
 
@@ -841,31 +840,31 @@ model GameMessage {
       <h2 class="h2">Bắt đầu từ đâu</h2>
       <ol class="path">
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0001.md">
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0001.md">
             <span class="step-n">01</span>
             <span class="step-t">Đọc Specification</span>
-            <span class="step-d">Cyclone là gì, và nó từ chối trở thành cái gì.</span>
+            <span class="step-d">Fomoxa là gì, và nó từ chối trở thành cái gì.</span>
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0002.md">
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">
             <span class="step-n">02</span>
             <span class="step-t">Xem RFC</span>
             <span class="step-d">RFC-0002 - hình dạng chính xác mà byte phải có.</span>
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/cyclone-protocol/spec/blob/main/vi/RFC-0003.md">
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">
             <span class="step-n">03</span>
             <span class="step-t">Chạy Test Vector</span>
             <span class="step-d">RFC-0003 - thứ duy nhất quyết định đúng hay sai.</span>
           </a>
         </li>
         <li>
-          <a class="step step-last" href="https://github.com/cyclone-protocol/spec">
+          <a class="step step-last" href="https://github.com/fomoxa/specification">
             <span class="step-n">04</span>
             <span class="step-t">Tự viết Implementation của bạn</span>
-            <span class="step-d">Ngôn ngữ nào cũng được, kỹ thuật nào cũng được. Pass 100% là Cyclone Compatible.</span>
+            <span class="step-d">Ngôn ngữ nào cũng được, kỹ thuật nào cũng được. Pass 100% là Fomoxa Compatible.</span>
           </a>
         </li>
       </ol>
@@ -875,7 +874,7 @@ model GameMessage {
 
 <footer>
   <div class="foot-in">
-    <span class="foot-brand">Cyclone Protocol</span>
+    <span class="foot-brand">Fomoxa Protocol</span>
     <span>Tác giả <strong>Hà Duy Thắng</strong></span>
   </div>
   <p class="foot-copy">

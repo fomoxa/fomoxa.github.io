@@ -2,7 +2,7 @@ Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 Copyright (c) 2026 Ha Duy Thang
 
-This work - the Cyclone Binary Protocol specification, including this
+This work - the Fomoxa Binary Protocol specification, including this
 repository's README, the documents under rfcs/, and the accompanying web page -
 is licensed under the Creative Commons Attribution 4.0 International License.
 
@@ -45,7 +45,7 @@ has no legal force.
 SUGGESTED ATTRIBUTION
 --------------------------------------------------------------------------------
 
-    "Cyclone Binary Protocol Specification" by Ha Duy Thang,
+    "Fomoxa Binary Protocol Specification" by Ha Duy Thang,
     licensed under CC BY 4.0
     https://creativecommons.org/licenses/by/4.0/
 
@@ -53,12 +53,12 @@ SUGGESTED ATTRIBUTION
 NOTE ON IMPLEMENTATIONS
 --------------------------------------------------------------------------------
 
-This repository contains the Cyclone Binary Protocol specification only.
+This repository contains the Fomoxa Binary Protocol specification only.
 
 This license applies to the specification document and its accompanying
 documentation.
 
-Software implementations of the Cyclone Binary Protocol are independent
+Software implementations of the Fomoxa Binary Protocol are independent
 projects. Authors of such implementations may choose any license for their
 software, provided they do not misrepresent the origin of this specification
 or remove the required attribution when redistributing the specification itself.
