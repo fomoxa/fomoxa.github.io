@@ -1,13 +1,66 @@
 (function () {
   var root = document.documentElement;
   var btn = document.getElementById('themeBtn');
+
+  function updateThemeUI(theme) {
+    if (!btn) return;
+    var isDark = theme === 'dark';
+    var isVi = root.getAttribute('lang') === 'vi';
+    btn.setAttribute('aria-label', isDark ? (isVi ? 'Bấm để đổi sang giao diện sáng' : 'Switch to light theme') : (isVi ? 'Bấm để đổi sang giao diện tối' : 'Switch to dark theme'));
+    btn.setAttribute('title', isDark ? (isVi ? 'Bấm để đổi sang giao diện sáng' : 'Switch to light theme') : (isVi ? 'Bấm để đổi sang giao diện tối' : 'Switch to dark theme'));
+    var text = isDark ? (isVi ? 'Tối' : 'Dark') : (isVi ? 'Sáng' : 'Light');
+    btn.innerHTML = (isDark ?
+      '<svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>' :
+      '<svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>'
+    ) + '<span>' + text + '</span>';
+  }
+
+  var savedTheme = null;
+  try {
+    savedTheme = localStorage.getItem('fomoxa_theme');
+  } catch (e) {}
+
+  var currentTheme = savedTheme || root.getAttribute('data-theme');
+  if (!currentTheme) {
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    currentTheme = prefersDark ? 'dark' : 'light';
+  }
+  root.setAttribute('data-theme', currentTheme);
+  try {
+    localStorage.setItem('fomoxa_theme', currentTheme);
+  } catch (e) {}
+  updateThemeUI(currentTheme);
+
+  // Enable transitions smoothly only after first frame render
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      if (document.body) {
+        document.body.classList.add('theme-ready');
+      }
+    });
+  });
+
   if (btn) {
     btn.addEventListener('click', function () {
-      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var current = root.getAttribute('data-theme') || (prefersDark ? 'dark' : 'light');
-      root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+      var active = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      var next = active === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try {
+        localStorage.setItem('fomoxa_theme', next);
+      } catch (e) {}
+      updateThemeUI(next);
     });
   }
+
+  try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+      if (!localStorage.getItem('fomoxa_theme')) {
+        var next = e.matches ? 'dark' : 'light';
+        root.setAttribute('data-theme', next);
+        updateThemeUI(next);
+      }
+    });
+  } catch (err) {}
 
   var mapRows = document.getElementById('mapRows');
   var status = document.getElementById('mapStatus');

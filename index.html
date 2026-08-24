@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fomoxa Protocol - A deterministic binary wire format</title>
 <meta name="description" content="Fomoxa is a protocol. It defines how logical data becomes bytes, and how bytes become logical data. Nothing more, nothing less.">
-<link rel="stylesheet" href="/assets/site.css">
-<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" type="image/png" href="assets/favicon.png">
 </head>
 <body>
 
 <header class="topbar">
   <div class="topbar-in">
     <a class="brand" href="#top">
-      <img src="/assets/logo.png" alt="Fomoxa Logo" class="brand-logo" />
+      <img src="assets/logo.png" alt="Fomoxa Logo" class="brand-logo" />
       Fomoxa
     </a>
     <nav class="topnav" aria-label="Sections">
@@ -26,17 +32,19 @@
       <a href="#conformance">Conformance</a>
       <a href="#github">GitHub</a>
     </nav>
-    <p class="lang-switch" aria-label="Language">
-      <span aria-current="true">EN</span><span class="sep">/</span><a href="/vi/" hreflang="vi" lang="vi">VI</a>
-    </p>
-    <button class="theme-btn" id="themeBtn" type="button">Theme</button>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Language">
+        <span aria-current="true">EN</span><span class="sep">/</span><a href="/vi/" hreflang="vi" lang="vi">VI</a>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">Theme</button>
+    </div>
   </div>
 </header>
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Wire format specification · v1.0.0 · Draft</p>
+    <p class="eyebrow">Wire format specification · v1.1.0 · Draft</p>
 
     <h1 class="h1">Fomoxa Protocol</h1>
 
@@ -51,7 +59,7 @@
     </p>
 
     <div class="ctas">
-      <a class="btn btn-primary" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">Read Specification <span class="arrow">→</span></a>
+      <a class="btn btn-primary" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">Read specification <span class="arrow">→</span></a>
       <a class="btn btn-ghost" href="https://github.com/fomoxa">GitHub <span class="arrow">↗</span></a>
     </div>
   </div>
@@ -62,7 +70,7 @@
   <div class="band-in">
     <p class="offset">Order</p>
     <div class="col">
-      <h2 class="statement">Specification First</h2>
+      <h2 class="statement">Specification first</h2>
       <p class="lede">
         The specification is the single source of truth. Never change the spec to accommodate an
         implementation. Everything else sits downstream of it.
@@ -90,7 +98,7 @@
 
       <p class="body">
         The test applied to every sentence of the specification:
-        <strong>could somebody writing an encoder in assembly on an 8-bit microcontroller follow it?</strong>
+        could somebody writing an encoder in assembly on an 8-bit microcontroller follow it?
         If not, that sentence describes an implementation. Cut it from the spec.
       </p>
     </div>
@@ -112,7 +120,7 @@
             <li><span class="x">×</span> RPC</li>
             <li><span class="x">×</span> Networking</li>
             <li><span class="x">×</span> Runtime</li>
-            <li><span class="x">×</span> Serialization Library</li>
+            <li><span class="x">×</span> Serialization library</li>
           </ul>
         </div>
 
@@ -128,7 +136,7 @@
 
       <p class="body">
         Transport, retransmission, ordering, matchmaking, encryption, compression, checksums -
-        build all of it <strong>on top of</strong> Fomoxa. The specification stops exactly where
+        build all of it on top of Fomoxa. The specification stops exactly where
         the bytes are formed.
       </p>
     </div>
@@ -150,48 +158,48 @@
       </div>
 
       <div class="stack">
-        <h3 class="h3">Principles of the Specification</h3>
+        <h3 class="h3">Principles of the specification</h3>
         <p class="body">Violate one of these and it is not Fomoxa.</p>
         <div class="principles">
           <div class="principle key">
             <span class="n">01</span>
-            <span class="t">Specification First
+            <span class="t">Specification first
               <span class="d">The spec is the single source of truth. Never change it to accommodate an implementation.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">02</span>
-            <span class="t">Protocol over Framework
+            <span class="t">Protocol over framework
               <span class="d">Fomoxa defines how data appears on the wire. Not an API, not a runtime.</span>
             </span>
           </div>
           <div class="principle key">
             <span class="n">03</span>
-            <span class="t">Minimal Wire Format
+            <span class="t">Minimal wire format
               <span class="d">Send the data, never a description of the data. No field names, no type info, no tags, no padding.</span>
             </span>
           </div>
           <div class="principle key">
             <span class="n">04</span>
-            <span class="t">Deterministic by Design
+            <span class="t">Deterministic by design
               <span class="d">One value, exactly one byte sequence. Two valid encodings of the same data must not exist.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">05</span>
-            <span class="t">Language Neutral
+            <span class="t">Language neutral
               <span class="d">No language is the reference language. Nothing in the format favours one type system.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">06</span>
-            <span class="t">Implementation Independent
+            <span class="t">Implementation independent
               <span class="d">No mandated parser, macro, or generator. The spec describes bytes and stops.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">07</span>
-            <span class="t">Implementation Replaceable
+            <span class="t">Implementation replaceable
               <span class="d">The Reference Implementation is not the standard. Replace it entirely and the wire format holds.</span>
             </span>
           </div>
@@ -207,19 +215,19 @@
         <div class="principles">
           <div class="principle">
             <span class="n">08</span>
-            <span class="t">User Owns the Model
+            <span class="t">User owns the Model
               <span class="d">No mandatory DTO layer, no base class. The RI reads the fields you mark and ignores the rest.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">09</span>
-            <span class="t">Compile-time over Runtime
+            <span class="t">Compile-time over runtime
               <span class="d">Anything decidable at build time is decided at build time.</span>
             </span>
           </div>
           <div class="principle">
             <span class="n">10</span>
-            <span class="t">Zero Runtime Reflection
+            <span class="t">Zero runtime reflection
               <span class="d">The wire format permits it. The spec does not require it. AOT and bare-metal targets stay viable.</span>
             </span>
           </div>
@@ -227,9 +235,9 @@
       </div>
 
       <p class="layer-note">
-        The decision rule, in two questions. <strong>One:</strong> is this statement observable from the
+        The decision rule, in two questions. One: is this statement observable from the
         byte stream? If not, it belongs to the Reference Implementation and must not enter the spec.
-        <strong>Two:</strong> does it violate one of the seven above? If yes, it is not part of Fomoxa.
+        Two: does it violate one of the seven above? If yes, it is not part of Fomoxa.
       </p>
     </div>
   </div>
@@ -252,7 +260,7 @@
             <h4>Schema evolution only at the end</h4>
             <p>
               Position is the only field identifier. Append or remove a field at the
-              <strong>end</strong> of a Model and the wire holds (Version Skew, RFC-0002 §9.1).
+              end of a Model and the wire holds (Version skew, RFC-0002 §9.1).
               Inserting a field in the middle, reordering fields, changing a field's type: breaking change.
             </p>
           </div>
@@ -263,7 +271,7 @@
             <h4>Compatibility only at the trailing edge</h4>
             <p>
               An old client reads a new server's message under one condition. The only change is a
-              field appended at the end. The extra bytes are discarded (Version Skew, RFC-0002 §9.1).
+              field appended at the end. The extra bytes are discarded (Version skew, RFC-0002 §9.1).
               A field inserted or changed in the middle is a hard break. Both ends deploy together,
               or not at all.
             </p>
@@ -285,7 +293,7 @@
           <div>
             <h4>No mandated IDL</h4>
             <p>
-              The source of truth is the <strong>Schema</strong>. The spec does not dictate how you
+              The source of truth is the Schema. The spec does not dictate how you
               write the Schema down. No mandatory IDL, no mandatory <code>.fomoxa</code> file. The
               Reference Implementation expresses the Schema as annotations on your existing type. It
               extracts exactly three things: the type, its fields, and each field's Fomoxa type. The
@@ -300,7 +308,7 @@
             <h4>No Optional, no nullable, no explicit default</h4>
             <p>
               There is no wire-level marker for absence. No tag, no null byte. A trailing field can
-              end up with no data through Version Skew (§9.1). How an implementation represents that
+              end up with no data through Version skew (§9.1). How an implementation represents that
               - a default value, <code>Option&lt;T&gt;</code>, an exception - is left to the
               implementation. Not to the wire format.
             </p>
@@ -343,7 +351,7 @@
         </a>
         <a class="doc" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">
           <span class="id">RFC-0002</span>
-          <span class="t">Wire Format</span>
+          <span class="t">Wire format</span>
           <span class="d">The shape the bytes must have: primitives, string, bytes, model, array, enum, invalid streams.</span>
           <span class="go">Read <span class="arrow">→</span></span>
         </a>
@@ -394,7 +402,7 @@ f32   -0.0       → <span class="by">[00 00 00 80]</span></pre>
 
         <article class="wf">
           <h3 class="wf-h">String</h3>
-          <p class="wf-p"><code>UInt32</code> length, then UTF-8 bytes. Length counts <strong>bytes</strong>, never characters.</p>
+          <p class="wf-p"><code>UInt32</code> length, then UTF-8 bytes. Length counts bytes, never characters.</p>
 <pre class="wf-b">"abc"      → <span class="by">[03 00 00 00]</span> <span class="by">[61 62 63]</span>
 "中"        → <span class="by">[03 00 00 00]</span> <span class="by">[E4 B8 AD]</span>
 "Xin chào" → <span class="by">[09 00 00 00]</span> <span class="by">[58 69 6E 20 63 68 C3 A0 6F]</span>
@@ -413,7 +421,7 @@ f32   -0.0       → <span class="by">[00 00 00 80]</span></pre>
 
         <article class="wf">
           <h3 class="wf-h">Model</h3>
-          <p class="wf-p">Fields concatenated in <strong>declaration</strong> order. No metadata, no field ID, no padding.</p>
+          <p class="wf-p">Fields concatenated in declaration order. No metadata, no field ID, no padding.</p>
 <pre class="wf-b">model Item { id: u32; name: String }
 Item{ 42, "Sword" }
   → <span class="by">[2A 00 00 00]</span> <span class="by">[05 00 00 00]</span> <span class="by">[53 77 6F 72 64]</span>
@@ -426,7 +434,7 @@ Mixed{ 1, 2, 3 } → <span class="by">[01 02 00 00 00 03]</span>   6 bytes
 
         <article class="wf">
           <h3 class="wf-h">Array</h3>
-          <p class="wf-p"><code>UInt32</code> count, then each element in the byte shape of <code>T</code>. Count is <strong>elements</strong>, not bytes.</p>
+          <p class="wf-p"><code>UInt32</code> count, then each element in the byte shape of <code>T</code>. Count is elements, not bytes.</p>
 <pre class="wf-b">Array&lt;u32&gt; [1,2,3]
   → <span class="by">[03 00 00 00]</span> <span class="by">[01 00 00 00]</span> <span class="by">[02 00 00 00]</span> <span class="by">[03 00 00 00]</span>
 
@@ -571,7 +579,7 @@ model GameMessage {
         Nothing separates the fields. No length prefix on the nested model. No delimiter between
         <code>position</code> and <code>health</code>. No terminator at the end. The decoder knows
         which field it is reading from how far the cursor has advanced. That is why
-        <strong>reordering a field is a breaking change</strong>, and why renaming one is free.
+        reordering a field is a breaking change, and why renaming one is free.
       </p>
     </div>
   </div>
@@ -586,10 +594,10 @@ model GameMessage {
       <div class="stack">
         <h2 class="h2">Test vectors</h2>
         <p class="lede">
-          A test vector is a pair of <strong>(logical value, byte sequence)</strong>. Never a pair of
+          A test vector is a pair of (logical value, byte sequence). Never a pair of
           (function call, return value). A vector names no method, no language, no API.
         </p>
-        <p class="tv-legend"><span>Input</span><span class="arrow">→</span><span>Expected Bytes</span></p>
+        <p class="tv-legend"><span>Input</span><span class="arrow">→</span><span>Expected bytes</span></p>
       </div>
 
       <div class="tv-group">
@@ -673,7 +681,7 @@ model GameMessage {
       </div>
 
       <div class="tv-group">
-        <h3 class="tv-h">Version Skew</h3>
+        <h3 class="tv-h">Version skew</h3>
         <div class="table-scroll">
           <table class="tv">
             <thead><tr><th scope="col">ID</th><th scope="col">Written</th><th scope="col">Read</th><th scope="col">Bytes</th><th scope="col">Expectation</th></tr></thead>
@@ -684,7 +692,7 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          Valid only when the shortfall or surplus lands exactly on a <strong>field boundary</strong>.
+          Valid only when the shortfall or surplus lands exactly on a field boundary.
           Compare with N-022 below: bytes go missing mid-field, and it MUST still be rejected. Treating
           every missing or extra byte as version skew, even mid-field, is the most common conformance
           bug when adding this support (RFC-0002 §9.1).
@@ -692,7 +700,7 @@ model GameMessage {
       </div>
 
       <div class="tv-group">
-        <h3 class="tv-h">Invalid Stream</h3>
+        <h3 class="tv-h">Invalid stream</h3>
         <div class="table-scroll">
           <table class="tv tv-reject">
             <thead><tr><th scope="col">ID</th><th scope="col">Input bytes</th><th scope="col">Expected result</th></tr></thead>
@@ -710,7 +718,7 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          Rejection is <strong>MUST</strong>. The error name is only SHOULD. N-023 and N-031 check one
+          Rejection is MUST. The error name is only SHOULD. N-023 and N-031 check one
           thing: is the length validated <em>before</em> allocating? Crashing and catching the exception
           does not count as a pass.
         </p>
@@ -734,13 +742,13 @@ model GameMessage {
 
       <div class="conform">
         <p class="conform-def">
-          An implementation is <strong>Fomoxa Compatible</strong> if and only if it passes
+          An implementation is Fomoxa Compatible if and only if it passes
           100% of the test vectors.
         </p>
         <ul class="reqs">
           <li><span class="tick">✓</span> RFC-0002</li>
-          <li><span class="tick">✓</span> Test Vectors</li>
-          <li><span class="tick">✓</span> Deterministic Output</li>
+          <li><span class="tick">✓</span> Test vectors</li>
+          <li><span class="tick">✓</span> Deterministic output</li>
         </ul>
       </div>
 
@@ -750,8 +758,8 @@ model GameMessage {
       </p>
 
       <p class="verdict-line">
-        An implementation 10× slower that passes 100% of the vectors <strong>is</strong> Fomoxa Compatible.<br>
-        The fastest implementation in the world that fails one vector <strong>is not</strong>.
+        An implementation 10× slower that passes 100% of the vectors is Fomoxa Compatible.<br>
+        The fastest implementation in the world that fails one vector is not.
       </p>
     </div>
   </div>
@@ -775,7 +783,7 @@ model GameMessage {
           <span class="arrow">↗</span>
         </a>
         <a class="repo" href="https://github.com/fomoxa/implementation-guide">
-          <span class="repo-t">Implementation Guide</span>
+          <span class="repo-t">Implementation guide</span>
           <span class="repo-d">Fomoxa implementation guide</span>
           <span class="arrow">↗</span>
         </a>
@@ -793,12 +801,12 @@ model GameMessage {
 
       <div class="tools">
         <div class="tool">
-          <span class="tool-t">Official Compiler</span>
+          <span class="tool-t">Official compiler</span>
           <span class="tool-d">Reads a Schema, emits a codec. One of many valid ways to satisfy RFC-0002.</span>
           <span class="status s-wip">In progress</span>
         </div>
         <div class="tool">
-          <span class="tool-t">Implementation Guide</span>
+          <span class="tool-t">Implementation guide</span>
           <span class="tool-d">Read to implement a Fomoxa-compatible implementation.</span>
           <span class="status s-wip">In progress</span>
         </div>
@@ -811,7 +819,7 @@ model GameMessage {
 
       <p class="disclaimer">
         These tools are reference implementations of the Fomoxa Protocol.
-        <strong>They are not part of the protocol itself.</strong>
+        They are not part of the protocol itself.
       </p>
 
       <p class="body">
@@ -845,7 +853,7 @@ model GameMessage {
         <li>
           <a class="step" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0001.md">
             <span class="step-n">01</span>
-            <span class="step-t">Read the Specification</span>
+            <span class="step-t">Read the specification</span>
             <span class="step-d">What Fomoxa is, and what it refuses to be.</span>
           </a>
         </li>
@@ -859,14 +867,14 @@ model GameMessage {
         <li>
           <a class="step" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">
             <span class="step-n">03</span>
-            <span class="step-t">Run Test Vectors</span>
+            <span class="step-t">Run test vectors</span>
             <span class="step-d">RFC-0003 - the only thing that decides correctness.</span>
           </a>
         </li>
         <li>
           <a class="step step-last" href="https://github.com/fomoxa/specification">
             <span class="step-n">04</span>
-            <span class="step-t">Build Your Own Implementation</span>
+            <span class="step-t">Build your own implementation</span>
             <span class="step-d">Any language, any technique. Pass 100% and it is Fomoxa Compatible.</span>
           </a>
         </li>
@@ -881,7 +889,7 @@ model GameMessage {
     <span>Created by <strong>Ha Duy Thang</strong></span>
   </div>
   <p class="foot-copy">
-    Draft specification v1.0.0 · Copyright © 2026 Ha Duy Thang ·
+    Draft specification v1.1.0 · Copyright © 2026 Ha Duy Thang ·
     Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
   </p>
 </footer>

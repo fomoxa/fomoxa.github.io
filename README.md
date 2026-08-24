@@ -1,8 +1,8 @@
 # Fomoxa Protocol
 
-**English** · [Tiếng Việt](vi/README.md)
+English · [Tiếng Việt](vi/README.md)
 
-Fomoxa is a way of specifying **how data is written as bytes**.
+Fomoxa is a way of specifying how data is written as bytes.
 
 That's all it is.
 
@@ -26,7 +26,7 @@ Fomoxa specifies that it becomes exactly this byte sequence:
 
 13 bytes. No field names, no braces, no tags - just data.
 
-The key point: **Go, C#, Rust and C must all produce these exact 13 bytes.** Not "equivalent" - identical, byte for byte.
+The key point: Go, C#, Rust and C must all produce these exact 13 bytes. Not "equivalent" - identical, byte for byte.
 
 ---
 
@@ -34,9 +34,9 @@ The key point: **Go, C#, Rust and C must all produce these exact 13 bytes.** Not
 
 With JSON or Protobuf, the same data can produce different bytes depending on the language, the library, the version. Usually that's fine. It breaks completely when:
 
-- You **sign or hash** a payload - a signature covers bytes; if the bytes change the signature fails even though the data didn't.
-- You run **replay or lockstep** - two machines must reach the same result from the same input sequence.
-- You want to **prove two SDKs are compatible** - the only way is to compare bytes.
+- You sign or hash a payload - a signature covers bytes; if the bytes change the signature fails even though the data didn't.
+- You run replay or lockstep - two machines must reach the same result from the same input sequence.
+- You want to prove two SDKs are compatible - the only way is to compare bytes.
 
 Fomoxa solves this by removing every choice: wherever an encoder is allowed to choose, two encoders will eventually choose differently.
 
@@ -50,7 +50,7 @@ Fomoxa solves this by removing every choice: wherever an encoder is allowed to c
 ✗ Encryption              ✗ Compression
 ```
 
-Those are built **on top of** Fomoxa. Fomoxa stands exactly where data changes shape:
+Those are built on top of Fomoxa. Fomoxa stands exactly where data changes shape:
 
 ```
 Model  →  Bytes
@@ -63,13 +63,13 @@ Bytes  →  Model
 
 Four rules are enough to understand the whole thing:
 
-**1. Numbers are fixed-size, little-endian.** `UInt32` is always 4 bytes, even for the value 0. No varints.
+1. Numbers are fixed-size, little-endian. `UInt32` is always 4 bytes, even for the value 0. No varints.
 
-**2. Strings and arrays are length-prefixed.** `[4-byte length][data]`. For strings, the length is the **number of UTF-8 bytes**, not characters.
+2. Strings and arrays are length-prefixed. `[4-byte length][data]`. For strings, the length is the number of UTF-8 bytes, not characters.
 
-**3. A Model is its fields, concatenated.** No header, no padding, no delimiter. The decoder knows which field it is reading **from the cursor position**, not from a tag.
+3. A Model is its fields, concatenated. No header, no padding, no delimiter. The decoder knows which field it is reading from the cursor position, not from a tag.
 
-**4. No metadata.** The byte stream is not self-describing. The receiver **must** already know the exact order and type of every field.
+4. No metadata. The byte stream is not self-describing. The receiver must already know the exact order and type of every field.
 
 The consequences of rules 3 and 4, worth understanding before you adopt this:
 
@@ -83,9 +83,9 @@ Wrong definition  →  usually NO error, just silently wrong data
 
 ## Fomoxa does not mandate an IDL
 
-The source of truth is the **Schema** - the type names, field names, Fomoxa types, and field order. The bytes come from the Schema, and from nothing else.
+The source of truth is the Schema - the type names, field names, Fomoxa types, and field order. The bytes come from the Schema, and from nothing else.
 
-But Fomoxa does not dictate how you **write** that Schema down:
+But Fomoxa does not dictate how you write that Schema down:
 
 ```
 Many ways of expressing it   →   one Schema   →   exactly one byte sequence
@@ -127,7 +127,7 @@ Another implementation is free to choose a different route entirely - a separate
 
 Stated up front:
 
-- You need old clients to talk to new servers → **Fomoxa is a poor fit**. v1 has no schema evolution.
+- You need old clients to talk to new servers → Fomoxa is a poor fit. v1 has no schema evolution.
 - Your schema changes constantly → every change requires deploying both sides together.
 - You need to read the data by eye → Fomoxa is pure binary.
 - You have many "may not be present" fields → v1 has no Optional/Nullable.
@@ -146,7 +146,7 @@ Same schema, same values
 Every implementation MUST produce identical bytes.
 ```
 
-If they don't, that is an **implementation bug**, not a protocol one. And that bug is caught by a single byte-array comparison - see the Conformance document.
+If they don't, that is an implementation bug, not a protocol one. And that bug is caught by a single byte-array comparison - see the Conformance document.
 
 ---
 
@@ -156,7 +156,7 @@ Read in this order:
 
 | Document | Answers |
 |----------|---------|
-| [RFC-0001 - What Fomoxa is](en/RFC-0001.md) | What problem it solves, why choose it, when **not** to |
+| [RFC-0001 - What Fomoxa is](en/RFC-0001.md) | What problem it solves, why choose it, when not to |
 | [RFC-0002 - Wire Format](en/RFC-0002.md) | What shape the bytes must have |
 | [RFC-0003 - Conformance](en/RFC-0003.md) | How do I know my implementation is correct (test vectors) |
 
@@ -168,9 +168,9 @@ Landing page: [fomoxa-protocol.github.io/fomoxa](https://fomoxa-protocol.github.
 
 ## Contributing
 
-Fomoxa is a **specification**, not a library. Implementations are needed for Rust, Go, C#/Unity, C/embedded, Zig/C++.
+Fomoxa is a specification, not a library. Implementations are needed for Rust, Go, C#/Unity, C/embedded, Zig/C++.
 
-The single criterion for being called **Fomoxa Compatible**:
+The single criterion for being called Fomoxa Compatible:
 
 ```
 Run the test vectors in RFC-0003
@@ -216,9 +216,9 @@ Vietnamese is the source of record; English is a translation. The workflow is de
 
 This entire repository is under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) - see [`LICENSE`](LICENSE).
 
-You are free to copy, translate, quote and create derivative works from the specification, including commercially, as long as you **give attribution**.
+You are free to copy, translate, quote and create derivative works from the specification, including commercially, as long as you give attribution.
 
-This is a **specification, not software**. Your implementation is a separate work, not a derivative of the specification - you are free to license it however you like.
+This is a specification, not software. Your implementation is a separate work, not a derivative of the specification - you are free to license it however you like.
 
 ## Copyright
 
