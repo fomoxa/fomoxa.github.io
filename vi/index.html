@@ -3,13 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fomoxa Protocol - Một binary wire format xác định</title>
-<meta name="description" content="Fomoxa là một protocol. Nó định nghĩa cách dữ liệu logic thành byte, và cách byte thành dữ liệu logic. Không hơn, không kém.">
+<title>Fomoxa Protocol - Cùng giá trị, cùng byte, ở mọi ngôn ngữ</title>
+<meta name="description" content="Fomoxa là một binary wire format xác định: mỗi giá trị có đúng một encoding hợp lệ, nên các implementation bằng Rust, C#, Go, C, C++, TypeScript và GDScript khớp nhau từng byte.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/site.css">
-<link rel="icon" type="image/png" href="../assets/favicon.svg">
+<link rel="canonical" href="https://fomoxa.github.io/vi/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <script>
 (function(){var t=localStorage.getItem('fomoxa_theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);})();
 </script>
@@ -18,19 +22,20 @@
 
 <header class="topbar">
   <div class="topbar-in">
-    <a class="brand" href="#top">
-      <img src="../assets/logo.svg" alt="Fomoxa Logo" class="brand-logo" />
+    <a class="brand" href="/vi/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
       Fomoxa
     </a>
-    <nav class="topnav" aria-label="Mục">
-      <a href="#top">Trang chủ</a>
-      <a href="#philosophy">Triết lý</a>
-      <a href="#tradeoffs">Đánh đổi</a>
-      <a href="#spec">Specification</a>
-      <a href="#wire">RFC-0002</a>
-      <a href="#vectors">Test vector</a>
-      <a href="#conformance">Conformance</a>
-      <a href="#github">GitHub</a>
+    <nav class="topnav" aria-label="Trang">
+      <a href="/vi/" aria-current="page">Protocol</a>
+      <a href="/vi/why/">Vì sao</a>
+      <a href="/vi/getting-started/">Bắt đầu</a>
+      <a href="/vi/inspector/">Inspector</a>
+      <a href="/vi/ecosystem/">Hệ sinh thái</a>
+      <a href="/vi/comparison/">So sánh</a>
+      <a href="/vi/use-cases/">Ứng dụng</a>
+      <a href="/vi/roadmap/">Lộ trình</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
     </nav>
     <div class="topbar-actions">
       <p class="lang-switch" aria-label="Ngôn ngữ">
@@ -44,23 +49,33 @@
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Wire format specification · v1.1.0 · Draft</p>
+    <p class="eyebrow">Wire format specification · v1.1.0 · Final</p>
 
     <h1 class="h1">Fomoxa Protocol</h1>
 
     <p class="hero-line">
-      Một binary wire format xác định.<br>
-      <em>Không hơn. Không kém.</em>
+      Cùng giá trị. Cùng byte.<br>
+      <em>Ở mọi ngôn ngữ.</em>
     </p>
 
     <p class="hero-sub">
-      Fomoxa định nghĩa cách dữ liệu logic thành byte.
-      Và cách byte thành dữ liệu logic.
+      Một binary wire format xác định: mỗi giá trị có đúng một encoding hợp lệ, nên server Rust,
+      client C# và thiết bị C khớp nhau từng byte. Bộ sinh code tham chiếu đọc annotation trên
+      chính các type bạn đã có.
     </p>
 
     <div class="ctas">
-      <a class="btn btn-primary" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">Đọc specification <span class="arrow">→</span></a>
-      <a class="btn btn-ghost" href="https://github.com/fomoxa">GitHub <span class="arrow">↗</span></a>
+      <a class="btn btn-primary" href="/vi/getting-started/">Bắt đầu <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="/vi/why/">Vì sao Fomoxa <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">Đọc specification <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="/vi/inspector/">Thử inspector <span class="arrow">→</span></a>
+    </div>
+
+    <div class="proof">
+      <a href="/vi/getting-started/#model"><span class="proof-n">8</span><span class="proof-t">target sinh code: Rust, C#, Go, C, C++, TypeScript, JavaScript, GDScript</span></a>
+      <a href="https://github.com/fomoxa/interop"><span class="proof-n">6</span><span class="proof-t">runtime giao tiếp với nhau qua socket TCP và UDP thật</span></a>
+      <a href="https://github.com/fomoxa/fomoxa-example-game"><span class="proof-n">5</span><span class="proof-t">loại client trong cùng một trận: Unity, Unreal, Godot, Go, Rust</span></a>
+      <a href="/vi/use-cases/#games"><span class="proof-n">1000</span><span class="proof-t">bot ở 30 Hz trên một luồng server, mỗi tick chỉ tốn 0.02 ms cho encode</span></a>
     </div>
   </div>
 </section>
@@ -72,8 +87,8 @@
     <div class="col">
       <h2 class="statement">Specification first</h2>
       <p class="lede">
-        Specification là nguồn sự thật duy nhất. Không sửa spec để chiều một implementation.
-        Mọi thứ khác đứng sau nó.
+        Specification là nguồn sự thật duy nhất. Spec không bao giờ được sửa để chiều một implementation;
+        mọi thứ khác đều suy ra từ nó.
       </p>
 
       <div class="flow-pair">
@@ -99,7 +114,7 @@
       <p class="body">
         Phép thử cho từng câu trong specification:
         một người viết encoder bằng assembly trên vi điều khiển 8-bit có làm theo được không?
-        Không → câu đó đang mô tả một implementation. Cắt khỏi spec.
+        Nếu không, câu đó đang mô tả một implementation và phải được bỏ khỏi spec.
       </p>
     </div>
   </div>
@@ -135,8 +150,8 @@
       </div>
 
       <p class="body">
-        Transport, retransmission, thứ tự gói, matchmaking, mã hoá, nén, checksum -
-        tất cả xây phía trên Fomoxa. Specification dừng đúng ở chỗ
+        Transport, retransmission, thứ tự gói, matchmaking, mã hoá, nén, checksum:
+        tất cả đều xây phía trên Fomoxa. Specification dừng ở chỗ
         byte hình thành.
       </p>
     </div>
@@ -153,13 +168,13 @@
         <h2 class="h2">Mười nguyên tắc, hai tầng.</h2>
         <p class="lede">
           Bảy nguyên tắc là điều kiện tuân thủ. Ba nguyên tắc là lựa chọn của Reference Implementation.
-          Trộn hai thứ đó, protocol âm thầm biến thành framework.
+          Trộn lẫn hai loại này sẽ dần biến protocol thành framework.
         </p>
       </div>
 
       <div class="stack">
         <h3 class="h3">Nguyên tắc của specification</h3>
-        <p class="body">Vi phạm một trong số này thì không phải Fomoxa.</p>
+        <p class="body">Format vi phạm bất kỳ nguyên tắc nào dưới đây thì không phải Fomoxa.</p>
         <div class="principles">
           <div class="principle key">
             <span class="n">01</span>
@@ -170,13 +185,13 @@
           <div class="principle">
             <span class="n">02</span>
             <span class="t">Protocol over framework
-              <span class="d">Fomoxa định nghĩa dữ liệu hiện ra trên wire. Không định nghĩa API, không định nghĩa runtime.</span>
+              <span class="d">Fomoxa định nghĩa dữ liệu hiện ra trên wire, không định nghĩa API hay runtime.</span>
             </span>
           </div>
           <div class="principle key">
             <span class="n">03</span>
             <span class="t">Minimal wire format
-              <span class="d">Gửi dữ liệu, không gửi mô tả dữ liệu. Không tên field, không type info, không tag, không padding.</span>
+              <span class="d">Gửi dữ liệu, không gửi mô tả dữ liệu: không tên field, type info, tag hay padding.</span>
             </span>
           </div>
           <div class="principle key">
@@ -209,8 +224,8 @@
       <div class="stack">
         <h3 class="h3">Nguyên tắc của Reference Implementation</h3>
         <p class="body">
-          Là lựa chọn thiết kế, không phải điều kiện tuân thủ. Implementation khác được chọn khác.
-          Miễn byte sinh ra không đổi.
+          Là lựa chọn thiết kế, không phải điều kiện tuân thủ. Implementation khác được chọn khác,
+          miễn byte sinh ra không đổi.
         </p>
         <div class="principles">
           <div class="principle">
@@ -228,7 +243,7 @@
           <div class="principle">
             <span class="n">10</span>
             <span class="t">Zero runtime reflection
-              <span class="d">Wire format cho phép điều đó. Spec không bắt buộc. AOT và bare-metal vẫn khả thi.</span>
+              <span class="d">Wire format cho phép implementation không dùng reflection và spec không bắt buộc điều đó, nên AOT và bare-metal vẫn khả thi.</span>
             </span>
           </div>
         </div>
@@ -270,9 +285,9 @@
           <div>
             <h4>Compatibility chỉ ở phần đuôi</h4>
             <p>
-              Client cũ đọc được message của server mới. Điều kiện: thay đổi duy nhất là một field
+              Client cũ đọc được message của server mới khi thay đổi duy nhất là một field
               thêm ở cuối. Byte thừa bị bỏ qua (Version skew, RFC-0002 §9.1). Một field bị chèn hoặc
-              đổi ở giữa thì breaking hoàn toàn. Hai đầu deploy cùng nhau, hoặc không deploy.
+              đổi ở giữa thì breaking hoàn toàn, và hai đầu phải deploy cùng nhau.
             </p>
           </div>
         </div>
@@ -282,8 +297,8 @@
             <h4>Không metadata, không tự mô tả</h4>
             <p>
               Stream không mang tên field, kiểu hay tag. Bên nhận bắt buộc biết trước thứ tự và
-              kiểu của từng field. Hệ quả nguy hiểm: decode sai định nghĩa thường
-              <em>không</em> báo lỗi gì cả. Nó sinh ra giá trị sai, im lặng.
+              kiểu của từng field. Hệ quả là decode sai định nghĩa thường
+              <em>không</em> báo lỗi gì cả mà âm thầm sinh ra giá trị sai.
             </p>
           </div>
         </div>
@@ -296,7 +311,7 @@
               cách nào. Không IDL bắt buộc, không file <code>.fomoxa</code> bắt buộc. Reference
               Implementation diễn đạt Schema bằng annotation trên type có sẵn của bạn. Nó trích đúng
               ba thứ: tên type, các field, Fomoxa type của từng field. Cái giá: không có tài liệu
-              Schema độc lập để đưa cho bên thứ ba. Hai phía tự lo việc rút ra cùng một Schema.
+              Schema độc lập để đưa cho bên thứ ba. Mỗi phía phải tự rút ra cùng một Schema.
             </p>
           </div>
         </div>
@@ -305,10 +320,10 @@
           <div>
             <h4>Không Optional, không nullable, không default tường minh</h4>
             <p>
-              Không có dấu hiệu nào ở mức wire cho sự vắng mặt. Không tag, không null byte. Một field
+              Ở mức wire không có dấu hiệu nào cho sự vắng mặt, kể cả tag hay null byte. Một field
               ở cuối có thể không có dữ liệu do Version skew (§9.1). Cách implementation biểu diễn
-              điều đó - default value, <code>Option&lt;T&gt;</code>, hay exception - do implementation
-              quyết định. Không phải wire format.
+              điều đó (default value, <code>Option&lt;T&gt;</code>, hay exception) do implementation
+              quyết định, không do wire format.
             </p>
           </div>
         </div>
@@ -318,15 +333,15 @@
             <h4>Không transport, không framing, không crypto</h4>
             <p>
               Fomoxa sinh ra một chuỗi byte rồi dừng. Ranh giới message, retransmission, thứ tự gói,
-              mã hoá, nén: bạn tự xây phía trên.
+              mã hoá và nén thuộc các tầng xây phía trên.
             </p>
           </div>
         </div>
       </div>
 
       <p class="body">
-        Có điều nào không chấp nhận được với bài toán của bạn? Một format có tag ID và optional field
-        sẽ phục vụ tốt hơn. Đó là lựa chọn đúng, không phải thất bại của Fomoxa.
+        Nếu bài toán của bạn không chấp nhận được điều nào trong số này, một format có tag ID và optional field
+        sẽ phù hợp hơn.
       </p>
     </div>
   </div>
@@ -338,13 +353,13 @@
     <p class="offset">Specification</p>
     <div class="col">
       <h2 class="h2">Specification</h2>
-      <p class="lede">Ba tài liệu. Mỗi tài liệu trả lời đúng một câu hỏi.</p>
+      <p class="lede">Ba tài liệu, mỗi tài liệu trả lời một câu hỏi.</p>
 
       <div class="docs">
         <a class="doc" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0001.md">
           <span class="id">RFC-0001</span>
           <span class="t">Giới thiệu</span>
-          <span class="d">Fomoxa là gì, giải bài toán gì, khi nào nên chọn - và khi nào không.</span>
+          <span class="d">Fomoxa là gì, giải bài toán gì, khi nào nên chọn và khi nào không.</span>
           <span class="go">Đọc <span class="arrow">→</span></span>
         </a>
         <a class="doc" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">
@@ -356,7 +371,7 @@
         <a class="doc" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">
           <span class="id">RFC-0003</span>
           <span class="t">Conformance</span>
-          <span class="d">Làm sao biết một implementation là đúng. Bộ test vector, và mốc pass duy nhất.</span>
+          <span class="d">Cách kiểm chứng một implementation: bộ test vector và mốc pass duy nhất.</span>
           <span class="go">Đọc <span class="arrow">→</span></span>
         </a>
       </div>
@@ -378,8 +393,8 @@
       <div class="stack">
         <h2 class="h2">Wire format</h2>
         <p class="lede">
-          Little endian, luôn luôn. Kích thước cố định, không varint. Không tag, không header, không padding,
-          không terminator. Vị trí là định danh duy nhất.
+          Luôn little endian, kích thước cố định, không varint. Không có tag, header, padding
+          hay terminator; vị trí là định danh duy nhất.
         </p>
       </div>
 
@@ -395,7 +410,7 @@ bool  true       → <span class="by">[01]</span>
 bool  <span class="bad">0x02</span>       → <span class="bad">không hợp lệ</span>
 f32   3.14       → <span class="by">[C3 F5 48 40]</span>
 f32   -0.0       → <span class="by">[00 00 00 80]</span></pre>
-          <p class="wf-n">Float giữ nguyên bit pattern IEEE 754. Không normalize, không canonical NaN.</p>
+          <p class="wf-n">Float giữ nguyên bit pattern IEEE 754, không normalize và không có canonical NaN.</p>
         </article>
 
         <article class="wf">
@@ -478,8 +493,7 @@ ghi bằng ItemV2, đọc bằng ItemV2, bị cắt giữa field
   [2A 00 00 00 05 00 00 00 53 77] → length=5, chỉ còn 2 byte dữ liệu
                   → <span class="bad">không hợp lệ</span> - Unexpected EOF, KHÔNG phải version skew</pre>
         <p class="wf-n">
-          Quy tắc dừng là “phần thiếu hay dư có rơi đúng ranh giới field không?”. Không bao giờ là
-          “có thiếu dữ liệu không?”. Chèn field vào giữa Model, đổi thứ tự field, đổi type của
+          Quy tắc dừng là “phần thiếu hay dư có rơi đúng ranh giới field không?”, chứ không phải “có thiếu dữ liệu không?”. Chèn field vào giữa Model, đổi thứ tự field, đổi type của
           field: vẫn breaking change. Xem RFC-0002 §9.1.
         </p>
       </div>
@@ -489,6 +503,7 @@ ghi bằng ItemV2, đọc bằng ItemV2, bị cắt giữa field
         <p class="lede">
           Ví dụ từ RFC-0002 §15. Model lồng, string, số nguyên, bool. Encode ra 31 byte.
           Rê chuột lên một field để làm sáng byte nó sở hữu. Rê lên một byte để tìm chủ của nó.
+          Muốn đổi giá trị? <a href="/vi/inspector/#preset=game">Mở trong inspector →</a>
         </p>
       </div>
 
@@ -574,11 +589,16 @@ model GameMessage {
       </div>
 
       <p class="body">
-        Không có gì ngăn cách các field. Không length prefix cho Model lồng. Không dấu phân cách giữa
-        <code>position</code> và <code>health</code>. Không terminator ở cuối. Decoder biết đang đọc
+        Không có gì ngăn cách các field: Model lồng không có length prefix, không có dấu phân cách giữa
+        <code>position</code> và <code>health</code>, và không có terminator ở cuối. Decoder biết đang đọc
         field nào nhờ con trỏ đã đi được bao xa. Đó là lý do
         đổi thứ tự field là breaking change, còn đổi tên field thì miễn phí.
       </p>
+
+      <div class="ctas">
+        <a class="btn btn-primary" href="/vi/inspector/">Encode giá trị của bạn <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="/vi/inspector/#preset=skew">Thử version skew <span class="arrow">→</span></a>
+      </div>
     </div>
   </div>
 </section>
@@ -592,7 +612,7 @@ model GameMessage {
       <div class="stack">
         <h2 class="h2">Test vector</h2>
         <p class="lede">
-          Một test vector là một cặp (giá trị logic, chuỗi byte). Không bao giờ là cặp
+          Một test vector là một cặp (giá trị logic, chuỗi byte), không bao giờ là cặp
           (lời gọi hàm, giá trị trả về). Một vector không nêu tên method, ngôn ngữ hay API nào.
         </p>
         <p class="tv-legend"><span>Input</span><span class="arrow">→</span><span>Byte mong đợi</span></p>
@@ -715,8 +735,8 @@ model GameMessage {
           </table>
         </div>
         <p class="tv-note">
-          Từ chối là MUST. Tên lỗi chỉ là SHOULD. N-023 và N-031 kiểm đúng một thứ:
-          độ dài có được kiểm tra <em>trước khi</em> cấp phát không? Crash rồi bắt exception không
+          Từ chối là MUST; tên lỗi chỉ là SHOULD. N-023 và N-031 kiểm tra độ dài có được
+          kiểm tra <em>trước khi</em> cấp phát hay không. Crash rồi bắt exception không
           tính là pass.
         </p>
       </div>
@@ -750,13 +770,13 @@ model GameMessage {
       </div>
 
       <p class="body">
-        Không có “tương thích một phần”. Không có 98%. Một vector trượt nghĩa là tồn tại một dữ liệu
-        mà hai implementation bất đồng. Im lặng, trên production.
+        Không có mức “tương thích một phần” như 98%. Một vector trượt nghĩa là tồn tại một dữ liệu
+        mà hai implementation hiểu khác nhau, âm thầm, trên production.
       </p>
 
       <p class="verdict-line">
         Implementation chậm gấp 10 lần nhưng pass 100% vector là Fomoxa Compatible.<br>
-        Implementation nhanh nhất thế giới mà trượt một vector thì không.
+        Một implementation nhanh hơn mà trượt một vector thì không.
       </p>
     </div>
   </div>
@@ -797,21 +817,21 @@ model GameMessage {
       <h2 class="h2">Công cụ chính thức</h2>
 
       <div class="tools">
-        <div class="tool">
-          <span class="tool-t">Compiler chính thức</span>
-          <span class="tool-d">Đọc một Schema, sinh ra codec. Một trong nhiều cách hợp lệ để thoả RFC-0002.</span>
-          <span class="status s-wip">Đang làm</span>
-        </div>
-        <div class="tool">
+        <a class="tool" href="/vi/ecosystem/">
+          <span class="tool-t">fomoxac</span>
+          <span class="tool-d">Đọc type có annotation ở tám ngôn ngữ, sinh ra codec. Một trong nhiều cách hợp lệ để thoả RFC-0002.</span>
+          <span class="status s-ok">Ổn định · 0.2.1</span>
+        </a>
+        <a class="tool" href="https://github.com/fomoxa/implementation-guide/blob/main/vi/README.md">
           <span class="tool-t">Implementation guide</span>
-          <span class="tool-d">Đọc để triển khai một Fomoxa tương thích với các bản phát hành.</span>
-          <span class="status s-wip">Đang làm</span>
-        </div>
-        <div class="tool">
-          <span class="tool-t">SDK tham chiếu</span>
-          <span class="tool-d">Một encoder/decoder mẫu để đọc song song với spec. Spec không phụ thuộc vào nó.</span>
-          <span class="status s-wip">Đang làm</span>
-        </div>
+          <span class="tool-d">Framing, handshake và hợp đồng transport, cho ai viết runtime ở một ngôn ngữ mới.</span>
+          <span class="status s-ok">Đã phát hành</span>
+        </a>
+        <a class="tool" href="/vi/ecosystem/#runtimes">
+          <span class="tool-t">Runtime mẫu</span>
+          <span class="tool-d">Rust, C#, Go, C/C++, Node.js và Godot. Hàng mẫu cho cách vận chuyển Fomoxa. Spec không phụ thuộc vào chúng.</span>
+          <span class="status s-ok">Ổn định</span>
+        </a>
       </div>
 
       <p class="disclaimer">
@@ -820,25 +840,12 @@ model GameMessage {
       </p>
 
       <p class="body">
-        Thay cả ba, wire format không đổi. Không gì trong Fomoxa bắt bạn phải dùng chúng.
-        Chúng tồn tại để được đọc, và để bị vượt qua.
+        Thay tất cả, wire format không đổi. Không gì trong Fomoxa bắt bạn phải dùng chúng.
+        Chúng được công bố để người khác đọc và viết bản tốt hơn. <a href="/vi/ecosystem/">Xem toàn bộ hệ sinh thái →</a>
       </p>
     </div>
   </div>
 </section>
-
-<!--
-  Bảng implementation - KHÔNG thêm cho tới khi có implementation thật,
-  trong đó ít nhất một cái đến từ bên ngoài dự án này. Hình dạng khi ngày đó tới:
-
-    Ngôn ngữ | Trạng thái | Compatible
-    Go       | Official   | ✅
-    Rust     | Community  | ✅
-    Java     | Community  | ✅
-
-  Một danh sách SDK "Coming Soon" dạy người mới rằng Fomoxa = một bộ SDK.
-  Không phải vậy.
--->
 
 <!-- ============ THE PATH ============ -->
 <section class="band band-close" id="path">
@@ -851,26 +858,33 @@ model GameMessage {
           <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0001.md">
             <span class="step-n">01</span>
             <span class="step-t">Đọc specification</span>
-            <span class="step-d">Fomoxa là gì, và nó từ chối trở thành cái gì.</span>
+            <span class="step-d">Fomoxa là gì, và không phải là gì.</span>
           </a>
         </li>
         <li>
           <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">
             <span class="step-n">02</span>
             <span class="step-t">Xem RFC</span>
-            <span class="step-d">RFC-0002 - hình dạng chính xác mà byte phải có.</span>
+            <span class="step-d">RFC-0002: hình dạng chính xác mà byte phải có.</span>
+          </a>
+        </li>
+        <li>
+          <a class="step" href="/vi/getting-started/">
+            <span class="step-n">03</span>
+            <span class="step-t">Sinh codec đầu tiên</span>
+            <span class="step-d">Bắt đầu: fomoxac, một model, 13 byte.</span>
           </a>
         </li>
         <li>
           <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">
-            <span class="step-n">03</span>
+            <span class="step-n">04</span>
             <span class="step-t">Chạy test vector</span>
-            <span class="step-d">RFC-0003 - thứ duy nhất quyết định đúng hay sai.</span>
+            <span class="step-d">RFC-0003: phép thử duy nhất cho tính đúng.</span>
           </a>
         </li>
         <li>
           <a class="step step-last" href="https://github.com/fomoxa/specification">
-            <span class="step-n">04</span>
+            <span class="step-n">05</span>
             <span class="step-t">Tự viết implementation của bạn</span>
             <span class="step-d">Ngôn ngữ nào cũng được, kỹ thuật nào cũng được. Pass 100% là Fomoxa Compatible.</span>
           </a>
@@ -886,12 +900,12 @@ model GameMessage {
     <span>Tác giả <strong>Hà Duy Thắng</strong></span>
   </div>
   <p class="foot-copy">
-    Draft specification v1.1.0 · Copyright © 2026 Ha Duy Thang ·
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
     Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
   </p>
 </footer>
 
-<script src="../assets/site.js"></script>
+<script src="/assets/site.js"></script>
 
 </body>
 </html>

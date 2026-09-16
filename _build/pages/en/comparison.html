@@ -1,0 +1,419 @@
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Comparison · different, not better</p>
+    <h1 class="h1">How Fomoxa differs</h1>
+    <p class="hero-sub">
+      Every format here is good at what it was designed for. This page lists what each one
+      guarantees, so you can tell which guarantees your problem needs.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Binary IDLs</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa, Protobuf, FlatBuffers, Cap'n Proto</h2>
+      <p class="lede">
+        All four use a schema known to both ends. They differ in what the schema lets the bytes
+        vary on, and in how much of that variation is allowed.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Property</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">Protocol Buffers</th>
+              <th scope="col">FlatBuffers</th>
+              <th scope="col">Cap'n Proto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>One value → one byte sequence</td>
+              <td class="us"><b>Required</b>Two valid encodings of the same value do not exist (RFC-0002).</td>
+              <td><b>Not canonical</b>The docs state serialization "is not (and cannot be) canonical".</td>
+              <td><b>Not canonical</b>Field and object order are left undefined; two encoders may differ and both be valid.</td>
+              <td><b>Canonical form defined, optional</b>A canonical form exists for signing; encoders need not use it.</td>
+            </tr>
+            <tr>
+              <td>How the schema is written</td>
+              <td class="us"><b>Not mandated</b>The spec has no IDL. <code>fomoxac</code> reads annotations on your own types, one language per run: a model shared by two languages is written in both, and a schema fingerprint checks that they match.</td>
+              <td><b><code>.proto</code> IDL</b>One file, generated message classes for every language.</td>
+              <td><b><code>.fbs</code> IDL</b>One file, generated accessors for every language.</td>
+              <td><b><code>.capnp</code> IDL</b>One file, generated readers/builders for every language.</td>
+            </tr>
+            <tr>
+              <td>Code generators</td>
+              <td class="us"><b>8 fomoxac targets</b>Rust, C#, Go, C, C++, TypeScript, JavaScript, GDScript. The spec itself names no language.</td>
+              <td><b>10 supported by Google</b>Eight built into <code>protoc</code>, plus Dart and Go as plugins. More from third parties.</td>
+              <td><b>14 listed</b>C++, C#, C, Go, Java, Kotlin, JavaScript, Lobster, Lua, TypeScript, PHP, Python, Rust, Swift.</td>
+              <td><b>C++ reference</b>Implementations in 15 more languages by other authors, not reviewed by the project; completeness varies.</td>
+            </tr>
+            <tr>
+              <td>Field identity on the wire</td>
+              <td class="us"><b>Position</b>No tags, no names. Declaration order is the identity.</td>
+              <td><b>Field number</b>A tag with each field.</td>
+              <td><b>vtable slot</b>Offsets looked up through a vtable.</td>
+              <td><b>Ordinal → fixed offset</b>Layout computed from <code>@n</code> ordinals.</td>
+            </tr>
+            <tr>
+              <td>Integer encoding</td>
+              <td class="us"><b>Fixed width, LE</b><code>u32</code> is 4 bytes, always.</td>
+              <td><b>Varint</b>Small numbers take fewer bytes.</td>
+              <td><b>Fixed width, LE</b>With alignment padding.</td>
+              <td><b>Fixed width, LE</b>8-byte word alignment; optional packing.</td>
+            </tr>
+            <tr>
+              <td>Schema evolution</td>
+              <td class="us"><b>Trailing edge only</b>Append or drop fields at the end of a Model. Anything else is a breaking change.</td>
+              <td><b>Flexible</b>Add or remove fields anywhere; unknown fields are carried along.</td>
+              <td><b>Append, or explicit ids</b>New fields at the end of a table, or anywhere with <code>id</code>. Fields are deprecated, not removed.</td>
+              <td><b>Append by ordinal</b>New fields get the next ordinal; old ones stay.</td>
+            </tr>
+            <tr>
+              <td>Optional / default values</td>
+              <td class="us"><b>None</b>Every field is always written.</td>
+              <td><b>Yes</b>Defaults may be omitted; presence tracking available.</td>
+              <td><b>Yes</b>Defaults are usually not written.</td>
+              <td><b>Yes</b>Defaults via XOR with the default value.</td>
+            </tr>
+            <tr>
+              <td>Read without parsing (zero-copy)</td>
+              <td class="us"><b>No</b>Sequential decode; a String's offset depends on earlier fields.</td>
+              <td><b>No</b></td>
+              <td><b>Yes</b>Designed for in-place access.</td>
+              <td><b>Yes</b>Designed for in-place access.</td>
+            </tr>
+            <tr>
+              <td>Scope</td>
+              <td class="us"><b>Wire format only</b>Transport, RPC and framing are out of scope.</td>
+              <td><b>Format + gRPC ecosystem</b></td>
+              <td><b>Format + optional gRPC</b></td>
+              <td><b>Format + capability RPC</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        Sources:
+        <a href="https://protobuf.dev/programming-guides/serialization-not-canonical/">protobuf.dev · serialization is not canonical</a>,
+        <a href="https://protobuf.dev/overview/">overview</a> ·
+        <a href="https://flatbuffers.dev/">flatbuffers.dev</a>,
+        <a href="https://flatbuffers.dev/internals/">internals</a>,
+        <a href="https://flatbuffers.dev/evolution/">evolution</a> ·
+        <a href="https://capnproto.org/encoding.html">capnproto.org · encoding</a>,
+        <a href="https://capnproto.org/otherlang.html">other languages</a>.
+        Checked September 2026.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Deterministic</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa, Borsh, BCS</h2>
+      <p class="lede">
+        The closest relatives. All three give a value exactly one encoding, write integers at a fixed width in
+        little endian, and write struct fields in declaration order with no tags. They differ in the types they carry.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Property</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">Borsh</th>
+              <th scope="col">BCS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>One value → one byte sequence</td>
+              <td class="us"><b>Required</b></td>
+              <td><b>Yes</b>Designed for hashing.</td>
+              <td><b>Yes</b>"Every value of a given type should have a single valid representation."</td>
+            </tr>
+            <tr>
+              <td>String and array lengths</td>
+              <td class="us"><b><code>u32</code>, LE</b></td>
+              <td><b><code>u32</code>, LE</b></td>
+              <td><b>ULEB128</b>Variable width.</td>
+            </tr>
+            <tr>
+              <td>Floats</td>
+              <td class="us"><b>Bits preserved</b>NaN payloads included.</td>
+              <td><b>NaN rejected</b></td>
+              <td><b>Not supported</b></td>
+            </tr>
+            <tr>
+              <td>Enums</td>
+              <td class="us"><b><code>u32</code> value</b>No payload.</td>
+              <td><b><code>u8</code> variant index</b>Then the variant's fields.</td>
+              <td><b>ULEB128 variant index</b>Then the variant's fields.</td>
+            </tr>
+            <tr>
+              <td>Optional values</td>
+              <td class="us"><b>None</b>No marker for absence.</td>
+              <td><b>1-byte tag</b></td>
+              <td><b>1-byte tag</b></td>
+            </tr>
+            <tr>
+              <td>Maps</td>
+              <td class="us"><b>None in v1</b></td>
+              <td><b>Sorted by key</b></td>
+              <td><b>Sorted by key bytes</b></td>
+            </tr>
+            <tr>
+              <td>Origin</td>
+              <td class="us"><b>Standalone specification</b>RFCs written apart from any language, RFC-0003 vectors as the pass mark.</td>
+              <td><b>NEAR</b>Specification, with implementations in Rust, TypeScript, Go, Java, Python, C# and more.</td>
+              <td><b>Diem</b>Specified alongside its Rust (Serde) implementation.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body">
+        If your system already runs on Borsh or BCS, you have the determinism guarantee Fomoxa is built around.
+        Fomoxa's differences are narrower: fewer types, float bits kept exactly, and a specification that belongs
+        to no single language.
+      </p>
+      <p class="tv-note">
+        Sources:
+        <a href="https://borsh.io/">borsh.io</a>,
+        <a href="https://github.com/near/borsh">github.com/near/borsh</a> ·
+        <a href="https://github.com/diem/bcs">github.com/diem/bcs</a>.
+        Checked September 2026.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Schemaless</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa, JSON, MessagePack</h2>
+      <p class="lede">
+        JSON and MessagePack are self-describing: a reader needs no schema. Fomoxa is the opposite:
+        without the schema the bytes mean nothing.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Property</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">JSON</th>
+              <th scope="col">MessagePack</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>One value → one byte sequence</td>
+              <td class="us"><b>Required</b></td>
+              <td><b>No</b>Key order, whitespace and number formatting vary. RFC 8785 (JCS) defines a separate canonical form.</td>
+              <td><b>No</b>The spec says serializers <em>should</em> pick the shortest format; map key order is not specified.</td>
+            </tr>
+            <tr>
+              <td>Self-describing</td>
+              <td class="us"><b>No</b>Wrong schema → wrong values, often without an error.</td>
+              <td><b>Yes</b>Field names and types travel with the data.</td>
+              <td><b>Yes</b>Type markers travel with the data.</td>
+            </tr>
+            <tr>
+              <td>Schema evolution</td>
+              <td class="us"><b>Trailing edge only</b></td>
+              <td><b>Application-defined</b>Readers typically ignore unknown keys.</td>
+              <td><b>Application-defined</b></td>
+            </tr>
+            <tr>
+              <td>Numbers</td>
+              <td class="us"><b>Exact width and bits</b>Float bit patterns, NaN payloads included, are preserved.</td>
+              <td><b>Text</b>Precision depends on the parser; no NaN or Infinity.</td>
+              <td><b>Typed, variable width</b>Encoder chooses among valid widths.</td>
+            </tr>
+            <tr>
+              <td>Human-readable</td>
+              <td class="us"><b>No</b>Use <code>fomoxa-inspect</code> or the <a href="/inspector/">inspector</a>.</td>
+              <td><b>Yes</b></td>
+              <td><b>No</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Same value</p>
+    <div class="col">
+      <h2 class="h2">One Player, five encodings</h2>
+      <p class="lede">
+        <code>Player{ id: 100, name: "Alice" }</code>. Byte counts are for this value only.
+        Change the value and the ranking can change.
+      </p>
+      <div class="bytes-vs">
+<pre class="code"><span class="c"># Fomoxa · 13 bytes</span>
+<span class="by">64 00 00 00</span> <span class="by">05 00 00 00</span> <span class="by">41 6C 69 63 65</span>
+<span class="c">id           length       A  l  i  c  e</span>
+<span class="c"># the only valid encoding</span></pre>
+<pre class="code"><span class="c"># Protobuf · 9 bytes    (id = 1, name = 2)</span>
+<span class="by">08 64</span> <span class="by">12 05 41 6C 69 63 65</span>
+<span class="c">tag varint   tag len  A  l  i  c  e</span>
+<span class="c"># fields may also appear in another order</span></pre>
+<pre class="code"><span class="c"># MessagePack · 16 bytes  (as a map)</span>
+<span class="by">82 A2 69 64 64 A4 6E 61 6D 65 A5 41 6C 69 63 65</span>
+<span class="c"># 100 may also be written CC 64, D0 64, ...
+# 8 bytes as an array: 92 64 A5 41 6C 69 63 65</span></pre>
+<pre class="code"><span class="c"># JSON · 25 bytes</span>
+<span class="s">{"id":100,"name":"Alice"}</span>
+<span class="c"># equally valid:</span>
+<span class="s">{"name":"Alice","id":1e2}</span></pre>
+      </div>
+      <p class="body">
+        Fomoxa is not the smallest here: fixed-width integers cost bytes that varints save. What it
+        buys is that the first block is the only valid answer, in every conforming implementation.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Measured</p>
+    <div class="col">
+      <h2 class="h2">Four codecs, same messages</h2>
+      <p class="lede">
+        From <a href="https://github.com/fomoxa/fomoxa-codec-bench">fomoxa-codec-bench</a>: the same game-shaped
+        messages in Rust, <code>fomoxac</code> against <code>prost</code> and <code>capnp</code>, the latter both
+        standard and in its canonical form, the one you would hash or sign. Medians from one run on 2026-09-18.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Message</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">Protobuf (prost)</th>
+              <th scope="col">Cap'n Proto</th>
+              <th scope="col">Cap'n Proto canonical</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>input<span class="src"><br>a moving player</span></td>
+              <td class="us"><b>21 B</b>encode 9.1 ns<br>decode 25.1 ns</td>
+              <td><b>26 B</b>encode 28.0 ns<br>decode 34.5 ns</td>
+              <td><b>40 B</b>encode 43.4 ns<br>decode 77.2 ns</td>
+              <td><b>32 B</b>encode 141 ns<br>decode 111 ns</td>
+            </tr>
+            <tr>
+              <td>input<span class="src"><br>a player standing still</span></td>
+              <td class="us"><b>21 B</b>encode 9.1 ns<br>decode 25.0 ns</td>
+              <td><b>2 B</b>encode 12.7 ns<br>decode 14.8 ns</td>
+              <td><b>40 B</b>encode 43.1 ns<br>decode 76.9 ns</td>
+              <td><b>16 B</b>encode 109 ns<br>decode 110 ns</td>
+            </tr>
+            <tr>
+              <td>stats<span class="src"><br>small counters</span></td>
+              <td class="us"><b>38 B</b>encode 10.8 ns<br>decode 29.0 ns</td>
+              <td><b>24 B</b>encode 74.8 ns<br>decode 76.1 ns</td>
+              <td><b>56 B</b>encode 49.2 ns<br>decode 66.9 ns</td>
+              <td><b>48 B</b>encode 121 ns<br>decode 111 ns</td>
+            </tr>
+            <tr>
+              <td>chat<span class="src"><br>64-character string</span></td>
+              <td class="us"><b>82 B</b>encode 20.2 ns<br>decode 48.9 ns</td>
+              <td><b>79 B</b>encode 33.8 ns<br>decode 73.7 ns</td>
+              <td><b>112 B</b>encode 58.9 ns<br>decode 118 ns</td>
+              <td><b>104 B</b>encode 165 ns<br>decode 197 ns</td>
+            </tr>
+            <tr>
+              <td>batch-100<span class="src"><br>100 transforms</span></td>
+              <td class="us"><b>2,908 B</b>encode 684 ns<br>decode 2.56 µs</td>
+              <td><b>3,586 B</b>encode 6.40 µs<br>decode 6.58 µs</td>
+              <td><b>3,240 B</b>encode 289 ns<br>decode 1.39 µs</td>
+              <td><b>3,232 B</b>encode 847 ns<br>decode 1.58 µs</td>
+            </tr>
+            <tr>
+              <td>batch-1000<span class="src"><br>1000 transforms</span></td>
+              <td class="us"><b>29,008 B</b>encode 8.67 µs<br>decode 25.18 µs</td>
+              <td><b>36,625 B</b>encode 72.35 µs<br>decode 64.90 µs</td>
+              <td><b>32,040 B</b>encode 3.35 µs<br>decode 12.58 µs</td>
+              <td><b>32,032 B</b>encode 8.75 µs<br>decode 13.75 µs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Where Fomoxa is ahead</span>
+          <ul class="card-list">
+            <li>Small messages with typical data: the fastest of the four to encode and decode.</li>
+            <li>Floats and random ids: 17–21% smaller than Protobuf, because there are no tags.</li>
+            <li>Against canonical Cap'n Proto on small messages: 8–15x faster to encode, about 4x faster to decode.</li>
+            <li>Against <code>prost</code> on typical data: 1.7–9.4x faster to encode, 1.4–2.8x faster to decode.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Where it is not</span>
+          <ul class="card-list neg">
+            <li>Arrays of fixed-size structs: Cap'n Proto encodes <code>batch-1000</code> 2.6x faster and decodes it 2x faster.</li>
+            <li>Canonical Cap'n Proto ties Fomoxa on <code>batch-1000</code> encode and still decodes batches 1.6–1.8x faster.</li>
+            <li>Mostly-zero data: Protobuf skips zero fields, so a player standing still is 2 bytes against 21, and decodes faster.</li>
+            <li>Small integers: Protobuf's varints make <code>stats</code> 24 bytes against 38.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="tv-note">
+        Read it with its limits: Rust only, one implementation per format, synthetic data, one laptop under WSL2,
+        loopback only. Every decoder builds the same owned struct; reading Cap'n Proto in place, as it is designed to
+        be read, is cheaper and not measured. In the
+        <a href="https://github.com/fomoxa/fomoxa-example-game#baseline-protobuf-comparison">example game</a>, at
+        1000 players the full server stacks were indistinguishable (0.3 ms p50), because the codec is a tiny share of
+        the tick. Run <code>scripts/run.sh</code> on your own message shapes before you decide.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Choosing</p>
+    <div class="col">
+      <h2 class="h2">When something else fits better</h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Choose Fomoxa when</span>
+          <ul class="card-list">
+            <li>Two implementations, in different languages, must produce identical bytes.</li>
+            <li>You sign, hash or deduplicate payloads.</li>
+            <li>You run replay, lockstep or state checksums across machines.</li>
+            <li>Both ends ship from the same schema and can deploy together.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Choose another format when</span>
+          <ul class="card-list neg">
+            <li>Clients and servers evolve independently for years: Protobuf's field numbers fit better.</li>
+            <li>You need random access into large buffers without decoding: FlatBuffers or Cap'n Proto.</li>
+            <li>Readers do not know the schema, or humans read the data: JSON.</li>
+            <li>You need optional fields or explicit nulls on the wire.</li>
+            <li>You need deterministic bytes and fast reads of large arrays: Cap'n Proto's canonical form.</li>
+            <li>Your system already runs on Borsh or BCS: you have the same determinism guarantee.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body">
+        The full reasoning is in
+        <a href="https://github.com/fomoxa/specification/blob/main/en/RFC-0001.md">RFC-0001 §3.3 and §5.3</a>.
+      </p>
+    </div>
+  </div>
+</section>
