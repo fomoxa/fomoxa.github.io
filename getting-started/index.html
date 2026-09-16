@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Getting started - Fomoxa Protocol</title>
+<meta name="description" content="Install fomoxac, annotate your first model, generate a codec and put 13 bytes on the wire in Rust, C#, Go or TypeScript.">
+<link rel="canonical" href="https://fomoxa.github.io/getting-started/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/getting-started/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/getting-started/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/getting-started/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Site">
+      <a href="/">Protocol</a>
+      <a href="/why/">Why</a>
+      <a href="/getting-started/" aria-current="page">Get started</a>
+      <a href="/inspector/">Inspector</a>
+      <a href="/ecosystem/">Ecosystem</a>
+      <a href="/comparison/">Compare</a>
+      <a href="/use-cases/">Use cases</a>
+      <a href="/roadmap/">Roadmap</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Language">
+        <span aria-current="true">EN</span><span class="sep">/</span><a href="/vi/getting-started/" hreflang="vi" lang="vi">VI</a>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Getting started · fomoxac 0.2.1</p>
+    <h1 class="h1">From a model to 13 bytes</h1>
+    <p class="hero-sub">
+      Install the generator, mark up a type you already have, generate a codec, and write
+      <code>Player{ id: 100, name: "Alice" }</code> to the wire. About ten minutes.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Before you start</p>
+    <div class="col">
+      <p class="lede">
+        Fomoxa is the specification. <code>fomoxac</code> is one tool that implements it: it reads
+        annotations on your own types and writes plain source code that encodes and decodes them.
+      </p>
+      <p class="body">
+        The generated code has no runtime dependency, not even on <code>fomoxac</code>. Hand-written
+        codecs are equally valid, as long as they pass the
+        <a href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">RFC-0003 test vectors</a>.
+        Every snippet on this page was generated with <code>fomoxac 0.2.1</code>, and all but the GDScript one were run.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Steps</p>
+    <div class="gs-steps">
+
+      <div class="gs-step" id="install">
+        <h2 class="h3">Install fomoxac</h2>
+        <p class="body">
+          <code>fomoxac</code> ships on crates.io and needs a Rust toolchain
+          (<a href="https://rustup.rs">rustup</a>) to install, whatever language your project uses.
+          The same command installs <code>fomoxa-inspect</code>, a payload debugger.
+        </p>
+<pre class="code">cargo install fomoxac
+fomoxac --version
+<span class="c"># fomoxac 0.2.1</span></pre>
+      </div>
+
+      <div class="gs-step" id="model">
+        <h2 class="h3">Annotate your first model</h2>
+        <p class="body">
+          There is no IDL file. The Schema is a set of annotations on a type you already own:
+          which type is a Model, which codec it generates (<code>game</code> here), and each field's
+          wire type. Unannotated fields never reach the wire.
+        </p>
+
+        <div class="tabs" data-sync="lang">
+          <div class="tab-list" role="tablist" aria-label="Language">
+            <button role="tab" type="button" data-key="rust" id="m-rust" aria-controls="mp-rust">Rust</button>
+            <button role="tab" type="button" data-key="csharp" id="m-csharp" aria-controls="mp-csharp">C#</button>
+            <button role="tab" type="button" data-key="go" id="m-go" aria-controls="mp-go">Go</button>
+            <button role="tab" type="button" data-key="ts" id="m-ts" aria-controls="mp-ts">TypeScript</button>
+            <button role="tab" type="button" data-key="js" id="m-js" aria-controls="mp-js">JavaScript</button>
+            <button role="tab" type="button" data-key="c" id="m-c" aria-controls="mp-c">C</button>
+            <button role="tab" type="button" data-key="cpp" id="m-cpp" aria-controls="mp-cpp">C++</button>
+            <button role="tab" type="button" data-key="gd" id="m-gd" aria-controls="mp-gd">GDScript</button>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-rust" aria-labelledby="m-rust">
+<pre class="code"><span class="c">// src/models/player.rs      needs: cargo add fomoxa-attributes</span>
+use fomoxa_attributes::*;
+
+#[network]
+#[codec(game)]
+pub struct Player {
+    #[network(u32)]
+    #[codec(game)]
+    pub id: u32,
+
+    #[network(string)]
+    #[codec(game)]
+    pub name: String,
+}</pre>
+            <p class="code-note">Also add <code>pub mod player;</code> to <code>src/models/mod.rs</code>.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-csharp" aria-labelledby="m-csharp">
+<pre class="code"><span class="c">// src/Models/Player.cs      needs: dotnet add package Fomoxa.Attributes</span>
+using Fomoxa;
+
+namespace Game.Models
+{
+    [Network]
+    [Codec("game")]
+    public class Player
+    {
+        [Network("u32")]
+        [Codec("game")]
+        public uint Id { get; set; }
+
+        [Network("string")]
+        [Codec("game")]
+        public string Name { get; set; }
+    }
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-go" aria-labelledby="m-go">
+<pre class="code"><span class="c">// models/player.go          needs: nothing - a comment and a struct tag are valid Go</span>
+package models
+
+//fomoxa:model codec=game
+type Player struct {
+	ID   uint32 `fomoxa:"u32" codec:"game"`
+	Name string `fomoxa:"string" codec:"game"`
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-ts" aria-labelledby="m-ts">
+<pre class="code"><span class="c">// src/models/player.ts      needs: nothing - directives are comments</span>
+// FOMOXA_MODEL
+// FOMOXA_CODEC("game")
+export class Player {
+    // FOMOXA_FIELD(u32)
+    // FOMOXA_CODEC("game")
+    id: number = 0;
+
+    // FOMOXA_FIELD(string)
+    // FOMOXA_CODEC("game")
+    name: string = "";
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-js" aria-labelledby="m-js">
+<pre class="code"><span class="c">// src/models/player.js      needs: nothing - directives are comments</span>
+// FOMOXA_MODEL
+// FOMOXA_CODEC("game")
+export class Player {
+    // FOMOXA_FIELD(u32)
+    // FOMOXA_CODEC("game")
+    id = 0;
+
+    // FOMOXA_FIELD(string)
+    // FOMOXA_CODEC("game")
+    name = "";
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-c" aria-labelledby="m-c">
+<pre class="code"><span class="c">/* include/fomoxa.h - three markers that expand to nothing */</span>
+#define FOMOXA_MODEL
+#define FOMOXA_FIELD(type)
+#define FOMOXA_CODEC(...)
+
+<span class="c">/* src/models/player.h */</span>
+#pragma once
+#include "fomoxa.h"
+#include &lt;stdint.h&gt;
+
+FOMOXA_MODEL
+FOMOXA_CODEC("game")
+struct Player
+{
+    FOMOXA_FIELD(u32)
+    FOMOXA_CODEC("game")
+    uint32_t id;
+
+    FOMOXA_FIELD(string)
+    FOMOXA_CODEC("game")
+    const char *name;
+};</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-cpp" aria-labelledby="m-cpp">
+<pre class="code"><span class="c">// src/models/player.hpp     needs: the same fomoxa.h as C</span>
+#pragma once
+#include "fomoxa.h"
+#include &lt;cstdint&gt;
+#include &lt;string&gt;
+
+FOMOXA_MODEL
+FOMOXA_CODEC("game")
+struct Player
+{
+    FOMOXA_FIELD(u32)
+    FOMOXA_CODEC("game")
+    uint32_t id = 0;
+
+    FOMOXA_FIELD(string)
+    FOMOXA_CODEC("game")
+    std::string name;
+};</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-gd" aria-labelledby="m-gd">
+<pre class="code"><span class="c"># models/player.gd           needs: nothing - directives are comments</span>
+# fomoxa:model codec=game
+class_name Player
+
+# fomoxa:u32 codec=game
+var id: int = 0
+
+# fomoxa:string codec=game
+var name: String = ""</pre>
+          </div>
+        </div>
+
+        <p class="note-line">
+          <strong>Two rules to keep in mind.</strong> The wire type comes from the annotation, never from
+          the host type: <code>u32</code> is four bytes even on a 64-bit field. And fields go on the
+          wire in declaration order: renaming a field is free, reordering one is a breaking change.
+        </p>
+        <p class="note-line">
+          <strong>No separate message type.</strong> There is no schema file to keep beside this struct and
+          no generated class to map to and from: the codec reads and writes the <code>Player</code> you just
+          annotated. If a second language uses the same model, annotate it there too. The schema fingerprint
+          in <code>.fomoxa/schema.json</code> tells you whether the two match.
+        </p>
+      </div>
+
+      <div class="gs-step" id="generate">
+        <h2 class="h3">Configure and generate</h2>
+        <p class="body">
+          Put a <code>fomoxa.toml</code> at the project root, next to <code>Cargo.toml</code>,
+          <code>go.mod</code>, <code>package.json</code> or your <code>.csproj</code>, then run the generator.
+          One run reads one language.
+        </p>
+<pre class="code"><span class="c"># fomoxa.toml</span>
+src = "src"             <span class="c"># Go / GDScript example above: "models"</span>
+out = "src/generated"   <span class="c"># Go / GDScript example above: "generated"</span></pre>
+<pre class="code">fomoxac generate
+<span class="c">fomoxac: src/generated/runtime.rs
+fomoxac: src/generated/handshake.rs
+fomoxac: src/generated/player_game.rs
+fomoxac: src/generated/mod.rs
+fomoxac: .fomoxa/schema.json
+fomoxac: .fomoxa/build-graph.json</span></pre>
+        <p class="body">
+          You get one file per codec (<code>PlayerGameCodec</code>), a small copied runtime
+          (<code>Writer</code>, <code>Reader</code>), and <code>.fomoxa/schema.json</code>. Commit the schema
+          file: later runs compare against it and report breaking changes.
+          <code>fomoxac generate --watch</code> regenerates on every save.
+        </p>
+      </div>
+
+      <div class="gs-step" id="run">
+        <h2 class="h3">Encode and decode</h2>
+        <p class="body">Same value, same bytes, in every language.</p>
+
+        <div class="tabs" data-sync="lang">
+          <div class="tab-list" role="tablist" aria-label="Language">
+            <button role="tab" type="button" data-key="rust" id="r-rust" aria-controls="rp-rust">Rust</button>
+            <button role="tab" type="button" data-key="csharp" id="r-csharp" aria-controls="rp-csharp">C#</button>
+            <button role="tab" type="button" data-key="go" id="r-go" aria-controls="rp-go">Go</button>
+            <button role="tab" type="button" data-key="ts" id="r-ts" aria-controls="rp-ts">TypeScript</button>
+            <button role="tab" type="button" data-key="js" id="r-js" aria-controls="rp-js">JavaScript</button>
+            <button role="tab" type="button" data-key="c" id="r-c" aria-controls="rp-c">C</button>
+            <button role="tab" type="button" data-key="cpp" id="r-cpp" aria-controls="rp-cpp">C++</button>
+            <button role="tab" type="button" data-key="gd" id="r-gd" aria-controls="rp-gd">GDScript</button>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-rust" aria-labelledby="r-rust">
+<pre class="code"><span class="c">// src/main.rs               run: cargo run</span>
+mod generated;
+mod models;
+
+use generated::{PlayerGameCodec, Reader, Writer};
+use models::player::Player;
+
+fn main() {
+    let player = Player { id: 100, name: "Alice".to_string() };
+
+    let mut writer = Writer::new();
+    PlayerGameCodec::encode(&amp;mut writer, &amp;player);
+    let bytes = writer.into_bytes();
+    println!("{:02X?}", bytes);
+
+    let mut decoded = Player { id: 0, name: String::new() };
+    PlayerGameCodec::decode(&amp;mut Reader::new(&amp;bytes), &amp;mut decoded).unwrap();
+    println!("id={} name={}", decoded.id, decoded.name);
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-csharp" aria-labelledby="r-csharp">
+<pre class="code"><span class="c">// Program.cs                run: dotnet run</span>
+using System;
+using Game.Models;
+using Generated;
+
+var player = new Player { Id = 100, Name = "Alice" };
+
+var writer = new Writer();
+PlayerGameCodec.Encode(writer, player);
+byte[] bytes = writer.ToArray();
+Console.WriteLine(BitConverter.ToString(bytes));
+
+var reader = new Reader(bytes);
+var decoded = new Player();
+PlayerGameCodec.Decode(ref reader, ref decoded);
+Console.WriteLine($"{decoded.Id} {decoded.Name}");</pre>
+            <p class="code-note">The generated namespace comes from the <code>out</code> folder name. <code>Decode</code> throws <code>DecodeException</code> on a bad payload.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-go" aria-labelledby="r-go">
+<pre class="code"><span class="c">// main.go                   run: go run .      (module: example.com/game)</span>
+package main
+
+import (
+	"fmt"
+
+	"example.com/game/generated"
+	"example.com/game/models"
+)
+
+func main() {
+	player := models.Player{ID: 100, Name: "Alice"}
+
+	w := generated.NewWriter()
+	generated.PlayerGameCodec{}.Encode(w, &amp;player)
+	bytes := w.Bytes()
+	fmt.Printf("% X\n", bytes)
+
+	var decoded models.Player
+	if err := (generated.PlayerGameCodec{}).Decode(generated.NewReader(bytes), &amp;decoded); err != nil {
+		panic(err)
+	}
+	fmt.Println(decoded.ID, decoded.Name)
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-ts" aria-labelledby="r-ts">
+<pre class="code"><span class="c">// src/main.ts               run: npx tsc &amp;&amp; node dist/src/main.js</span>
+import { Player } from "./models/player";
+import { Reader, Writer } from "./generated/runtime";
+import { PlayerGameCodec } from "./generated/player_game";
+
+const player = new Player();
+player.id = 100;
+player.name = "Alice";
+
+const writer = new Writer();
+PlayerGameCodec.encode(writer, player);
+const bytes = writer.toUint8Array();
+console.log(Buffer.from(bytes).toString("hex"));
+
+const decoded = new Player();
+PlayerGameCodec.decode(new Reader(bytes), decoded);
+console.log(decoded.id, decoded.name);</pre>
+            <p class="code-note">Generated imports have no file extension, so compile with <code>tsc</code> (or a bundler) before running.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-js" aria-labelledby="r-js">
+<pre class="code"><span class="c">// src/main.js               run: node src/main.js   (package.json: "type": "module")</span>
+import { Player } from "./models/player.js";
+import { Reader, Writer } from "./generated/runtime.js";
+import { PlayerGameCodec } from "./generated/player_game.js";
+
+const player = new Player();
+player.id = 100;
+player.name = "Alice";
+
+const writer = new Writer();
+PlayerGameCodec.encode(writer, player);
+const bytes = writer.toUint8Array();
+console.log(Buffer.from(bytes).toString("hex"));
+
+const decoded = new Player();
+PlayerGameCodec.decode(new Reader(bytes), decoded);
+console.log(decoded.id, decoded.name);</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-c" aria-labelledby="r-c">
+<pre class="code"><span class="c">/* src/main.c                build: cc -std=c99 -I . -I include -I src src/main.c */</span>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#include "generated/player_game.h"
+#include "generated/player_fomoxa.h"
+
+int main(void)
+{
+    struct Player player = { 100, "Alice" };
+
+    FomoxaWriter writer;
+    fomoxa_writer_init(&amp;writer);
+    if (!PlayerGameCodec_encode(&amp;writer, &amp;player)) return 1;
+    for (size_t i = 0; i &lt; writer.len; i++) printf("%02X ", writer.data[i]);
+    printf("\n");
+
+    FomoxaReader reader;
+    fomoxa_reader_init(&amp;reader, writer.data, writer.len, fomoxa_limits_unlimited());
+    struct Player decoded;
+    memset(&amp;decoded, 0, sizeof(decoded));
+    FomoxaDecodeError error = PlayerGameCodec_decode(&amp;reader, &amp;decoded);
+    if (!fomoxa_decode_error_ok(&amp;error)) return 1;
+    printf("%u %s\n", decoded.id, decoded.name);
+
+    Player_free(&amp;decoded);
+    fomoxa_writer_free(&amp;writer);
+    return 0;
+}</pre>
+            <p class="code-note">A decoded <code>string</code> is heap-allocated: call <code>Player_free</code> exactly once per decoded value.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-cpp" aria-labelledby="r-cpp">
+<pre class="code"><span class="c">// src/main.cpp              build: c++ -std=c++17 -I . -I include -I src src/main.cpp</span>
+#include &lt;cstdio&gt;
+
+#include "generated/player_game.hpp"
+
+int main()
+{
+    Player player;
+    player.id = 100;
+    player.name = "Alice";
+
+    generated::Writer writer;
+    generated::PlayerGameCodec::encode(writer, player);
+    const auto&amp; bytes = writer.bytes();
+    for (auto b : bytes) std::printf("%02X ", b);
+    std::printf("\n");
+
+    generated::Reader reader(bytes.data(), bytes.size());
+    Player decoded;
+    if (!generated::PlayerGameCodec::decode(reader, decoded).ok()) return 1;
+    std::printf("%u %s\n", decoded.id, decoded.name.c_str());
+}</pre>
+            <p class="code-note">Header-only, C++17, works with <code>-fno-exceptions</code>: errors come back as a <code>DecodeError</code> value.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-gd" aria-labelledby="r-gd">
+<pre class="code"><span class="c"># main.gd                   Godot 4.3</span>
+extends Node
+
+func _ready() -> void:
+	var player := Player.new()
+	player.id = 100
+	player.name = "Alice"
+
+	var writer := FomoxaRuntime.Writer.new()
+	PlayerGameCodec.encode(writer, player)
+	var bytes := writer.bytes()
+	print(bytes.hex_encode())
+
+	var decoded := Player.new()
+	var err := PlayerGameCodec.decode(FomoxaRuntime.Reader.new(bytes), decoded)
+	if err != null:
+		push_error(str(err))
+		return
+	print(decoded.id, " ", decoded.name)</pre>
+            <p class="code-note">
+              Codecs are <code>static func</code>s and <code>decode</code> returns its error (GDScript has no
+              <code>try</code>/<code>catch</code>). This snippet follows the generated API but was not run for this
+              guide; the <a href="https://github.com/fomoxa/godot/tree/main/examples">Godot examples</a> are.
+            </p>
+          </div>
+        </div>
+
+<pre class="code"><span class="c"># output (formatting differs per language, the bytes do not)</span>
+<span class="by">64 00 00 00</span> <span class="by">05 00 00 00</span> <span class="by">41 6C 69 63 65</span>
+id = 100    length = 5  A  l  i  c  e
+100 Alice</pre>
+      </div>
+
+      <div class="gs-step" id="inspect">
+        <h2 class="h3">Look at the bytes</h2>
+        <p class="body">
+          Thirteen bytes, zero metadata. Open them in the
+          <a href="/inspector/#preset=player">interactive inspector</a>, or decode a captured payload
+          against your schema from the command line:
+        </p>
+<pre class="code">fomoxa-inspect --schema .fomoxa/schema.json --message Player.game \
+  --hex '64000000 05000000 416c696365'
+
+<span class="c">id      : u32 = 100
+          offset: 0
+          bytes: 64 00 00 00
+
+name    : string = "Alice" (5 bytes)
+          offset: 4
+          bytes: 05 00 00 00 41 6C 69 63 65</span></pre>
+      </div>
+
+      <div class="gs-step" id="next">
+        <h2 class="h3">Where next</h2>
+        <div class="cards cards-3">
+          <div class="card">
+            <span class="card-k">Transport</span>
+            <span class="card-t">Send it over a network</span>
+            <span class="card-d">Fomoxa stops at bytes. The sample runtimes add framing, a schema handshake and heartbeats over TCP or UDP.</span>
+            <a class="card-a" href="/ecosystem/#runtimes">Ecosystem →</a>
+          </div>
+          <div class="card">
+            <span class="card-k">CI</span>
+            <span class="card-t">Guard the schema</span>
+            <span class="card-d"><code>fomoxac ci --base-ref origin/main</code> fails the build when a change would break peers still on the old schema.</span>
+            <a class="card-a" href="https://github.com/fomoxa/fomoxac#fomoxac-ci">fomoxac docs ↗</a>
+          </div>
+          <div class="card">
+            <span class="card-k">Specification</span>
+            <span class="card-t">Know the exact rules</span>
+            <span class="card-d">RFC-0002 is short. Read it before you ship: it explains why reordering breaks and appending does not.</span>
+            <a class="card-a" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">RFC-0002 ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Created by <strong>Ha Duy Thang</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+
+
+</body>
+</html>

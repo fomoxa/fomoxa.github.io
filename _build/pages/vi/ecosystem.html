@@ -1,0 +1,299 @@
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Hệ sinh thái · Tháng 9/2026</p>
+    <h1 class="h1">Một specification. Nhiều implementation.</h1>
+    <p class="hero-sub">
+      Specification chính là Fomoxa. Mọi thứ khác trên trang này là công cụ giúp bạn dùng nó,
+      hoặc hàng mẫu cho cách hiện thực nó. Tất cả đều ổn định và dùng được ngay hôm nay.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Các tầng</p>
+    <div class="col">
+      <h2 class="h2">Đâu là protocol, đâu không phải</h2>
+      <div class="tiers">
+        <div class="tier tier-spec">
+          <span class="tier-k">Protocol</span>
+          <span class="tier-t">Specification · RFC-0001, 0002, 0003</span>
+          <span class="tier-d">Định nghĩa duy nhất của Fomoxa. v1.1.0, Final. Nếu bất cứ thứ gì bên dưới mâu thuẫn với nó, specification thắng.</span>
+        </div>
+        <div class="tier">
+          <span class="tier-k">Công cụ</span>
+          <span class="tier-t">fomoxac · fomoxa-inspect</span>
+          <span class="tier-d">Sinh codec từ type có annotation ở tám ngôn ngữ, kiểm tra tương thích schema, và decode payload để debug.</span>
+        </div>
+        <div class="tier">
+          <span class="tier-k">Hàng mẫu</span>
+          <span class="tier-t">Runtime implementation</span>
+          <span class="tier-d">Framing, schema handshake và heartbeat trên TCP/UDP, theo implementation guide. Ví dụ về cách vận chuyển Fomoxa, không thuộc specification.</span>
+        </div>
+      </div>
+      <p class="disclaimer">
+        Thay bất kỳ thứ nào trong số này bằng cái của bạn, wire format vẫn giữ nguyên. Một codec viết tay pass
+        100% vector của RFC-0003 cũng Fomoxa Compatible y như codec được sinh ra.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Specification</p>
+    <div class="col">
+      <h2 class="h2">Tài liệu</h2>
+      <div class="docs">
+        <a class="doc" href="https://github.com/fomoxa/specification">
+          <span class="id">fomoxa/specification</span>
+          <span class="t">RFC-0001 · 0002 · 0003</span>
+          <span class="d">Fomoxa là gì, wire format, và conformance. Tiếng Anh và tiếng Việt; bản tiếng Việt là bản gốc.</span>
+          <span class="status s-ok inline">v1.1.0 · Final</span>
+        </a>
+        <a class="doc" href="https://github.com/fomoxa/implementation-guide">
+          <span class="id">fomoxa/implementation-guide</span>
+          <span class="t">Implementation guide</span>
+          <span class="d">Hợp đồng transport, framing, handshake và heartbeat cho ai viết runtime ở một ngôn ngữ mới.</span>
+          <span class="status s-ok inline">Đã phát hành</span>
+        </a>
+        <a class="doc" href="/vi/inspector/">
+          <span class="id">fomoxa.github.io</span>
+          <span class="t">Byte inspector</span>
+          <span class="d">Encode, decode và so sánh byte Fomoxa ngay trong trình duyệt.</span>
+          <span class="status s-ok inline">Đang chạy</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Công cụ</p>
+    <div class="col">
+      <h2 class="h2">fomoxac</h2>
+      <p class="lede">
+        Một công cụ sinh code cho tám ngôn ngữ. Nó đọc annotation, ghi ra source thuần,
+        rồi thoát. Code sinh ra không có dependency lúc chạy.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">fomoxac generate</span>
+          <span class="card-t">Đọc annotation, sinh ra codec</span>
+          <span class="card-d">Đọc các model đã được annotation bằng một trong tám ngôn ngữ, ghi ra codec, một schema.json và một build-graph.json. Không bao giờ fail vì breaking change - nó báo cáo thay đổi rồi vẫn sinh code như thường.</span>
+        </div>
+        <div class="card">
+          <span class="card-k">fomoxac compat</span>
+          <span class="card-t">Kiểm tra tương thích schema</span>
+          <span class="card-d">So sánh một base schema với source hiện tại, hoặc với một schema khác, rồi in ra báo cáo tương thích. Thoát với mã khác 0 nếu kết quả là breaking.</span>
+        </div>
+        <div class="card">
+          <span class="card-k">fomoxac ci</span>
+          <span class="card-t">Cổng kiểm tra cho pull request</span>
+          <span class="card-d">Xác nhận schema.json đã commit khớp với source của branch, rồi so sánh với schema của branch đích qua git. Làm fail CI nếu lệch nhau hoặc có breaking change.</span>
+        </div>
+        <div class="card">
+          <span class="card-k">fomoxa-inspect</span>
+          <span class="card-t">Giải mã payload thủ công</span>
+          <span class="card-d">Đọc một chuỗi byte thô, từ file hoặc hex trên dòng lệnh, đối chiếu với schema.json rồi in ra từng field kèm offset và byte của nó. Nằm chung binary với fomoxac.</span>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="eco">
+          <thead><tr><th scope="col">Package</th><th scope="col">Phiên bản</th><th scope="col">Cài đặt</th><th scope="col">Trạng thái</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="https://github.com/fomoxa/fomoxac">fomoxac</a><span class="sub">sinh code · fomoxa-inspect</span></td>
+              <td class="num">0.2.1</td>
+              <td><span class="pkg">cargo install fomoxac</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/attributes-rust">fomoxa-attributes</a><span class="sub">annotation cho Rust</span></td>
+              <td class="num">0.1.1</td>
+              <td><span class="pkg">cargo add fomoxa-attributes</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/attributes-csharp">Fomoxa.Attributes</a><span class="sub">annotation cho C#</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">dotnet add package Fomoxa.Attributes</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/unity-codecs">fomoxa.unity</a><span class="sub">codec cho type của Unity</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">Package Manager · add from disk</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll">
+        <table class="eco">
+          <thead><tr><th scope="col">Backend codec</th><th scope="col">Annotation cho model</th><th scope="col">Cần</th><th scope="col">Kiểm tra trong CI của fomoxac</th></tr></thead>
+          <tbody>
+            <tr><td>Rust</td><td><span class="pkg">#[network] #[codec(...)]</span></td><td>fomoxa-attributes</td><td><span class="yes">✓</span> cargo test</td></tr>
+            <tr><td>C#</td><td><span class="pkg">[Network] [Codec(...)]</span></td><td>Fomoxa.Attributes</td><td><span class="yes">✓</span> build</td></tr>
+            <tr><td>Go</td><td><span class="pkg">//fomoxa:model · struct tags</span></td><td>không cần gì</td><td><span class="yes">✓</span> build + vet</td></tr>
+            <tr><td>TypeScript</td><td><span class="pkg">// FOMOXA_MODEL</span></td><td>không cần gì</td><td><span class="yes">✓</span> build + smoke test</td></tr>
+            <tr><td>JavaScript</td><td><span class="pkg">// FOMOXA_MODEL</span></td><td>không cần gì</td><td><span class="yes">✓</span> smoke test</td></tr>
+            <tr><td>C</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macro)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
+            <tr><td>C++</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macro)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
+            <tr><td>GDScript</td><td><span class="pkg"># fomoxa:model</span></td><td>không cần gì</td><td><span class="dash">chỉ generate --check</span><span class="sub">biên dịch trong Godot editor</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        <code>tests/vectors/fomoxa-vectors.json</code> là mốc tham chiếu giữa các ngôn ngữ: byte cố định và fingerprint
+        cố định mà mọi backend phải tái tạo được. Backend Rust kiểm tra từng byte trong CI, và các test đa ngôn ngữ
+        đảm bảo cùng một model viết ở các ngôn ngữ khác nhau cho cùng một fingerprint.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="runtimes">
+  <div class="band-in">
+    <p class="offset">Hàng mẫu</p>
+    <div class="col">
+      <h2 class="h2">Runtime implementation</h2>
+      <p class="lede">
+        Mỗi runtime vận chuyển payload mà không đọc nội dung: framing, schema handshake, heartbeat và tick loop
+        không chặn trên TCP hoặc UDP. Không runtime nào chứa codec. Codec do <code>fomoxac</code> sinh ra.
+      </p>
+      <div class="table-scroll">
+        <table class="eco">
+          <thead>
+            <tr>
+              <th scope="col">Ngôn ngữ</th>
+              <th scope="col">Package</th>
+              <th scope="col">Phiên bản</th>
+              <th scope="col">Cài đặt</th>
+              <th scope="col">Interop</th>
+              <th scope="col">Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rust</td>
+              <td><a href="https://github.com/fomoxa/rust">fomoxa-net</a><span class="sub">không dependency, không async</span></td>
+              <td class="num">0.1.1</td>
+              <td><span class="pkg">cargo add fomoxa-net</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td>C# · Unity</td>
+              <td><a href="https://github.com/fomoxa/csharp">Fomoxa.Net</a><span class="sub">netstandard2.1 · Unity 2021+ IL2CPP</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">dotnet add package Fomoxa.Net</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td>C# · Unity</td>
+              <td><a href="https://github.com/fomoxa/csharp">Fomoxa.Reliability</a><span class="sub">gửi reliable / unreliable theo từng message trên một session</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">dotnet add package Fomoxa.Reliability</span></td>
+              <td><span class="dash">-</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td>Go</td>
+              <td><a href="https://github.com/fomoxa/go">github.com/fomoxa/go</a><span class="sub">chỉ dùng thư viện chuẩn, không goroutine</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">go get github.com/fomoxa/go</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td>C · C++</td>
+              <td><a href="https://github.com/fomoxa/c">fomoxa</a><span class="sub">C99, không dependency, không thread · wrapper header C++17</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">CMake FetchContent</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td>TypeScript · JavaScript</td>
+              <td><a href="https://github.com/fomoxa/typescript">@fomoxa/net</a><span class="sub">Node.js 22+, ESM, không dependency</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">npm install @fomoxa/net</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td>GDScript · Godot</td>
+              <td><a href="https://github.com/fomoxa/godot">fomoxa-godot</a><span class="sub">GDScript thuần, Godot 4.3</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">chép addons/fomoxa</span></td>
+              <td><span class="dash">chưa có</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        <strong>Interop</strong> nghĩa là runtime nằm trong
+        <a href="https://github.com/fomoxa/interop">fomoxa/interop</a>: hai process viết bằng hai ngôn ngữ khác nhau
+        hoàn tất handshake qua socket TCP hoặc UDP thật và trao đổi một message. Runtime Godot có bộ test và CI
+        riêng, nhưng chưa nằm trong ma trận đó.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Bằng chứng</p>
+    <div class="col">
+      <h2 class="h2">Đã chạy cùng nhau</h2>
+      <div class="cards cards-2">
+        <a class="card" href="https://github.com/fomoxa/fomoxa-example-game">
+          <span class="card-k">fomoxa-example-game</span>
+          <span class="card-t">Một server Rust, năm loại client</span>
+          <span class="card-d">Unity (C#), Unreal (C++), Godot (GDScript), Kaiju (Go) và bot Rust headless trong cùng một trận. Có benchmark tới 2000 người chơi.</span>
+          <span class="card-a">Repository ↗</span>
+        </a>
+        <a class="card" href="https://github.com/fomoxa/interop">
+          <span class="card-k">fomoxa/interop</span>
+          <span class="card-t">Mỗi runtime đấu với mọi runtime khác</span>
+          <span class="card-d">Peer Rust, C#, Go, C, C++ và JavaScript, mỗi peer dùng package đã phát hành, handshake qua TCP và UDP.</span>
+          <span class="card-a">Repository ↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Con người</p>
+    <div class="col">
+      <h2 class="h2">Ai xây dựng</h2>
+      <div class="cards cards-3">
+        <div class="card">
+          <span class="card-k">Maintainer</span>
+          <span class="card-t">Hà Duy Thắng</span>
+          <span class="card-d">Tác giả specification và maintainer của mọi repository trên trang này.</span>
+          <a class="card-a" href="https://github.com/fomoxa">github.com/fomoxa ↗</a>
+        </div>
+        <div class="card">
+          <span class="card-k">Đóng góp</span>
+          <span class="card-t">Issue và pull request</span>
+          <span class="card-d">Câu hỏi về spec gửi vào repository specification. Lỗi của công cụ hay runtime gửi vào repository của chính nó.</span>
+          <a class="card-a" href="https://github.com/fomoxa/specification/issues">Mở issue ↗</a>
+        </div>
+        <div class="card card-accent">
+          <span class="card-k">Đang dùng Fomoxa?</span>
+          <span class="card-t">Cho chúng tôi biết, hoặc đưa implementation của bạn lên đây</span>
+          <span class="card-d">Dự án và implementation độc lập pass 100% RFC-0003 có thể được liệt kê ở đây. Mở pull request vào repository của trang này.</span>
+          <a class="card-a" href="https://github.com/fomoxa/fomoxa.github.io">fomoxa.github.io ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

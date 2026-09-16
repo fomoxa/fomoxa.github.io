@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>So sánh - Fomoxa Protocol</title>
+<meta name="description" content="Fomoxa khác Protocol Buffers, FlatBuffers, Cap’n Proto, Borsh, BCS, JSON và MessagePack ở đâu, kèm số liệu đo thật. Chỉ nói khác nhau, không xếp hạng.">
+<link rel="canonical" href="https://fomoxa.github.io/vi/comparison/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/comparison/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/comparison/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/comparison/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/vi/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Trang">
+      <a href="/vi/">Protocol</a>
+      <a href="/vi/why/">Vì sao</a>
+      <a href="/vi/getting-started/">Bắt đầu</a>
+      <a href="/vi/inspector/">Inspector</a>
+      <a href="/vi/ecosystem/">Hệ sinh thái</a>
+      <a href="/vi/comparison/" aria-current="page">So sánh</a>
+      <a href="/vi/use-cases/">Ứng dụng</a>
+      <a href="/vi/roadmap/">Lộ trình</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Ngôn ngữ">
+        <a href="/comparison/" hreflang="en" lang="en">EN</a><span class="sep">/</span><span aria-current="true">VI</span>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Chuyển giao diện">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">So sánh · khác nhau, không phải hơn kém</p>
+    <h1 class="h1">Fomoxa khác ở đâu</h1>
+    <p class="hero-sub">
+      Mỗi format ở đây đều tốt cho việc nó được thiết kế. Trang này liệt kê mỗi format đảm bảo điều gì,
+      để bạn biết bài toán của mình cần đảm bảo nào.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Binary IDL</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa, Protobuf, FlatBuffers, Cap'n Proto</h2>
+      <p class="lede">
+        Cả bốn đều dùng một schema mà hai đầu cùng biết. Chúng khác nhau ở chỗ schema cho phép byte
+        thay đổi theo những gì, và thay đổi đến mức nào.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Thuộc tính</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">Protocol Buffers</th>
+              <th scope="col">FlatBuffers</th>
+              <th scope="col">Cap'n Proto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Một giá trị → một chuỗi byte</td>
+              <td class="us"><b>Bắt buộc</b>Không tồn tại hai encoding hợp lệ cho cùng một giá trị (RFC-0002).</td>
+              <td><b>Không canonical</b>Tài liệu chính thức nói serialization "is not (and cannot be) canonical".</td>
+              <td><b>Không canonical</b>Thứ tự field và object để ngỏ; hai encoder có thể khác nhau mà đều hợp lệ.</td>
+              <td><b>Có canonical form, không bắt buộc</b>Có dạng canonical để ký số; encoder không buộc phải dùng.</td>
+            </tr>
+            <tr>
+              <td>Cách viết schema</td>
+              <td class="us"><b>Không bắt buộc</b>Spec không có IDL. <code>fomoxac</code> đọc annotation trên chính type của bạn, mỗi lần chạy một ngôn ngữ: model dùng chung giữa hai ngôn ngữ được viết ở cả hai, và schema fingerprint kiểm tra chúng khớp nhau.</td>
+              <td><b>IDL <code>.proto</code></b>Một file, sinh class message cho mọi ngôn ngữ.</td>
+              <td><b>IDL <code>.fbs</code></b>Một file, sinh accessor cho mọi ngôn ngữ.</td>
+              <td><b>IDL <code>.capnp</code></b>Một file, sinh reader/builder cho mọi ngôn ngữ.</td>
+            </tr>
+            <tr>
+              <td>Sinh code</td>
+              <td class="us"><b>8 target của fomoxac</b>Rust, C#, Go, C, C++, TypeScript, JavaScript, GDScript. Bản thân spec không gắn với ngôn ngữ nào.</td>
+              <td><b>10 ngôn ngữ do Google hỗ trợ</b>Tám ngôn ngữ có sẵn trong <code>protoc</code>, cộng Dart và Go qua plugin. Thêm nhiều ngôn ngữ từ bên thứ ba.</td>
+              <td><b>14 ngôn ngữ được liệt kê</b>C++, C#, C, Go, Java, Kotlin, JavaScript, Lobster, Lua, TypeScript, PHP, Python, Rust, Swift.</td>
+              <td><b>Tham chiếu bằng C++</b>Có implementation ở 15 ngôn ngữ khác do tác giả khác viết, dự án chưa review; mức hoàn thiện khác nhau.</td>
+            </tr>
+            <tr>
+              <td>Nhận diện field trên wire</td>
+              <td class="us"><b>Vị trí</b>Không tag, không tên. Thứ tự khai báo chính là danh tính.</td>
+              <td><b>Field number</b>Mỗi field đi kèm một tag.</td>
+              <td><b>Slot trong vtable</b>Offset tra qua vtable.</td>
+              <td><b>Ordinal → offset cố định</b>Layout tính từ các ordinal <code>@n</code>.</td>
+            </tr>
+            <tr>
+              <td>Mã hoá số nguyên</td>
+              <td class="us"><b>Độ rộng cố định, LE</b><code>u32</code> luôn là 4 byte.</td>
+              <td><b>Varint</b>Số nhỏ tốn ít byte hơn.</td>
+              <td><b>Độ rộng cố định, LE</b>Có padding để căn lề.</td>
+              <td><b>Độ rộng cố định, LE</b>Căn theo word 8 byte; có thể nén (packing).</td>
+            </tr>
+            <tr>
+              <td>Tiến hoá schema</td>
+              <td class="us"><b>Chỉ ở cuối</b>Thêm hoặc bỏ field ở cuối Model. Mọi thay đổi khác là breaking change.</td>
+              <td><b>Linh hoạt</b>Thêm hoặc bỏ field ở bất kỳ đâu; field lạ được giữ lại.</td>
+              <td><b>Thêm vào cuối, hoặc dùng id</b>Field mới ở cuối table, hoặc ở bất kỳ đâu với <code>id</code>. Field cũ được đánh dấu deprecated, không xoá.</td>
+              <td><b>Thêm theo ordinal</b>Field mới nhận ordinal kế tiếp; field cũ ở lại.</td>
+            </tr>
+            <tr>
+              <td>Optional / giá trị mặc định</td>
+              <td class="us"><b>Không có</b>Mọi field luôn được ghi.</td>
+              <td><b>Có</b>Có thể bỏ giá trị mặc định; có theo dõi presence.</td>
+              <td><b>Có</b>Giá trị mặc định thường không được ghi.</td>
+              <td><b>Có</b>Mặc định bằng cách XOR với giá trị mặc định.</td>
+            </tr>
+            <tr>
+              <td>Đọc không cần parse (zero-copy)</td>
+              <td class="us"><b>Không</b>Decode tuần tự; vị trí của một String phụ thuộc các field trước nó.</td>
+              <td><b>Không</b></td>
+              <td><b>Có</b>Thiết kế để truy cập tại chỗ.</td>
+              <td><b>Có</b>Thiết kế để truy cập tại chỗ.</td>
+            </tr>
+            <tr>
+              <td>Phạm vi</td>
+              <td class="us"><b>Chỉ wire format</b>Transport, RPC và framing nằm ngoài phạm vi.</td>
+              <td><b>Format + hệ sinh thái gRPC</b></td>
+              <td><b>Format + gRPC tuỳ chọn</b></td>
+              <td><b>Format + capability RPC</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        Nguồn:
+        <a href="https://protobuf.dev/programming-guides/serialization-not-canonical/">protobuf.dev · serialization is not canonical</a>,
+        <a href="https://protobuf.dev/overview/">overview</a> ·
+        <a href="https://flatbuffers.dev/">flatbuffers.dev</a>,
+        <a href="https://flatbuffers.dev/internals/">internals</a>,
+        <a href="https://flatbuffers.dev/evolution/">evolution</a> ·
+        <a href="https://capnproto.org/encoding.html">capnproto.org · encoding</a>,
+        <a href="https://capnproto.org/otherlang.html">other languages</a>.
+        Kiểm tra tháng 9/2026.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Xác định</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa, Borsh, BCS</h2>
+      <p class="lede">
+        Những họ hàng gần nhất. Cả ba đều cho mỗi giá trị đúng một encoding, ghi số nguyên độ rộng cố định theo
+        little endian, và ghi field của struct theo thứ tự khai báo, không tag. Chúng khác nhau ở các kiểu dữ liệu mang theo.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Thuộc tính</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">Borsh</th>
+              <th scope="col">BCS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Một giá trị → một chuỗi byte</td>
+              <td class="us"><b>Bắt buộc</b></td>
+              <td><b>Có</b>Thiết kế để hash.</td>
+              <td><b>Có</b>"Every value of a given type should have a single valid representation."</td>
+            </tr>
+            <tr>
+              <td>Độ dài string và array</td>
+              <td class="us"><b><code>u32</code>, LE</b></td>
+              <td><b><code>u32</code>, LE</b></td>
+              <td><b>ULEB128</b>Độ rộng thay đổi.</td>
+            </tr>
+            <tr>
+              <td>Số thực</td>
+              <td class="us"><b>Giữ nguyên bit</b>Kể cả payload NaN.</td>
+              <td><b>Từ chối NaN</b></td>
+              <td><b>Không hỗ trợ</b></td>
+            </tr>
+            <tr>
+              <td>Enum</td>
+              <td class="us"><b>Giá trị <code>u32</code></b>Không có payload.</td>
+              <td><b>Chỉ số variant <code>u8</code></b>Sau đó là các field của variant.</td>
+              <td><b>Chỉ số variant ULEB128</b>Sau đó là các field của variant.</td>
+            </tr>
+            <tr>
+              <td>Giá trị optional</td>
+              <td class="us"><b>Không có</b>Không có marker cho sự vắng mặt.</td>
+              <td><b>Tag 1 byte</b></td>
+              <td><b>Tag 1 byte</b></td>
+            </tr>
+            <tr>
+              <td>Map</td>
+              <td class="us"><b>Không có ở v1</b></td>
+              <td><b>Sắp theo key</b></td>
+              <td><b>Sắp theo byte của key</b></td>
+            </tr>
+            <tr>
+              <td>Nguồn gốc</td>
+              <td class="us"><b>Specification độc lập</b>RFC viết tách khỏi mọi ngôn ngữ, lấy vector của RFC-0003 làm chuẩn đạt.</td>
+              <td><b>NEAR</b>Có specification, cùng implementation bằng Rust, TypeScript, Go, Java, Python, C# và nhiều ngôn ngữ khác.</td>
+              <td><b>Diem</b>Được đặc tả cùng với implementation Rust (Serde).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body">
+        Nếu hệ thống của bạn đã chạy trên Borsh hoặc BCS, bạn đã có đảm bảo tính xác định mà Fomoxa xây quanh.
+        Khác biệt của Fomoxa hẹp hơn: ít kiểu hơn, bit của số thực được giữ nguyên, và một specification không
+        thuộc về riêng ngôn ngữ nào.
+      </p>
+      <p class="tv-note">
+        Nguồn:
+        <a href="https://borsh.io/">borsh.io</a>,
+        <a href="https://github.com/near/borsh">github.com/near/borsh</a> ·
+        <a href="https://github.com/diem/bcs">github.com/diem/bcs</a>.
+        Kiểm tra tháng 9/2026.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Không schema</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa, JSON, MessagePack</h2>
+      <p class="lede">
+        JSON và MessagePack tự mô tả: bên đọc không cần schema. Fomoxa thì ngược lại:
+        không có schema, các byte không mang nghĩa gì.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Thuộc tính</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">JSON</th>
+              <th scope="col">MessagePack</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Một giá trị → một chuỗi byte</td>
+              <td class="us"><b>Bắt buộc</b></td>
+              <td><b>Không</b>Thứ tự key, khoảng trắng và cách in số đều có thể khác. RFC 8785 (JCS) định nghĩa riêng một dạng canonical.</td>
+              <td><b>Không</b>Spec nói serializer <em>nên</em> (SHOULD) chọn dạng ngắn nhất; thứ tự key của map không được quy định.</td>
+            </tr>
+            <tr>
+              <td>Tự mô tả</td>
+              <td class="us"><b>Không</b>Sai schema → sai giá trị, thường không báo lỗi.</td>
+              <td><b>Có</b>Tên và kiểu field đi kèm dữ liệu.</td>
+              <td><b>Có</b>Marker kiểu đi kèm dữ liệu.</td>
+            </tr>
+            <tr>
+              <td>Tiến hoá schema</td>
+              <td class="us"><b>Chỉ ở cuối</b></td>
+              <td><b>Do ứng dụng quyết định</b>Bên đọc thường bỏ qua key lạ.</td>
+              <td><b>Do ứng dụng quyết định</b></td>
+            </tr>
+            <tr>
+              <td>Số</td>
+              <td class="us"><b>Đúng độ rộng và từng bit</b>Bit pattern của float, kể cả payload NaN, được giữ nguyên.</td>
+              <td><b>Dạng text</b>Độ chính xác tuỳ parser; không có NaN hay Infinity.</td>
+              <td><b>Có kiểu, độ rộng thay đổi</b>Encoder chọn một trong nhiều độ rộng hợp lệ.</td>
+            </tr>
+            <tr>
+              <td>Người đọc được</td>
+              <td class="us"><b>Không</b>Dùng <code>fomoxa-inspect</code> hoặc <a href="/vi/inspector/">inspector</a>.</td>
+              <td><b>Có</b></td>
+              <td><b>Không</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Cùng giá trị</p>
+    <div class="col">
+      <h2 class="h2">Một Player, năm cách encode</h2>
+      <p class="lede">
+        <code>Player{ id: 100, name: "Alice" }</code>. Số byte chỉ đúng cho giá trị này.
+        Đổi giá trị thì thứ hạng có thể đổi.
+      </p>
+      <div class="bytes-vs">
+<pre class="code"><span class="c"># Fomoxa · 13 byte</span>
+<span class="by">64 00 00 00</span> <span class="by">05 00 00 00</span> <span class="by">41 6C 69 63 65</span>
+<span class="c">id           độ dài       A  l  i  c  e</span>
+<span class="c"># encoding hợp lệ duy nhất</span></pre>
+<pre class="code"><span class="c"># Protobuf · 9 byte    (id = 1, name = 2)</span>
+<span class="by">08 64</span> <span class="by">12 05 41 6C 69 63 65</span>
+<span class="c">tag varint   tag len  A  l  i  c  e</span>
+<span class="c"># các field cũng có thể xuất hiện theo thứ tự khác</span></pre>
+<pre class="code"><span class="c"># MessagePack · 16 byte  (dạng map)</span>
+<span class="by">82 A2 69 64 64 A4 6E 61 6D 65 A5 41 6C 69 63 65</span>
+<span class="c"># 100 cũng có thể ghi là CC 64, D0 64, ...
+# 8 byte nếu dùng array: 92 64 A5 41 6C 69 63 65</span></pre>
+<pre class="code"><span class="c"># JSON · 25 byte</span>
+<span class="s">{"id":100,"name":"Alice"}</span>
+<span class="c"># cũng hợp lệ như vậy:</span>
+<span class="s">{"name":"Alice","id":1e2}</span></pre>
+      </div>
+      <p class="body">
+        Fomoxa không phải nhỏ nhất ở đây: số nguyên độ rộng cố định tốn những byte mà varint tiết kiệm được.
+        Đổi lại, khối đầu tiên là câu trả lời hợp lệ duy nhất, ở mọi implementation tuân thủ.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Đo thật</p>
+    <div class="col">
+      <h2 class="h2">Bốn codec, cùng các message</h2>
+      <p class="lede">
+        Từ <a href="https://github.com/fomoxa/fomoxa-codec-bench">fomoxa-codec-bench</a>: cùng các message mang dáng
+        dữ liệu game, bằng Rust, <code>fomoxac</code> so với <code>prost</code> và <code>capnp</code>, capnp đo cả dạng
+        thường lẫn canonical form, dạng bạn sẽ hash hoặc ký. Giá trị trung vị từ một lần chạy ngày 18/9/2026.
+      </p>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th scope="col">Message</th>
+              <th scope="col" class="us">Fomoxa</th>
+              <th scope="col">Protobuf (prost)</th>
+              <th scope="col">Cap'n Proto</th>
+              <th scope="col">Cap'n Proto canonical</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>input<span class="src"><br>người chơi đang di chuyển</span></td>
+              <td class="us"><b>21 B</b>encode 9.1 ns<br>decode 25.1 ns</td>
+              <td><b>26 B</b>encode 28.0 ns<br>decode 34.5 ns</td>
+              <td><b>40 B</b>encode 43.4 ns<br>decode 77.2 ns</td>
+              <td><b>32 B</b>encode 141 ns<br>decode 111 ns</td>
+            </tr>
+            <tr>
+              <td>input<span class="src"><br>người chơi đứng yên</span></td>
+              <td class="us"><b>21 B</b>encode 9.1 ns<br>decode 25.0 ns</td>
+              <td><b>2 B</b>encode 12.7 ns<br>decode 14.8 ns</td>
+              <td><b>40 B</b>encode 43.1 ns<br>decode 76.9 ns</td>
+              <td><b>16 B</b>encode 109 ns<br>decode 110 ns</td>
+            </tr>
+            <tr>
+              <td>stats<span class="src"><br>các bộ đếm nhỏ</span></td>
+              <td class="us"><b>38 B</b>encode 10.8 ns<br>decode 29.0 ns</td>
+              <td><b>24 B</b>encode 74.8 ns<br>decode 76.1 ns</td>
+              <td><b>56 B</b>encode 49.2 ns<br>decode 66.9 ns</td>
+              <td><b>48 B</b>encode 121 ns<br>decode 111 ns</td>
+            </tr>
+            <tr>
+              <td>chat<span class="src"><br>chuỗi 64 ký tự</span></td>
+              <td class="us"><b>82 B</b>encode 20.2 ns<br>decode 48.9 ns</td>
+              <td><b>79 B</b>encode 33.8 ns<br>decode 73.7 ns</td>
+              <td><b>112 B</b>encode 58.9 ns<br>decode 118 ns</td>
+              <td><b>104 B</b>encode 165 ns<br>decode 197 ns</td>
+            </tr>
+            <tr>
+              <td>batch-100<span class="src"><br>100 transform</span></td>
+              <td class="us"><b>2,908 B</b>encode 684 ns<br>decode 2.56 µs</td>
+              <td><b>3,586 B</b>encode 6.40 µs<br>decode 6.58 µs</td>
+              <td><b>3,240 B</b>encode 289 ns<br>decode 1.39 µs</td>
+              <td><b>3,232 B</b>encode 847 ns<br>decode 1.58 µs</td>
+            </tr>
+            <tr>
+              <td>batch-1000<span class="src"><br>1000 transform</span></td>
+              <td class="us"><b>29,008 B</b>encode 8.67 µs<br>decode 25.18 µs</td>
+              <td><b>36,625 B</b>encode 72.35 µs<br>decode 64.90 µs</td>
+              <td><b>32,040 B</b>encode 3.35 µs<br>decode 12.58 µs</td>
+              <td><b>32,032 B</b>encode 8.75 µs<br>decode 13.75 µs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Fomoxa dẫn trước ở đâu</span>
+          <ul class="card-list">
+            <li>Message nhỏ với dữ liệu điển hình: encode và decode nhanh nhất trong bốn format.</li>
+            <li>Số thực và id ngẫu nhiên: nhỏ hơn Protobuf 17–21%, vì không có tag.</li>
+            <li>So với Cap'n Proto canonical trên message nhỏ: encode nhanh hơn 8–15 lần, decode nhanh hơn khoảng 4 lần.</li>
+            <li>So với <code>prost</code> trên dữ liệu điển hình: encode nhanh hơn 1.7–9.4 lần, decode nhanh hơn 1.4–2.8 lần.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Fomoxa không dẫn ở đâu</span>
+          <ul class="card-list neg">
+            <li>Array của struct kích thước cố định: Cap'n Proto encode <code>batch-1000</code> nhanh hơn 2.6 lần và decode nhanh hơn 2 lần.</li>
+            <li>Cap'n Proto canonical hoà Fomoxa khi encode <code>batch-1000</code> và vẫn decode batch nhanh hơn 1.6–1.8 lần.</li>
+            <li>Dữ liệu phần lớn là số 0: Protobuf bỏ qua field bằng 0, nên người chơi đứng yên chỉ tốn 2 byte so với 21, và decode nhanh hơn.</li>
+            <li>Số nguyên nhỏ: varint của Protobuf làm <code>stats</code> còn 24 byte so với 38.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="tv-note">
+        Hãy đọc kèm giới hạn của nó: chỉ Rust, mỗi format một implementation, dữ liệu tổng hợp, một laptop chạy WSL2,
+        chỉ loopback. Mọi decoder đều dựng cùng một struct sở hữu dữ liệu; đọc Cap'n Proto tại chỗ, đúng cách nó được
+        thiết kế, rẻ hơn và không được đo ở đây. Trong
+        <a href="https://github.com/fomoxa/fomoxa-example-game#baseline-protobuf-comparison">example game</a>, ở
+        1000 người chơi toàn bộ stack server gần như không phân biệt được (lệch 0.3 ms p50), vì codec chỉ chiếm phần rất
+        nhỏ của tick. Hãy chạy <code>scripts/run.sh</code> trên chính các message của bạn trước khi quyết định.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Lựa chọn</p>
+    <div class="col">
+      <h2 class="h2">Khi nào format khác hợp hơn</h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Chọn Fomoxa khi</span>
+          <ul class="card-list">
+            <li>Hai implementation, ở hai ngôn ngữ khác nhau, phải ra byte giống hệt nhau.</li>
+            <li>Bạn ký, hash hoặc khử trùng lặp payload.</li>
+            <li>Bạn chạy replay, lockstep hoặc checksum trạng thái giữa nhiều máy.</li>
+            <li>Hai đầu phát hành từ cùng một schema và có thể deploy cùng lúc.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Chọn format khác khi</span>
+          <ul class="card-list neg">
+            <li>Client và server tiến hoá độc lập trong nhiều năm: field number của Protobuf hợp hơn.</li>
+            <li>Cần truy cập ngẫu nhiên vào buffer lớn mà không decode: FlatBuffers hoặc Cap'n Proto.</li>
+            <li>Bên đọc không biết schema, hoặc con người cần đọc dữ liệu: JSON.</li>
+            <li>Bạn cần field optional hoặc giá trị null trên wire.</li>
+            <li>Cần byte xác định và đọc nhanh array lớn: canonical form của Cap'n Proto.</li>
+            <li>Hệ thống đã chạy trên Borsh hoặc BCS: bạn đã có cùng đảm bảo tính xác định.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body">
+        Lập luận đầy đủ nằm trong
+        <a href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0001.md">RFC-0001 §3.3 và §5.3</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Tác giả <strong>Hà Duy Thắng</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+
+
+</body>
+</html>

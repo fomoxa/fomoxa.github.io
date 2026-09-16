@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vì sao Fomoxa - Fomoxa Protocol</title>
+<meta name="description" content="Vì sao cần một wire format không để encoder lựa chọn, khi nào byte giống hệt nhau là quan trọng, và cách dùng annotation được gì, mất gì so với IDL.">
+<link rel="canonical" href="https://fomoxa.github.io/vi/why/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/why/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/why/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/why/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/vi/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Trang">
+      <a href="/vi/">Protocol</a>
+      <a href="/vi/why/" aria-current="page">Vì sao</a>
+      <a href="/vi/getting-started/">Bắt đầu</a>
+      <a href="/vi/inspector/">Inspector</a>
+      <a href="/vi/ecosystem/">Hệ sinh thái</a>
+      <a href="/vi/comparison/">So sánh</a>
+      <a href="/vi/use-cases/">Ứng dụng</a>
+      <a href="/vi/roadmap/">Lộ trình</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Ngôn ngữ">
+        <a href="/why/" hreflang="en" lang="en">EN</a><span class="sep">/</span><span aria-current="true">VI</span>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Chuyển giao diện">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Vì sao Fomoxa</p>
+    <h1 class="h1">Một format không để lại lựa chọn</h1>
+    <p class="hero-sub">
+      Phần lớn format để encoder tự chọn: thứ tự field, độ rộng số nguyên, có ghi giá trị mặc định hay không.
+      Fomoxa bỏ hết những lựa chọn đó, nên cùng một giá trị cho ra cùng các byte ở mọi ngôn ngữ.
+      Trang này nói khi nào điều đó đáng giá, và nó tốn gì.
+    </p>
+  </div>
+</section>
+
+<section class="band" id="problem">
+  <div class="band-in">
+    <p class="offset">Vấn đề</p>
+    <div class="col">
+      <h2 class="h2">Cùng giá trị, khác byte</h2>
+      <p class="lede">
+        Với JSON hay Protobuf, cùng một dữ liệu có thể ra các byte khác nhau tuỳ ngôn ngữ, thư viện hay phiên bản.
+        Thường thì không ai để ý. Nó hỏng ở ba chỗ.
+      </p>
+      <div class="cards cards-3">
+        <div class="card">
+          <span class="card-k">Chữ ký và hash</span>
+          <p class="card-d">
+            Chữ ký phủ lên byte. Nếu một implementation khác encode lại giá trị theo cách khác, việc kiểm tra thất bại
+            dù dữ liệu không hề đổi.
+          </p>
+        </div>
+        <div class="card">
+          <span class="card-k">Replay và lockstep</span>
+          <p class="card-d">
+            Hai máy phải đi đến cùng một trạng thái từ cùng các input. Checksum trên trạng thái đó chỉ dùng được
+            khi hai bên serialize nó giống hệt nhau.
+          </p>
+        </div>
+        <div class="card">
+          <span class="card-k">Tương thích SDK</span>
+          <p class="card-d">
+            Cách duy nhất để chứng minh hai SDK khớp nhau là so sánh byte của chúng. Việc đó cần đúng một đáp án
+            để so.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="idea">
+  <div class="band-in">
+    <p class="offset">Ý tưởng</p>
+    <div class="col">
+      <h2 class="h2">Bỏ mọi lựa chọn</h2>
+      <p class="lede">
+        Chỗ nào encoder được phép chọn, sớm muộn hai encoder sẽ chọn khác nhau.
+        Bốn quy tắc không để lại gì để chọn.
+      </p>
+      <ol class="card-list ordered">
+        <li>Số có độ rộng cố định, little endian. <code>u32</code> là bốn byte, kể cả khi bằng 0. Không varint.</li>
+        <li>String và array bắt đầu bằng độ dài hoặc count kiểu <code>u32</code>. Độ dài string tính theo byte UTF-8.</li>
+        <li>Một Model là các field của nó, theo thứ tự khai báo. Không tag, không header, không padding.</li>
+        <li>Không có gì mô tả dữ liệu. Hai đầu đã biết sẵn schema.</li>
+      </ol>
+      <p class="body">
+        Mỗi quy tắc có cái giá của nó, liệt kê ở phần <a href="/vi/#tradeoffs">đánh đổi</a>: field chỉ tiến hoá ở cuối,
+        không có gì là optional, và decode bằng sai schema thường cho ra giá trị sai thay vì báo lỗi.
+        Đổi lại, tính đúng chỉ có một phép thử: đạt 100% các
+        <a href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">vector của RFC-0003</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="workflow">
+  <div class="band-in">
+    <p class="offset">Quy trình</p>
+    <div class="col">
+      <h2 class="h2">Hai cách giữ schema</h2>
+      <p class="lede">
+        Protobuf giữ schema trong một file <code>.proto</code> và sinh một type cho mỗi ngôn ngữ.
+        Công cụ tham chiếu của Fomoxa giữ schema ngay trên các type bạn đã có. Cách nào cũng có giá.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">IDL · Protobuf</span>
+          <ol class="card-list ordered">
+            <li>Viết mỗi message một lần, trong file <code>.proto</code>.</li>
+            <li>Chạy <code>protoc</code> hoặc <code>buf</code> cho từng ngôn ngữ đích.</li>
+            <li>Dùng type message được sinh ra, hoặc chuyển đổi qua lại với type của bạn.</li>
+            <li>Kiểm tra breaking change bằng công cụ như <code>buf breaking</code>.</li>
+          </ol>
+        </div>
+        <div class="card card-accent">
+          <span class="card-k">Annotation · fomoxac</span>
+          <ol class="card-list ordered">
+            <li>Đánh dấu chính type của bạn, ở từng ngôn ngữ dùng nó.</li>
+            <li>Chạy <code>fomoxac generate</code> trong từng project đó.</li>
+            <li>Encode và decode thẳng type đó. Không có type message nào được sinh ra.</li>
+            <li>So schema fingerprint giữa các ngôn ngữ; <code>fomoxac ci</code> làm pull request thất bại khi có breaking change.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Annotation tiết kiệm gì</span>
+          <ul class="card-list">
+            <li>Không có type thứ hai cho mỗi message, không có code chuyển đổi giữa nó và type của bạn.</li>
+            <li>Field không được đánh dấu không bao giờ lên wire, nên một type có thể mang cả trạng thái cục bộ.</li>
+            <li>Nếu hai đầu cùng một ngôn ngữ thì không còn gì khác phải đồng bộ.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Annotation tốn gì</span>
+          <ul class="card-list neg">
+            <li>Model dùng ở nhiều ngôn ngữ phải viết ở từng ngôn ngữ. Thứ tự field và wire type phải khớp bằng tay.</li>
+            <li>Sai lệch được phát hiện nhờ so fingerprint, nhờ <code>fomoxac ci</code> và nhờ handshake của runtime lúc kết nối. Không phải nhờ compiler.</li>
+            <li>Không có file schema viết tay để đưa cho bên thứ ba. <code>.fomoxa/schema.json</code> là output được sinh ra.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note-line">
+        <strong>Trong thực tế:</strong> <a href="https://github.com/fomoxa/fomoxa-example-game#modifying-the-protocol">fomoxa-example-game</a>
+        khai báo protocol bằng Rust, C#, C++ và GDScript, và một script kiểm tra cả bốn schema fingerprint đều khớp
+        với server.
+      </p>
+      <p class="body">
+        Annotation là lựa chọn của bộ công cụ tham chiếu, không phải của specification. Một file schema riêng, macro
+        hay codec viết tay đều hợp lệ như nhau, miễn là các byte đạt RFC-0003.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close" id="fit">
+  <div class="band-in">
+    <p class="offset">Phù hợp</p>
+    <div class="col">
+      <h2 class="h2">Khi nào đáng dùng</h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Đáng dùng khi</span>
+          <ul class="card-list">
+            <li>Chính các byte mang ý nghĩa: chúng được ký, hash, cache hoặc so sánh.</li>
+            <li>Hai ngôn ngữ trở lên phải thống nhất về các byte đó.</li>
+            <li>Hai đầu phát hành từ cùng một schema và có thể deploy cùng lúc.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Không đáng khi</span>
+          <ul class="card-list neg">
+            <li>Client và server tiến hoá độc lập trong nhiều năm.</li>
+            <li>Bạn cần field optional, hoặc bên đọc không biết schema.</li>
+            <li>Không ai so sánh các byte. Format phổ biến nào cũng được.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ctas">
+        <a class="btn btn-primary" href="/vi/getting-started/">Bắt đầu <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="/vi/use-cases/">Ứng dụng <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="/vi/comparison/">So sánh format <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Tác giả <strong>Hà Duy Thắng</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+
+
+</body>
+</html>

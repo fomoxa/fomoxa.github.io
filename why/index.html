@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Fomoxa - Fomoxa Protocol</title>
+<meta name="description" content="Why a wire format with no encoder choices, where identical bytes matter, and what the annotation workflow saves and costs compared with an IDL.">
+<link rel="canonical" href="https://fomoxa.github.io/why/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/why/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/why/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/why/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Site">
+      <a href="/">Protocol</a>
+      <a href="/why/" aria-current="page">Why</a>
+      <a href="/getting-started/">Get started</a>
+      <a href="/inspector/">Inspector</a>
+      <a href="/ecosystem/">Ecosystem</a>
+      <a href="/comparison/">Compare</a>
+      <a href="/use-cases/">Use cases</a>
+      <a href="/roadmap/">Roadmap</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Language">
+        <span aria-current="true">EN</span><span class="sep">/</span><a href="/vi/why/" hreflang="vi" lang="vi">VI</a>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Why Fomoxa</p>
+    <h1 class="h1">A format with no choices</h1>
+    <p class="hero-sub">
+      Most formats let the encoder choose: field order, integer width, whether to write a default.
+      Fomoxa takes every one of those choices away, so the same value gives the same bytes in every language.
+      This page covers when that is worth it, and what it costs.
+    </p>
+  </div>
+</section>
+
+<section class="band" id="problem">
+  <div class="band-in">
+    <p class="offset">Problem</p>
+    <div class="col">
+      <h2 class="h2">The same value, different bytes</h2>
+      <p class="lede">
+        With JSON or Protobuf, the same data can come out as different bytes depending on the language, the
+        library or the version. Usually nobody notices. It breaks in three places.
+      </p>
+      <div class="cards cards-3">
+        <div class="card">
+          <span class="card-k">Signatures and hashes</span>
+          <p class="card-d">
+            A signature covers bytes. If another implementation re-encodes the value differently, verification
+            fails although the data did not change.
+          </p>
+        </div>
+        <div class="card">
+          <span class="card-k">Replay and lockstep</span>
+          <p class="card-d">
+            Two machines must reach the same state from the same inputs. A checksum over that state only works
+            if both sides serialize it identically.
+          </p>
+        </div>
+        <div class="card">
+          <span class="card-k">SDK compatibility</span>
+          <p class="card-d">
+            The only way to prove two SDKs agree is to compare their bytes. That needs exactly one right answer
+            to compare against.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="idea">
+  <div class="band-in">
+    <p class="offset">Idea</p>
+    <div class="col">
+      <h2 class="h2">Remove every choice</h2>
+      <p class="lede">
+        Wherever an encoder is allowed to choose, two encoders will eventually choose differently.
+        Four rules leave nothing to choose.
+      </p>
+      <ol class="card-list ordered">
+        <li>Numbers are fixed width, little endian. A <code>u32</code> is four bytes, even for zero. No varints.</li>
+        <li>Strings and arrays start with a <code>u32</code> length or count. String length counts UTF-8 bytes.</li>
+        <li>A Model is its fields, in declaration order. No tags, no header, no padding.</li>
+        <li>Nothing describes the data. Both ends already know the schema.</li>
+      </ol>
+      <p class="body">
+        Each rule has a price, listed under <a href="/#tradeoffs">trade-offs</a>: fields evolve only at the end,
+        nothing is optional, and decoding against the wrong schema usually gives wrong values rather than an error.
+        What you get in return is a single test for correctness: pass 100% of the
+        <a href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">RFC-0003 vectors</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="workflow">
+  <div class="band-in">
+    <p class="offset">Workflow</p>
+    <div class="col">
+      <h2 class="h2">Two ways to keep a schema</h2>
+      <p class="lede">
+        Protobuf keeps the schema in one <code>.proto</code> file and generates a type per language.
+        The Fomoxa reference tools keep it on the types you already have. Neither route is free.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">IDL · Protobuf</span>
+          <ol class="card-list ordered">
+            <li>Write each message once, in a <code>.proto</code> file.</li>
+            <li>Run <code>protoc</code> or <code>buf</code> for each target language.</li>
+            <li>Use the generated message types, or map them to and from your own types.</li>
+            <li>Check for breaking changes with a tool such as <code>buf breaking</code>.</li>
+          </ol>
+        </div>
+        <div class="card card-accent">
+          <span class="card-k">Annotations · fomoxac</span>
+          <ol class="card-list ordered">
+            <li>Annotate your own type, in each language that uses it.</li>
+            <li>Run <code>fomoxac generate</code> in each of those projects.</li>
+            <li>Encode and decode that type directly. There is no generated message type.</li>
+            <li>Compare schema fingerprints across languages; <code>fomoxac ci</code> fails a pull request on a breaking change.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">What annotations save</span>
+          <ul class="card-list">
+            <li>No second type per message, and no mapping code between it and yours.</li>
+            <li>Fields you do not annotate never reach the wire, so one type can also carry local state.</li>
+            <li>With one language on both ends there is nothing else to keep in sync.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">What they cost</span>
+          <ul class="card-list neg">
+            <li>A model used by several languages is written in each of them. Field order and wire types must match by hand.</li>
+            <li>A mismatch is caught by comparing fingerprints, by <code>fomoxac ci</code> and by the runtime handshake at connect time. Not by the compiler.</li>
+            <li>No hand-written schema file to give a third party. <code>.fomoxa/schema.json</code> is generated output.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note-line">
+        <strong>Seen in practice:</strong> <a href="https://github.com/fomoxa/fomoxa-example-game#modifying-the-protocol">fomoxa-example-game</a>
+        declares its protocol in Rust, C#, C++ and GDScript, and a script checks that all four schema fingerprints
+        match the server's.
+      </p>
+      <p class="body">
+        Annotations are a choice of the reference tools, not of the specification. A separate schema file, macros
+        or a hand-written codec are equally valid, as long as the bytes pass RFC-0003.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close" id="fit">
+  <div class="band-in">
+    <p class="offset">Fit</p>
+    <div class="col">
+      <h2 class="h2">When it is worth it</h2>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Worth it when</span>
+          <ul class="card-list">
+            <li>The bytes themselves matter: they are signed, hashed, cached or compared.</li>
+            <li>Two or more languages must agree on those bytes.</li>
+            <li>Both ends ship from the same schema and can deploy together.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Not worth it when</span>
+          <ul class="card-list neg">
+            <li>Clients and servers evolve independently for years.</li>
+            <li>You need optional fields, or readers that do not know the schema.</li>
+            <li>Nobody ever compares the bytes. Any well-supported format will do.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ctas">
+        <a class="btn btn-primary" href="/getting-started/">Get started <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="/use-cases/">Use cases <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="/comparison/">Compare formats <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Created by <strong>Ha Duy Thang</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+
+
+</body>
+</html>

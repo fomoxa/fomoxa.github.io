@@ -1,0 +1,103 @@
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Lộ trình · cập nhật tháng 9/2026</p>
+    <h1 class="h1">Đã xong gì, và tiếp theo là gì</h1>
+    <p class="hero-sub">
+      Specification đã final. Việc phía trước xoay quanh các engine mà người ta dùng để làm game:
+      Unity trước, rồi đến Unreal Engine.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Mốc thời gian</p>
+    <div class="col">
+      <div class="timeline">
+
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Đã xong · 2026</span>
+            <span class="phase-t">Specification và nền tảng</span>
+            <ul class="card-list">
+              <li>RFC-0001, RFC-0002 và RFC-0003 ở v1.1.0, Final, bằng tiếng Anh và tiếng Việt.</li>
+              <li>Quy tắc version skew: field thêm hoặc bỏ ở cuối Model (RFC-0002 §9.1).</li>
+              <li><code>fomoxac</code> 0.2.1: codec cho Rust, Go, C#, GDScript, C, C++, TypeScript và JavaScript, cùng <code>compat</code>, <code>ci</code>, <code>--watch</code> và <code>fomoxa-inspect</code>.</li>
+              <li>Các runtime mẫu: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> và <code>Fomoxa.Reliability</code> (C#), Go, C/C++, <code>@fomoxa/net</code> (Node.js) và Godot.</li>
+              <li>Implementation guide, bộ kiểm tra <code>interop</code> đa ngôn ngữ, và codec <code>fomoxa.unity</code> cho các type của Unity.</li>
+              <li><code>fomoxa-example-game</code>: client Unity, Unreal, Godot và Go với server Rust, kèm benchmark.</li>
+              <li>Trang web này: hướng dẫn bắt đầu, byte inspector, trang hệ sinh thái và so sánh.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase phase-now">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">12 tháng tới · đến khoảng Q3/2027</span>
+            <span class="phase-t">Hoàn thiện các thư viện cho Unity</span>
+            <p class="body">
+              Hoàn thiện bộ thư viện mà một project Unity cần để dùng Fomoxa từ đầu đến cuối, dựa trên những gì
+              đã chạy trong Unity hôm nay: <code>Fomoxa.Net</code> dưới IL2CPP, <code>Fomoxa.Reliability</code>, và
+              codec <code>fomoxa.unity</code> cho các type có sẵn.
+            </p>
+            <span class="status s-next inline">Đang làm</span>
+          </div>
+        </div>
+
+        <div class="phase">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">2 năm tiếp theo · đến khoảng Q3/2029</span>
+            <span class="phase-t">Tích hợp sâu với Unreal Engine</span>
+            <p class="body">
+              Tích hợp Fomoxa chặt chẽ với Unreal Engine, bắt đầu từ backend codec C++ và client Unreal
+              đang chạy trong example game.
+            </p>
+            <span class="status s-plan inline">Dự kiến</span>
+          </div>
+        </div>
+
+      </div>
+      <p class="note-line note-warn">
+        Mốc thời gian là ước lượng, không phải cam kết. Specification không phụ thuộc vào bất kỳ việc nào ở đây:
+        thư viện cho Unity hay Unreal là implementation, và wire format giữ đúng như RFC-0002 định nghĩa.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Không có kế hoạch</p>
+    <div class="col">
+      <h2 class="h2">Những gì lộ trình sẽ không thêm</h2>
+      <p class="lede">
+        Đây là cái giá của các đảm bảo trong Fomoxa, không phải tính năng còn thiếu. Không mục nào được lên lịch.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <ul class="card-list neg">
+            <li>Tag, field number hay tên field trên wire.</li>
+            <li>Field optional, nullable hoặc có giá trị mặc định.</li>
+            <li>Varint hay bất kỳ kiểu số nguyên độ rộng thay đổi nào.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <ul class="card-list neg">
+            <li>IDL hay định dạng file schema bắt buộc.</li>
+            <li>Transport, framing, RPC, nén hay mã hoá trong specification.</li>
+            <li>Marker phiên bản bên trong chuỗi byte.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body">
+        Lý do của từng mục nằm ở <a href="/vi/#tradeoffs">trang chủ</a> và trong
+        <a href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0001.md">RFC-0001</a>.
+        Mọi góp ý và câu hỏi đều được chào đón dưới dạng
+        <a href="https://github.com/fomoxa/specification/issues">issue</a>.
+      </p>
+    </div>
+  </div>
+</section>

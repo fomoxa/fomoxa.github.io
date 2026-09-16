@@ -1,0 +1,199 @@
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Use cases</p>
+    <h1 class="h1">Where identical bytes matter</h1>
+    <p class="hero-sub">
+      Fomoxa fits wherever two programs, often in two languages, must agree on data down to the byte.
+      Here are four places that happens, with what works well and what to know before you start.
+    </p>
+  </div>
+</section>
+
+<section class="band" id="games">
+  <div class="band-in">
+    <p class="offset">01 · Games</p>
+    <div class="col">
+      <h2 class="h2">Multiplayer games across engines</h2>
+      <p class="lede">
+        A Rust or C# server, Unity clients in C#, Unreal clients in C++, Godot clients in GDScript.
+        One schema, and every engine reads and writes the same bytes.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Why it fits</span>
+          <ul class="card-list">
+            <li>Byte-identical snapshots make lockstep, replays and desync checksums comparable across platforms.</li>
+            <li>No tags or names on the wire: a player state costs only its fields. The example game spends 29 bytes per player.</li>
+            <li>Generated code uses no reflection, so it runs under Unity IL2CPP and other AOT targets.</li>
+            <li>The C# runtime targets netstandard2.1 and runs in Unity 2021+; <code>fomoxa.unity</code> adds <code>Vector3</code>, <code>Quaternion</code>, <code>Color</code> and friends as field types.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Things to know</span>
+          <ul class="card-list neg">
+            <li>Client and server ship from the same schema. Only fields appended at the end survive a rolling update.</li>
+            <li>A client decoding with an outdated schema gets wrong values, not an error. The runtimes' schema handshake exists to stop that at connect time.</li>
+            <li>Fomoxa does not do prediction, interpolation or delta compression. Those stay in your netcode.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c">// Unity · a model using fomoxa.unity types</span>
+[Network]
+[Codec("game")]
+public class PlayerState
+{
+    [Network("u32")]        [Codec("game")] public uint Id { get; set; }
+    [Network("Vector3")]    [Codec("game")] public Vector3 Position { get; set; }
+    [Network("Quaternion")] [Codec("game")] public Quaternion Rotation { get; set; }
+    [Network("u8")]         [Codec("game")] public byte Health { get; set; }
+}</pre>
+      <p class="note-line">
+        <strong>Compared with other formats:</strong> Protobuf and FlatBuffers allow more than one valid encoding
+        of the same snapshot, and Cap'n Proto's canonical form is opt-in. With them, two engines that compare
+        snapshots must both run the same canonicalization step. With Fomoxa that step is the format itself.
+      </p>
+      <p class="note-line">
+        <strong>Seen running:</strong> <a href="https://github.com/fomoxa/fomoxa-example-game">fomoxa-example-game</a> puts
+        Unity, Unreal, Godot and Go clients in one match against a Rust server. A single-threaded server held
+        30 Hz for 1000 bots, each receiving the state of 999 others, and encoding took 0.02 ms of the 33.3 ms tick.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="backend">
+  <div class="band-in">
+    <p class="offset">02 · Services</p>
+    <div class="col">
+      <h2 class="h2">Backend service communication</h2>
+      <p class="lede">
+        Services in Go, Rust, C# and Node.js exchanging messages where the bytes themselves carry meaning:
+        signed, hashed, cached or compared.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Why it fits</span>
+          <ul class="card-list">
+            <li>A signature or hash made in one language verifies in another, because re-encoding the same value gives the same bytes.</li>
+            <li>Content-addressed caches and deduplication work without a separate canonicalization step.</li>
+            <li><code>fomoxac ci</code> compares the schema against the target branch and fails the build on a breaking change.</li>
+            <li>Fomoxa is only a payload format, so it fits inside whatever you already run: HTTP bodies, message queues, files, or the sample runtimes over TCP/UDP.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Things to know</span>
+          <ul class="card-list neg">
+            <li>Teams that deploy independently for months are better served by field-numbered formats.</li>
+            <li>Payloads are not readable in logs. Keep <code>.fomoxa/schema.json</code> around and use <code>fomoxa-inspect</code>.</li>
+            <li>No RPC layer: service definitions, retries and routing are yours.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c">// Go signs, Rust verifies: both re-encode the same Order and get the same bytes</span>
+<span class="k">go</span>    payload := encode(order)                 <span class="c">// 2A 00 00 00 ...</span>
+      sig     := ed25519.Sign(key, payload)
+
+<span class="k">rust</span>  let payload = encode(&amp;order);              <span class="c">// 2A 00 00 00 ... identical</span>
+      verifying_key.verify(&amp;payload, &amp;sig)?;</pre>
+      <p class="note-line">
+        <strong>Compared with other formats:</strong> Protobuf documents its serialization as
+        <a href="https://protobuf.dev/programming-guides/serialization-not-canonical/">not canonical</a>, so a
+        verifier checks the exact bytes it received rather than a re-encoding. With Fomoxa, either side can
+        rebuild the payload from the value and get the bytes that were signed.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="embedded">
+  <div class="band-in">
+    <p class="offset">03 · Embedded</p>
+    <div class="col">
+      <h2 class="h2">Embedded systems in C</h2>
+      <p class="lede">
+        Microcontrollers and gateways talking to servers and tools written in other languages.
+        The specification is written so that an encoder in assembly on an 8-bit MCU can follow it.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Why it fits</span>
+          <ul class="card-list">
+            <li>Generated C is C99, header-only <code>static inline</code> functions, with no dependency.</li>
+            <li>Generated C++ is C++17 and works with <code>-fno-exceptions</code>.</li>
+            <li>A model made only of fixed-width fields always has the same size, so buffers can be sized at compile time.</li>
+            <li>Length and count prefixes are checked against the remaining bytes before any allocation, which matters on untrusted links.</li>
+            <li>The C runtime has no threads and no background work, and accepts a user-supplied transport.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Things to know</span>
+          <ul class="card-list neg">
+            <li>Decoding <code>string</code>, <code>bytes</code> and arrays in the generated C allocates with <code>malloc</code>. On targets without a heap, keep those fields out of the model.</li>
+            <li>The bundled runtime transports are TCP and UDP sockets. For UART, CAN or radio links, write a transport, or use only the codec with your own framing.</li>
+            <li>Fixed-width integers cost more bytes than varints on slow links.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c">/* A fixed-size telemetry frame: always 4 + 4 + 2 + 1 = 11 bytes */</span>
+FOMOXA_MODEL
+FOMOXA_CODEC("uplink")
+struct Telemetry
+{
+    FOMOXA_FIELD(u32) FOMOXA_CODEC("uplink") uint32_t sequence;
+    FOMOXA_FIELD(f32) FOMOXA_CODEC("uplink") float    temperature;
+    FOMOXA_FIELD(u16) FOMOXA_CODEC("uplink") uint16_t millivolts;
+    FOMOXA_FIELD(u8)  FOMOXA_CODEC("uplink") uint8_t  status;
+};</pre>
+      <p class="note-line">
+        <strong>Compared with other formats:</strong> with varints, a message's size depends on its values, so
+        embedded Protobuf libraries size buffers for the worst case. A Fomoxa model of fixed-width fields has
+        exactly one size, whatever the values.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close" id="tooling">
+  <div class="band-in">
+    <p class="offset">04 · Tooling</p>
+    <div class="col">
+      <h2 class="h2">Cross-engine tooling</h2>
+      <p class="lede">
+        Replay recorders, binary logs, level and asset pipelines, editor plugins: tools written in one
+        language that read data produced by another.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Why it fits</span>
+          <ul class="card-list">
+            <li><code>.fomoxa/schema.json</code> is a language-neutral description of every model, ready for tools to read.</li>
+            <li><code>fomoxa-inspect</code> and the <a href="/inspector/">byte inspector</a> decode any payload against a schema.</li>
+            <li>Version skew rules say exactly which old recordings still decode: those that differ only by fields at the end.</li>
+            <li>A recording hashes the same no matter which engine wrote it, so files can be deduplicated and verified.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Things to know</span>
+          <ul class="card-list neg">
+            <li>Files carry no version marker. Store the schema fingerprint beside the data, or frame it yourself.</li>
+            <li>Reordering or retyping a field makes old files unreadable. Keep the old schema to migrate them.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c"># decode one frame of a replay file against the schema that recorded it</span>
+fomoxa-inspect --schema replays/v3/schema.json --message WorldSnapshot.game --file frame-0042.bin
+
+<span class="c"># check a schema change against the one your recordings were made with</span>
+fomoxac compat --base replays/v3/schema.json</pre>
+      <p class="note-line">
+        <strong>Compared with other formats:</strong> content-addressing recordings in another binary format
+        works when every writer agrees to canonicalize first, as Cap'n Proto's canonical form allows. Fomoxa has
+        no second form, so any conforming writer produces the same file.
+      </p>
+      <p class="body">
+        Not sure Fomoxa fits? <a href="/comparison/">See how it compares</a> with Protobuf, FlatBuffers,
+        Cap'n Proto, Borsh, BCS, JSON and MessagePack.
+      </p>
+    </div>
+  </div>
+</section>
