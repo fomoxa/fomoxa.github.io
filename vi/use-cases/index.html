@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ứng dụng - Fomoxa Protocol</title>
+<meta name="description" content="Một binary wire format xác định phù hợp ở đâu: game multiplayer, backend service, hệ nhúng và công cụ đa engine.">
+<link rel="canonical" href="https://fomoxa.github.io/vi/use-cases/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/use-cases/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/use-cases/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/use-cases/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/vi/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Trang">
+      <a href="/vi/">Protocol</a>
+      <a href="/vi/getting-started/">Bắt đầu</a>
+      <a href="/vi/inspector/">Inspector</a>
+      <a href="/vi/ecosystem/">Hệ sinh thái</a>
+      <a href="/vi/comparison/">So sánh</a>
+      <a href="/vi/use-cases/" aria-current="page">Ứng dụng</a>
+      <a href="/vi/roadmap/">Lộ trình</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Ngôn ngữ">
+        <a href="/use-cases/" hreflang="en" lang="en">EN</a><span class="sep">/</span><span aria-current="true">VI</span>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Chuyển giao diện">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Ứng dụng</p>
+    <h1 class="h1">Nơi byte giống hệt nhau là quan trọng</h1>
+    <p class="hero-sub">
+      Fomoxa phù hợp ở bất cứ đâu hai chương trình, thường viết bằng hai ngôn ngữ, phải thống nhất dữ liệu
+      đến từng byte. Dưới đây là bốn nơi như vậy, kèm những gì chạy tốt và những gì cần tính trước.
+    </p>
+  </div>
+</section>
+
+<section class="band" id="games">
+  <div class="band-in">
+    <p class="offset">01 · Game</p>
+    <div class="col">
+      <h2 class="h2">Game multiplayer đa engine</h2>
+      <p class="lede">
+        Server bằng Rust hoặc C#, client Unity bằng C#, client Unreal bằng C++, client Godot bằng GDScript.
+        Một schema, và mọi engine đọc ghi cùng một chuỗi byte.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Vì sao phù hợp</span>
+          <ul class="card-list">
+            <li>Snapshot giống hệt từng byte giúp lockstep, replay và checksum phát hiện desync so sánh được giữa các nền tảng.</li>
+            <li>Không tag hay tên trên wire: trạng thái người chơi chỉ tốn đúng các field của nó. Example game dùng 29 byte cho mỗi người chơi.</li>
+            <li>Code sinh ra không dùng reflection, nên chạy được dưới Unity IL2CPP và các target AOT khác.</li>
+            <li>Runtime C# nhắm netstandard2.1 và chạy trong Unity 2021+; <code>fomoxa.unity</code> cho phép dùng <code>Vector3</code>, <code>Quaternion</code>, <code>Color</code>… làm kiểu field.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Cần tính trước</span>
+          <ul class="card-list neg">
+            <li>Client và server phát hành từ cùng một schema. Chỉ field thêm vào cuối mới sống sót qua rolling update.</li>
+            <li>Client decode bằng schema cũ sẽ nhận giá trị sai, không phải lỗi. Schema handshake của các runtime tồn tại để chặn điều đó ngay lúc kết nối.</li>
+            <li>Fomoxa không làm prediction, interpolation hay delta compression. Những việc đó vẫn thuộc netcode của bạn.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c">// Unity · model dùng các kiểu của fomoxa.unity</span>
+[Network]
+[Codec("game")]
+public class PlayerState
+{
+    [Network("u32")]        [Codec("game")] public uint Id { get; set; }
+    [Network("Vector3")]    [Codec("game")] public Vector3 Position { get; set; }
+    [Network("Quaternion")] [Codec("game")] public Quaternion Rotation { get; set; }
+    [Network("u8")]         [Codec("game")] public byte Health { get; set; }
+}</pre>
+      <p class="note-line">
+        <strong>Đã chạy thật:</strong> <a href="https://github.com/fomoxa/fomoxa-example-game">fomoxa-example-game</a> đưa
+        client Unity, Unreal, Godot và Go vào cùng một trận với server Rust. Server một luồng giữ vững 30 Hz với
+        1000 bot, mỗi bot nhận trạng thái của 999 bot khác, và phần encode chỉ tốn 0.02 ms trong tick 33.3 ms.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="backend">
+  <div class="band-in">
+    <p class="offset">02 · Service</p>
+    <div class="col">
+      <h2 class="h2">Giao tiếp giữa backend service</h2>
+      <p class="lede">
+        Các service viết bằng Go, Rust, C# và Node.js trao đổi message mà chính các byte mang ý nghĩa:
+        được ký, hash, cache hoặc so sánh.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Vì sao phù hợp</span>
+          <ul class="card-list">
+            <li>Chữ ký hoặc hash tạo ở ngôn ngữ này kiểm tra được ở ngôn ngữ khác, vì encode lại cùng giá trị cho ra cùng byte.</li>
+            <li>Cache theo nội dung và khử trùng lặp hoạt động mà không cần bước canonical hoá riêng.</li>
+            <li><code>fomoxac ci</code> so schema với nhánh đích và làm build thất bại khi có breaking change.</li>
+            <li>Fomoxa chỉ là định dạng payload, nên đặt được vào bất cứ thứ gì bạn đang chạy: body HTTP, message queue, file, hoặc các runtime mẫu trên TCP/UDP.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Cần tính trước</span>
+          <ul class="card-list neg">
+            <li>Các team deploy độc lập trong nhiều tháng sẽ hợp hơn với format dùng field number.</li>
+            <li>Payload không đọc được trong log. Hãy giữ <code>.fomoxa/schema.json</code> và dùng <code>fomoxa-inspect</code>.</li>
+            <li>Không có tầng RPC: định nghĩa service, retry và routing là việc của bạn.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c">// Go ký, Rust kiểm tra: cả hai encode lại cùng một Order và ra cùng byte</span>
+<span class="k">go</span>    payload := encode(order)                 <span class="c">// 2A 00 00 00 ...</span>
+      sig     := ed25519.Sign(key, payload)
+
+<span class="k">rust</span>  let payload = encode(&amp;order);              <span class="c">// 2A 00 00 00 ... giống hệt</span>
+      verifying_key.verify(&amp;payload, &amp;sig)?;</pre>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="embedded">
+  <div class="band-in">
+    <p class="offset">03 · Nhúng</p>
+    <div class="col">
+      <h2 class="h2">Hệ nhúng viết bằng C</h2>
+      <p class="lede">
+        Vi điều khiển và gateway nói chuyện với server và công cụ viết bằng ngôn ngữ khác.
+        Specification được viết sao cho một encoder bằng assembly trên MCU 8-bit cũng làm theo được.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Vì sao phù hợp</span>
+          <ul class="card-list">
+            <li>Code C sinh ra là C99, các hàm <code>static inline</code> header-only, không dependency.</li>
+            <li>Code C++ sinh ra là C++17 và chạy được với <code>-fno-exceptions</code>.</li>
+            <li>Model chỉ gồm field độ rộng cố định luôn có cùng kích thước, nên buffer có thể xác định lúc biên dịch.</li>
+            <li>Tiền tố độ dài và count được kiểm tra với số byte còn lại trước mọi lần cấp phát, điều quan trọng trên đường truyền không tin cậy.</li>
+            <li>Runtime C không có thread, không chạy nền, và nhận transport do người dùng tự viết.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Cần tính trước</span>
+          <ul class="card-list neg">
+            <li>Decode <code>string</code>, <code>bytes</code> và array trong code C sinh ra có gọi <code>malloc</code>. Trên target không có heap, hãy để những field đó ngoài model.</li>
+            <li>Transport có sẵn của runtime là socket TCP và UDP. Với UART, CAN hay sóng radio, hãy tự viết transport, hoặc chỉ dùng codec với framing của riêng bạn.</li>
+            <li>Số nguyên độ rộng cố định tốn nhiều byte hơn varint trên đường truyền chậm.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c">/* Một frame telemetry kích thước cố định: luôn 4 + 4 + 2 + 1 = 11 byte */</span>
+FOMOXA_MODEL
+FOMOXA_CODEC("uplink")
+struct Telemetry
+{
+    FOMOXA_FIELD(u32) FOMOXA_CODEC("uplink") uint32_t sequence;
+    FOMOXA_FIELD(f32) FOMOXA_CODEC("uplink") float    temperature;
+    FOMOXA_FIELD(u16) FOMOXA_CODEC("uplink") uint16_t millivolts;
+    FOMOXA_FIELD(u8)  FOMOXA_CODEC("uplink") uint8_t  status;
+};</pre>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close" id="tooling">
+  <div class="band-in">
+    <p class="offset">04 · Công cụ</p>
+    <div class="col">
+      <h2 class="h2">Công cụ đa engine</h2>
+      <p class="lede">
+        Bộ ghi replay, binary log, pipeline cho level và asset, plugin editor: các công cụ viết bằng
+        một ngôn ngữ đọc dữ liệu do ngôn ngữ khác tạo ra.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <span class="card-k">Vì sao phù hợp</span>
+          <ul class="card-list">
+            <li><code>.fomoxa/schema.json</code> mô tả mọi model độc lập với ngôn ngữ, công cụ đọc được ngay.</li>
+            <li><code>fomoxa-inspect</code> và <a href="/vi/inspector/">byte inspector</a> decode bất kỳ payload nào theo một schema.</li>
+            <li>Quy tắc version skew cho biết chính xác bản ghi cũ nào vẫn decode được: những bản chỉ khác ở các field cuối.</li>
+            <li>Một bản ghi cho cùng hash dù engine nào ghi ra, nên file có thể khử trùng lặp và kiểm chứng.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="card-k">Cần tính trước</span>
+          <ul class="card-list neg">
+            <li>File không mang marker phiên bản. Hãy lưu schema fingerprint cạnh dữ liệu, hoặc tự đóng khung nó.</li>
+            <li>Đổi thứ tự hay đổi kiểu một field khiến file cũ không đọc được. Giữ schema cũ để chuyển đổi.</li>
+          </ul>
+        </div>
+      </div>
+<pre class="code"><span class="c"># decode một frame trong file replay theo schema đã ghi ra nó</span>
+fomoxa-inspect --schema replays/v3/schema.json --message WorldSnapshot.game --file frame-0042.bin
+
+<span class="c"># kiểm tra thay đổi schema so với schema lúc ghi các bản replay</span>
+fomoxac compat --base replays/v3/schema.json</pre>
+      <p class="body">
+        Chưa chắc Fomoxa có hợp không? <a href="/vi/comparison/">Xem so sánh</a> với Protobuf, FlatBuffers,
+        Cap'n Proto, JSON và MessagePack.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Tác giả <strong>Hà Duy Thắng</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+
+
+</body>
+</html>

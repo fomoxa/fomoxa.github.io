@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Byte inspector - Fomoxa Protocol</title>
+<meta name="description" content="Type a value, see the exact Fomoxa bytes. Decode a payload, or compare against common implementation bugs and your own output.">
+<link rel="canonical" href="https://fomoxa.github.io/inspector/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/inspector/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/inspector/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/inspector/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Site">
+      <a href="/">Protocol</a>
+      <a href="/getting-started/">Get started</a>
+      <a href="/inspector/" aria-current="page">Inspector</a>
+      <a href="/ecosystem/">Ecosystem</a>
+      <a href="/comparison/">Compare</a>
+      <a href="/use-cases/">Use cases</a>
+      <a href="/roadmap/">Roadmap</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Language">
+        <span aria-current="true">EN</span><span class="sep">/</span><a href="/vi/inspector/" hreflang="vi" lang="vi">VI</a>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Byte inspector · RFC-0002</p>
+    <h1 class="h1">Type a value. See the bytes.</h1>
+    <p class="hero-sub">
+      Encode any Fomoxa type, decode a payload, or put the correct bytes next to a known bug or
+      your own implementation's output. Everything runs in your browser. Nothing is sent anywhere.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Inspector</p>
+    <div class="insp" id="inspector">
+
+      <div class="insp-bar">
+        <div class="seg" role="group" aria-label="Mode">
+          <button type="button" data-mode="encode" aria-pressed="true">Encode</button>
+          <button type="button" data-mode="decode" aria-pressed="false">Decode</button>
+        </div>
+      </div>
+
+      <div class="insp-bar">
+        <span class="chip-label">Examples</span>
+        <button class="chip" type="button" data-preset="game">GameMessage · 31 B</button>
+        <button class="chip" type="button" data-preset="player">Player</button>
+        <button class="chip" type="button" data-preset="u32">u32</button>
+        <button class="chip" type="button" data-preset="f32">f32 NaN</button>
+        <button class="chip" type="button" data-preset="string">String</button>
+        <button class="chip" type="button" data-preset="array">Array</button>
+        <button class="chip" type="button" data-preset="enumv">Enum</button>
+        <button class="chip" type="button" data-preset="mixed">Mixed</button>
+        <button class="chip" type="button" data-preset="skew">Version skew</button>
+        <button class="chip" type="button" data-preset="reject">Invalid stream</button>
+      </div>
+
+      <div class="insp-form">
+        <div class="insp-col">
+          <label class="ctl">
+            <span>Schema <small>- models and enums, optional for primitives</small></span>
+            <textarea id="inSchema" rows="8" spellcheck="false" autocomplete="off"></textarea>
+          </label>
+          <label class="ctl">
+            <span>Type</span>
+            <input id="inType" list="typeList" spellcheck="false" autocomplete="off">
+            <datalist id="typeList"></datalist>
+          </label>
+        </div>
+        <div class="insp-col">
+          <label class="ctl" id="ctlValue">
+            <span>Value</span>
+            <textarea id="inValue" rows="9" spellcheck="false" autocomplete="off"></textarea>
+          </label>
+          <label class="ctl" id="ctlHex" hidden>
+            <span>Bytes <small>- hex, spaces optional</small></span>
+            <textarea id="inHex" rows="9" spellcheck="false" autocomplete="off"></textarea>
+          </label>
+        </div>
+      </div>
+
+      <p class="msg" id="inspMsg" role="status" aria-live="polite" hidden></p>
+
+      <div class="insp-out" id="inspOut"></div>
+
+      <div class="insp-cmp" id="cmpWrap">
+        <h2 class="h3">Compare</h2>
+        <div class="insp-form">
+          <div class="insp-col">
+            <label class="ctl">
+              <span>Compare the correct bytes with</span>
+              <select id="cmpSel">
+                <option value="">Nothing</option>
+                <option value="paste">My implementation's output (paste hex)</option>
+              </select>
+            </label>
+            <p class="bug-desc" id="cmpDesc" hidden></p>
+          </div>
+          <div class="insp-col">
+            <label class="ctl" id="ctlPaste" hidden>
+              <span>Bytes from your implementation</span>
+              <textarea id="inPaste" rows="4" spellcheck="false" autocomplete="off" placeholder="2A 00 00 00 06 00 00 00 ..."></textarea>
+            </label>
+          </div>
+        </div>
+        <div id="cmpOut"></div>
+      </div>
+
+      <noscript><p class="msg msg-err">The inspector needs JavaScript.</p></noscript>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Syntax</p>
+    <div class="col">
+      <h2 class="h2">Writing schemas and values</h2>
+      <p class="lede">
+        The schema notation is the one the RFCs use. It is a teaching notation, not an IDL:
+        Fomoxa does not mandate one.
+      </p>
+      <div class="table-scroll">
+        <table class="tv">
+          <thead><tr><th scope="col">Type</th><th scope="col">Value examples</th><th scope="col">Notes</th></tr></thead>
+          <tbody>
+            <tr><td class="vid">bool</td><td class="vout">true · false</td><td class="vin">Nothing else. <code>1</code> is not a bool.</td></tr>
+            <tr><td class="vid">u8 … i64</td><td class="vout">100 · -1 · 0x12345678 · 18446744073709551615</td><td class="vin">Exact integers, range-checked. 64-bit values keep full precision.</td></tr>
+            <tr><td class="vid">f32 · f64</td><td class="vout">3.14 · -0.0 · Infinity · NaN · 0x7FC00001</td><td class="vin">A <code>0x…</code> value is the raw IEEE 754 bit pattern, so NaN payloads survive.</td></tr>
+            <tr><td class="vid">String</td><td class="vout">"Xin chào" · "&#92;u4E2D"</td><td class="vin">Encoded as UTF-8. Lone surrogates are rejected.</td></tr>
+            <tr><td class="vid">Bytes</td><td class="vout">"FF FE" · [255, 254]</td><td class="vin">Hex text or a list of 0-255.</td></tr>
+            <tr><td class="vid">Array&lt;T&gt;</td><td class="vout">[1, 2, 3] · [[1, 2], []]</td><td class="vin">Any element type, nested arrays included.</td></tr>
+            <tr><td class="vid">enum</td><td class="vout">Walk · PlayerState::Walk · 1</td><td class="vin"><code>enum E { A = 0, B }</code>. Undefined values are rejected (N-040).</td></tr>
+            <tr><td class="vid">model</td><td class="vout">{ id: 42, name: "Sword" } · [42, "Sword"]</td><td class="vin"><code>model M { id: u32; name: String }</code>. Every field is required: Fomoxa has no defaults.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note-line">
+        This page follows RFC-0002 and is checked against every RFC-0003 vector and the
+        <code>fomoxac</code> accept/reject vectors. It is a learning tool, not a conformance suite:
+        an implementation is Fomoxa Compatible only when it passes
+        <a href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">RFC-0003</a> itself.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Created by <strong>Ha Duy Thang</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+<script src="/assets/inspector.js"></script>
+<script src="/assets/inspector-ui.js"></script>
+
+</body>
+</html>

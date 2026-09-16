@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Byte inspector - Fomoxa Protocol</title>
+<meta name="description" content="Nhập giá trị, xem đúng các byte Fomoxa. Decode một payload, hoặc so sánh với các lỗi implementation hay gặp và output của chính bạn.">
+<link rel="canonical" href="https://fomoxa.github.io/vi/inspector/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/inspector/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/inspector/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/inspector/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/vi/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Trang">
+      <a href="/vi/">Protocol</a>
+      <a href="/vi/getting-started/">Bắt đầu</a>
+      <a href="/vi/inspector/" aria-current="page">Inspector</a>
+      <a href="/vi/ecosystem/">Hệ sinh thái</a>
+      <a href="/vi/comparison/">So sánh</a>
+      <a href="/vi/use-cases/">Ứng dụng</a>
+      <a href="/vi/roadmap/">Lộ trình</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Ngôn ngữ">
+        <a href="/inspector/" hreflang="en" lang="en">EN</a><span class="sep">/</span><span aria-current="true">VI</span>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Chuyển giao diện">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Byte inspector · RFC-0002</p>
+    <h1 class="h1">Nhập giá trị. Xem byte.</h1>
+    <p class="hero-sub">
+      Encode bất kỳ type Fomoxa nào, decode một payload, hoặc đặt byte đúng cạnh một lỗi đã biết hay
+      output từ implementation của bạn. Mọi thứ chạy trong trình duyệt. Không gì được gửi đi đâu cả.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Inspector</p>
+    <div class="insp" id="inspector">
+
+      <div class="insp-bar">
+        <div class="seg" role="group" aria-label="Chế độ">
+          <button type="button" data-mode="encode" aria-pressed="true">Encode</button>
+          <button type="button" data-mode="decode" aria-pressed="false">Decode</button>
+        </div>
+      </div>
+
+      <div class="insp-bar">
+        <span class="chip-label">Ví dụ</span>
+        <button class="chip" type="button" data-preset="game">GameMessage · 31 B</button>
+        <button class="chip" type="button" data-preset="player">Player</button>
+        <button class="chip" type="button" data-preset="u32">u32</button>
+        <button class="chip" type="button" data-preset="f32">f32 NaN</button>
+        <button class="chip" type="button" data-preset="string">String</button>
+        <button class="chip" type="button" data-preset="array">Array</button>
+        <button class="chip" type="button" data-preset="enumv">Enum</button>
+        <button class="chip" type="button" data-preset="mixed">Mixed</button>
+        <button class="chip" type="button" data-preset="skew">Version skew</button>
+        <button class="chip" type="button" data-preset="reject">Stream không hợp lệ</button>
+      </div>
+
+      <div class="insp-form">
+        <div class="insp-col">
+          <label class="ctl">
+            <span>Schema <small>- model và enum, không cần cho kiểu nguyên thuỷ</small></span>
+            <textarea id="inSchema" rows="8" spellcheck="false" autocomplete="off"></textarea>
+          </label>
+          <label class="ctl">
+            <span>Kiểu</span>
+            <input id="inType" list="typeList" spellcheck="false" autocomplete="off">
+            <datalist id="typeList"></datalist>
+          </label>
+        </div>
+        <div class="insp-col">
+          <label class="ctl" id="ctlValue">
+            <span>Giá trị</span>
+            <textarea id="inValue" rows="9" spellcheck="false" autocomplete="off"></textarea>
+          </label>
+          <label class="ctl" id="ctlHex" hidden>
+            <span>Byte <small>- hex, khoảng trắng tuỳ ý</small></span>
+            <textarea id="inHex" rows="9" spellcheck="false" autocomplete="off"></textarea>
+          </label>
+        </div>
+      </div>
+
+      <p class="msg" id="inspMsg" role="status" aria-live="polite" hidden></p>
+
+      <div class="insp-out" id="inspOut"></div>
+
+      <div class="insp-cmp" id="cmpWrap">
+        <h2 class="h3">So sánh</h2>
+        <div class="insp-form">
+          <div class="insp-col">
+            <label class="ctl">
+              <span>So sánh byte đúng với</span>
+              <select id="cmpSel">
+                <option value="">Không so sánh</option>
+                <option value="paste">Output từ implementation của tôi (dán hex)</option>
+              </select>
+            </label>
+            <p class="bug-desc" id="cmpDesc" hidden></p>
+          </div>
+          <div class="insp-col">
+            <label class="ctl" id="ctlPaste" hidden>
+              <span>Byte từ implementation của bạn</span>
+              <textarea id="inPaste" rows="4" spellcheck="false" autocomplete="off" placeholder="2A 00 00 00 06 00 00 00 ..."></textarea>
+            </label>
+          </div>
+        </div>
+        <div id="cmpOut"></div>
+      </div>
+
+      <noscript><p class="msg msg-err">Inspector cần JavaScript.</p></noscript>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Cú pháp</p>
+    <div class="col">
+      <h2 class="h2">Cách viết schema và giá trị</h2>
+      <p class="lede">
+        Ký pháp schema là ký pháp các RFC dùng. Đây là ký pháp để minh hoạ, không phải IDL:
+        Fomoxa không bắt buộc IDL nào.
+      </p>
+      <div class="table-scroll">
+        <table class="tv">
+          <thead><tr><th scope="col">Kiểu</th><th scope="col">Ví dụ giá trị</th><th scope="col">Ghi chú</th></tr></thead>
+          <tbody>
+            <tr><td class="vid">bool</td><td class="vout">true · false</td><td class="vin">Không gì khác. <code>1</code> không phải bool.</td></tr>
+            <tr><td class="vid">u8 … i64</td><td class="vout">100 · -1 · 0x12345678 · 18446744073709551615</td><td class="vin">Số nguyên chính xác, có kiểm tra phạm vi. Giá trị 64-bit giữ đủ độ chính xác.</td></tr>
+            <tr><td class="vid">f32 · f64</td><td class="vout">3.14 · -0.0 · Infinity · NaN · 0x7FC00001</td><td class="vin">Giá trị <code>0x…</code> là bit pattern IEEE 754 thô, nên payload của NaN được giữ nguyên.</td></tr>
+            <tr><td class="vid">String</td><td class="vout">"Xin chào" · "&#92;u4E2D"</td><td class="vin">Encode thành UTF-8. Surrogate lẻ bị từ chối.</td></tr>
+            <tr><td class="vid">Bytes</td><td class="vout">"FF FE" · [255, 254]</td><td class="vin">Chuỗi hex hoặc danh sách 0-255.</td></tr>
+            <tr><td class="vid">Array&lt;T&gt;</td><td class="vout">[1, 2, 3] · [[1, 2], []]</td><td class="vin">Phần tử kiểu gì cũng được, kể cả array lồng nhau.</td></tr>
+            <tr><td class="vid">enum</td><td class="vout">Walk · PlayerState::Walk · 1</td><td class="vin"><code>enum E { A = 0, B }</code>. Giá trị không được định nghĩa bị từ chối (N-040).</td></tr>
+            <tr><td class="vid">model</td><td class="vout">{ id: 42, name: "Sword" } · [42, "Sword"]</td><td class="vin"><code>model M { id: u32; name: String }</code>. Mọi field đều bắt buộc: Fomoxa không có giá trị mặc định.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note-line">
+        Trang này làm theo RFC-0002 và được kiểm tra với mọi vector của RFC-0003 cùng các vector
+        accept/reject của <code>fomoxac</code>. Đây là công cụ học, không phải bộ kiểm tra conformance:
+        một implementation chỉ là Fomoxa Compatible khi chính nó pass
+        <a href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">RFC-0003</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Tác giả <strong>Hà Duy Thắng</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+<script src="/assets/inspector.js"></script>
+<script src="/assets/inspector-ui.js"></script>
+
+</body>
+</html>

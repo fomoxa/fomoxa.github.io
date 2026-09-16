@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://fomoxa.github.io/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/vi/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/getting-started/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/getting-started/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/getting-started/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/vi/getting-started/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/getting-started/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/getting-started/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/inspector/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/inspector/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/inspector/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/vi/inspector/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/inspector/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/inspector/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/ecosystem/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/ecosystem/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/ecosystem/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/vi/ecosystem/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/ecosystem/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/ecosystem/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/comparison/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/comparison/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/comparison/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/vi/comparison/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/comparison/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/comparison/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/use-cases/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/use-cases/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/use-cases/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/vi/use-cases/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/use-cases/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/use-cases/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/roadmap/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/roadmap/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/roadmap/"/>
+  </url>
+  <url>
+    <loc>https://fomoxa.github.io/vi/roadmap/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://fomoxa.github.io/roadmap/"/>
+    <xhtml:link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/roadmap/"/>
+  </url>
+</urlset>

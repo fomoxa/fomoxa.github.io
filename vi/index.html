@@ -8,8 +8,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/site.css">
-<link rel="icon" type="image/png" href="../assets/favicon.svg">
+<link rel="canonical" href="https://fomoxa.github.io/vi/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <script>
 (function(){var t=localStorage.getItem('fomoxa_theme');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);})();
 </script>
@@ -18,19 +22,19 @@
 
 <header class="topbar">
   <div class="topbar-in">
-    <a class="brand" href="#top">
-      <img src="../assets/logo.svg" alt="Fomoxa Logo" class="brand-logo" />
+    <a class="brand" href="/vi/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
       Fomoxa
     </a>
-    <nav class="topnav" aria-label="Mục">
-      <a href="#top">Trang chủ</a>
-      <a href="#philosophy">Triết lý</a>
-      <a href="#tradeoffs">Đánh đổi</a>
-      <a href="#spec">Specification</a>
-      <a href="#wire">RFC-0002</a>
-      <a href="#vectors">Test vector</a>
-      <a href="#conformance">Conformance</a>
-      <a href="#github">GitHub</a>
+    <nav class="topnav" aria-label="Trang">
+      <a href="/vi/" aria-current="page">Protocol</a>
+      <a href="/vi/getting-started/">Bắt đầu</a>
+      <a href="/vi/inspector/">Inspector</a>
+      <a href="/vi/ecosystem/">Hệ sinh thái</a>
+      <a href="/vi/comparison/">So sánh</a>
+      <a href="/vi/use-cases/">Ứng dụng</a>
+      <a href="/vi/roadmap/">Lộ trình</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
     </nav>
     <div class="topbar-actions">
       <p class="lang-switch" aria-label="Ngôn ngữ">
@@ -44,7 +48,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Wire format specification · v1.1.0 · Draft</p>
+    <p class="eyebrow">Wire format specification · v1.1.0 · Final</p>
 
     <h1 class="h1">Fomoxa Protocol</h1>
 
@@ -60,7 +64,8 @@
 
     <div class="ctas">
       <a class="btn btn-primary" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">Đọc specification <span class="arrow">→</span></a>
-      <a class="btn btn-ghost" href="https://github.com/fomoxa">GitHub <span class="arrow">↗</span></a>
+      <a class="btn btn-ghost" href="/vi/getting-started/">Bắt đầu <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="/vi/inspector/">Thử inspector <span class="arrow">→</span></a>
     </div>
   </div>
 </section>
@@ -489,6 +494,7 @@ ghi bằng ItemV2, đọc bằng ItemV2, bị cắt giữa field
         <p class="lede">
           Ví dụ từ RFC-0002 §15. Model lồng, string, số nguyên, bool. Encode ra 31 byte.
           Rê chuột lên một field để làm sáng byte nó sở hữu. Rê lên một byte để tìm chủ của nó.
+          Muốn đổi giá trị? <a href="/vi/inspector/#preset=game">Mở trong inspector →</a>
         </p>
       </div>
 
@@ -579,6 +585,11 @@ model GameMessage {
         field nào nhờ con trỏ đã đi được bao xa. Đó là lý do
         đổi thứ tự field là breaking change, còn đổi tên field thì miễn phí.
       </p>
+
+      <div class="ctas">
+        <a class="btn btn-primary" href="/vi/inspector/">Encode giá trị của bạn <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="/vi/inspector/#preset=skew">Thử version skew <span class="arrow">→</span></a>
+      </div>
     </div>
   </div>
 </section>
@@ -797,21 +808,21 @@ model GameMessage {
       <h2 class="h2">Công cụ chính thức</h2>
 
       <div class="tools">
-        <div class="tool">
-          <span class="tool-t">Compiler chính thức</span>
-          <span class="tool-d">Đọc một Schema, sinh ra codec. Một trong nhiều cách hợp lệ để thoả RFC-0002.</span>
-          <span class="status s-wip">Đang làm</span>
-        </div>
-        <div class="tool">
+        <a class="tool" href="/vi/ecosystem/">
+          <span class="tool-t">fomoxac</span>
+          <span class="tool-d">Đọc type có annotation ở tám ngôn ngữ, sinh ra codec. Một trong nhiều cách hợp lệ để thoả RFC-0002.</span>
+          <span class="status s-ok">Ổn định · 0.2.0</span>
+        </a>
+        <a class="tool" href="https://github.com/fomoxa/implementation-guide/blob/main/vi/README.md">
           <span class="tool-t">Implementation guide</span>
-          <span class="tool-d">Đọc để triển khai một Fomoxa tương thích với các bản phát hành.</span>
-          <span class="status s-wip">Đang làm</span>
-        </div>
-        <div class="tool">
-          <span class="tool-t">SDK tham chiếu</span>
-          <span class="tool-d">Một encoder/decoder mẫu để đọc song song với spec. Spec không phụ thuộc vào nó.</span>
-          <span class="status s-wip">Đang làm</span>
-        </div>
+          <span class="tool-d">Framing, handshake và hợp đồng transport, cho ai viết runtime ở một ngôn ngữ mới.</span>
+          <span class="status s-ok">Đã phát hành</span>
+        </a>
+        <a class="tool" href="/vi/ecosystem/#runtimes">
+          <span class="tool-t">Runtime mẫu</span>
+          <span class="tool-d">Rust, C#, Go, C/C++, Node.js và Godot. Hàng mẫu cho cách vận chuyển Fomoxa. Spec không phụ thuộc vào chúng.</span>
+          <span class="status s-ok">Ổn định</span>
+        </a>
       </div>
 
       <p class="disclaimer">
@@ -820,25 +831,12 @@ model GameMessage {
       </p>
 
       <p class="body">
-        Thay cả ba, wire format không đổi. Không gì trong Fomoxa bắt bạn phải dùng chúng.
-        Chúng tồn tại để được đọc, và để bị vượt qua.
+        Thay tất cả, wire format không đổi. Không gì trong Fomoxa bắt bạn phải dùng chúng.
+        Chúng tồn tại để được đọc, và để bị vượt qua. <a href="/vi/ecosystem/">Xem toàn bộ hệ sinh thái →</a>
       </p>
     </div>
   </div>
 </section>
-
-<!--
-  Bảng implementation - KHÔNG thêm cho tới khi có implementation thật,
-  trong đó ít nhất một cái đến từ bên ngoài dự án này. Hình dạng khi ngày đó tới:
-
-    Ngôn ngữ | Trạng thái | Compatible
-    Go       | Official   | ✅
-    Rust     | Community  | ✅
-    Java     | Community  | ✅
-
-  Một danh sách SDK "Coming Soon" dạy người mới rằng Fomoxa = một bộ SDK.
-  Không phải vậy.
--->
 
 <!-- ============ THE PATH ============ -->
 <section class="band band-close" id="path">
@@ -862,15 +860,22 @@ model GameMessage {
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">
+          <a class="step" href="/vi/getting-started/">
             <span class="step-n">03</span>
+            <span class="step-t">Sinh codec đầu tiên</span>
+            <span class="step-d">Bắt đầu - fomoxac, một model, 13 byte.</span>
+          </a>
+        </li>
+        <li>
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">
+            <span class="step-n">04</span>
             <span class="step-t">Chạy test vector</span>
             <span class="step-d">RFC-0003 - thứ duy nhất quyết định đúng hay sai.</span>
           </a>
         </li>
         <li>
           <a class="step step-last" href="https://github.com/fomoxa/specification">
-            <span class="step-n">04</span>
+            <span class="step-n">05</span>
             <span class="step-t">Tự viết implementation của bạn</span>
             <span class="step-d">Ngôn ngữ nào cũng được, kỹ thuật nào cũng được. Pass 100% là Fomoxa Compatible.</span>
           </a>
@@ -886,12 +891,12 @@ model GameMessage {
     <span>Tác giả <strong>Hà Duy Thắng</strong></span>
   </div>
   <p class="foot-copy">
-    Draft specification v1.1.0 · Copyright © 2026 Ha Duy Thang ·
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
     Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
   </p>
 </footer>
 
-<script src="../assets/site.js"></script>
+<script src="/assets/site.js"></script>
 
 </body>
 </html>

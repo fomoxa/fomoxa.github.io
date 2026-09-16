@@ -11,26 +11,30 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css">
-<link rel="icon" type="image/png" href="assets/favicon.svg">
+<link rel="canonical" href="https://fomoxa.github.io/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 </head>
 <body>
 
 <header class="topbar">
   <div class="topbar-in">
-    <a class="brand" href="#top">
-      <img src="assets/logo.svg" alt="Fomoxa Logo" class="brand-logo" />
+    <a class="brand" href="/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
       Fomoxa
     </a>
-    <nav class="topnav" aria-label="Sections">
-      <a href="#top">Home</a>
-      <a href="#philosophy">Philosophy</a>
-      <a href="#tradeoffs">Trade-offs</a>
-      <a href="#spec">Specification</a>
-      <a href="#wire">RFC-0002</a>
-      <a href="#vectors">Test vectors</a>
-      <a href="#conformance">Conformance</a>
-      <a href="#github">GitHub</a>
+    <nav class="topnav" aria-label="Site">
+      <a href="/" aria-current="page">Protocol</a>
+      <a href="/getting-started/">Get started</a>
+      <a href="/inspector/">Inspector</a>
+      <a href="/ecosystem/">Ecosystem</a>
+      <a href="/comparison/">Compare</a>
+      <a href="/use-cases/">Use cases</a>
+      <a href="/roadmap/">Roadmap</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
     </nav>
     <div class="topbar-actions">
       <p class="lang-switch" aria-label="Language">
@@ -44,7 +48,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Wire format specification · v1.1.0 · Draft</p>
+    <p class="eyebrow">Wire format specification · v1.1.0 · Final</p>
 
     <h1 class="h1">Fomoxa Protocol</h1>
 
@@ -60,7 +64,8 @@
 
     <div class="ctas">
       <a class="btn btn-primary" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0002.md">Read specification <span class="arrow">→</span></a>
-      <a class="btn btn-ghost" href="https://github.com/fomoxa">GitHub <span class="arrow">↗</span></a>
+      <a class="btn btn-ghost" href="/getting-started/">Get started <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="/inspector/">Try the inspector <span class="arrow">→</span></a>
     </div>
   </div>
 </section>
@@ -491,6 +496,7 @@ written ItemV2, read ItemV2, truncated mid-field
         <p class="lede">
           The example from RFC-0002 §15. Nested model, string, integers, bool. It encodes to 31 bytes.
           Hover a field to light up the bytes it owns. Hover a byte to find its owner.
+          Want to change the values? <a href="/inspector/#preset=game">Open it in the inspector →</a>
         </p>
       </div>
 
@@ -581,6 +587,11 @@ model GameMessage {
         which field it is reading from how far the cursor has advanced. That is why
         reordering a field is a breaking change, and why renaming one is free.
       </p>
+
+      <div class="ctas">
+        <a class="btn btn-primary" href="/inspector/">Encode your own values <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="/inspector/#preset=skew">Try version skew <span class="arrow">→</span></a>
+      </div>
     </div>
   </div>
 </section>
@@ -800,21 +811,21 @@ model GameMessage {
       <h2 class="h2">Official tools</h2>
 
       <div class="tools">
-        <div class="tool">
-          <span class="tool-t">Official compiler</span>
-          <span class="tool-d">Reads a Schema, emits a codec. One of many valid ways to satisfy RFC-0002.</span>
-          <span class="status s-wip">In progress</span>
-        </div>
-        <div class="tool">
+        <a class="tool" href="/ecosystem/">
+          <span class="tool-t">fomoxac</span>
+          <span class="tool-d">Reads annotated types in eight languages, emits codecs. One of many valid ways to satisfy RFC-0002.</span>
+          <span class="status s-ok">Stable · 0.2.0</span>
+        </a>
+        <a class="tool" href="https://github.com/fomoxa/implementation-guide">
           <span class="tool-t">Implementation guide</span>
-          <span class="tool-d">Read to implement a Fomoxa-compatible implementation.</span>
-          <span class="status s-wip">In progress</span>
-        </div>
-        <div class="tool">
-          <span class="tool-t">Reference SDK</span>
-          <span class="tool-d">A worked encoder/decoder to read alongside the spec. The spec does not depend on it.</span>
-          <span class="status s-wip">In progress</span>
-        </div>
+          <span class="tool-d">Framing, handshake and transport contract, for anyone writing a runtime in a new language.</span>
+          <span class="status s-ok">Published</span>
+        </a>
+        <a class="tool" href="/ecosystem/#runtimes">
+          <span class="tool-t">Sample runtimes</span>
+          <span class="tool-d">Rust, C#, Go, C/C++, Node.js and Godot. Samples of how Fomoxa can be carried. The spec does not depend on them.</span>
+          <span class="status s-ok">Stable</span>
+        </a>
       </div>
 
       <p class="disclaimer">
@@ -823,25 +834,12 @@ model GameMessage {
       </p>
 
       <p class="body">
-        Replace all three and the wire format holds. Nothing in Fomoxa requires you to use them.
-        They exist to be read, and to be beaten.
+        Replace all of them and the wire format holds. Nothing in Fomoxa requires you to use them.
+        They exist to be read, and to be beaten. <a href="/ecosystem/">See the whole ecosystem →</a>
       </p>
     </div>
   </div>
 </section>
-
-<!--
-  Implementations table - do NOT add until real implementations exist,
-  including at least one from outside this project. Shape when that day comes:
-
-    Language | Status    | Compatible
-    Go       | Official  | ✅
-    Rust     | Community | ✅
-    Java     | Community | ✅
-
-  A list of "Coming Soon" SDKs teaches newcomers that Fomoxa = a set of SDKs.
-  It does not.
--->
 
 <!-- ============ THE PATH ============ -->
 <section class="band band-close" id="path">
@@ -865,15 +863,22 @@ model GameMessage {
           </a>
         </li>
         <li>
-          <a class="step" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">
+          <a class="step" href="/getting-started/">
             <span class="step-n">03</span>
+            <span class="step-t">Generate your first codec</span>
+            <span class="step-d">Getting started - fomoxac, one model, 13 bytes.</span>
+          </a>
+        </li>
+        <li>
+          <a class="step" href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">
+            <span class="step-n">04</span>
             <span class="step-t">Run test vectors</span>
             <span class="step-d">RFC-0003 - the only thing that decides correctness.</span>
           </a>
         </li>
         <li>
           <a class="step step-last" href="https://github.com/fomoxa/specification">
-            <span class="step-n">04</span>
+            <span class="step-n">05</span>
             <span class="step-t">Build your own implementation</span>
             <span class="step-d">Any language, any technique. Pass 100% and it is Fomoxa Compatible.</span>
           </a>
@@ -889,12 +894,12 @@ model GameMessage {
     <span>Created by <strong>Ha Duy Thang</strong></span>
   </div>
   <p class="foot-copy">
-    Draft specification v1.1.0 · Copyright © 2026 Ha Duy Thang ·
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
     Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
   </p>
 </footer>
 
-<script src="assets/site.js"></script>
+<script src="/assets/site.js"></script>
 
 </body>
 </html>

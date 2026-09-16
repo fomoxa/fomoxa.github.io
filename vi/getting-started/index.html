@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bắt đầu - Fomoxa Protocol</title>
+<meta name="description" content="Cài fomoxac, đánh dấu model đầu tiên, sinh codec và ghi 13 byte ra wire bằng Rust, C#, Go hoặc TypeScript.">
+<link rel="canonical" href="https://fomoxa.github.io/vi/getting-started/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/getting-started/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/getting-started/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/getting-started/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/vi/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Trang">
+      <a href="/vi/">Protocol</a>
+      <a href="/vi/getting-started/" aria-current="page">Bắt đầu</a>
+      <a href="/vi/inspector/">Inspector</a>
+      <a href="/vi/ecosystem/">Hệ sinh thái</a>
+      <a href="/vi/comparison/">So sánh</a>
+      <a href="/vi/use-cases/">Ứng dụng</a>
+      <a href="/vi/roadmap/">Lộ trình</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Ngôn ngữ">
+        <a href="/getting-started/" hreflang="en" lang="en">EN</a><span class="sep">/</span><span aria-current="true">VI</span>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Chuyển giao diện">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Bắt đầu · fomoxac 0.2.0</p>
+    <h1 class="h1">Từ một model đến 13 byte</h1>
+    <p class="hero-sub">
+      Cài công cụ sinh code, đánh dấu một type bạn đã có, sinh codec, rồi ghi
+      <code>Player{ id: 100, name: "Alice" }</code> ra wire. Khoảng mười phút.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Trước khi bắt đầu</p>
+    <div class="col">
+      <p class="lede">
+        Fomoxa là specification. <code>fomoxac</code> là một công cụ hiện thực nó: đọc annotation
+        trên chính type của bạn và sinh ra source code thuần để encode và decode chúng.
+      </p>
+      <p class="body">
+        Code sinh ra không có dependency lúc chạy, kể cả với <code>fomoxac</code>. Codec viết tay cũng hợp lệ
+        như vậy, miễn là pass các
+        <a href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">test vector của RFC-0003</a>.
+        Mọi đoạn code trên trang này đều được sinh bằng <code>fomoxac 0.2.0</code>, và tất cả trừ GDScript đã được chạy thật.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Các bước</p>
+    <div class="gs-steps">
+
+      <div class="gs-step" id="install">
+        <h2 class="h3">Cài fomoxac</h2>
+        <p class="body">
+          <code>fomoxac</code> được phát hành trên crates.io và cần Rust toolchain
+          (<a href="https://rustup.rs">rustup</a>) để cài, dù project của bạn dùng ngôn ngữ nào.
+          Cùng lệnh đó cài luôn <code>fomoxa-inspect</code>, công cụ debug payload.
+        </p>
+<pre class="code">cargo install fomoxac
+fomoxac --version
+<span class="c"># fomoxac 0.2.0</span></pre>
+      </div>
+
+      <div class="gs-step" id="model">
+        <h2 class="h3">Đánh dấu model đầu tiên</h2>
+        <p class="body">
+          Không có file IDL. Schema là một tập annotation trên type bạn đã sở hữu:
+          type nào là Model, nó sinh codec nào (ở đây là <code>game</code>), và wire type của từng field.
+          Field không có annotation không bao giờ lên wire.
+        </p>
+
+        <div class="tabs" data-sync="lang">
+          <div class="tab-list" role="tablist" aria-label="Ngôn ngữ">
+            <button role="tab" type="button" data-key="rust" id="m-rust" aria-controls="mp-rust">Rust</button>
+            <button role="tab" type="button" data-key="csharp" id="m-csharp" aria-controls="mp-csharp">C#</button>
+            <button role="tab" type="button" data-key="go" id="m-go" aria-controls="mp-go">Go</button>
+            <button role="tab" type="button" data-key="ts" id="m-ts" aria-controls="mp-ts">TypeScript</button>
+            <button role="tab" type="button" data-key="js" id="m-js" aria-controls="mp-js">JavaScript</button>
+            <button role="tab" type="button" data-key="c" id="m-c" aria-controls="mp-c">C</button>
+            <button role="tab" type="button" data-key="cpp" id="m-cpp" aria-controls="mp-cpp">C++</button>
+            <button role="tab" type="button" data-key="gd" id="m-gd" aria-controls="mp-gd">GDScript</button>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-rust" aria-labelledby="m-rust">
+<pre class="code"><span class="c">// src/models/player.rs      cần: cargo add fomoxa-attributes</span>
+use fomoxa_attributes::*;
+
+#[network]
+#[codec(game)]
+pub struct Player {
+    #[network(u32)]
+    #[codec(game)]
+    pub id: u32,
+
+    #[network(string)]
+    #[codec(game)]
+    pub name: String,
+}</pre>
+            <p class="code-note">Thêm <code>pub mod player;</code> vào <code>src/models/mod.rs</code>.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-csharp" aria-labelledby="m-csharp">
+<pre class="code"><span class="c">// src/Models/Player.cs      cần: dotnet add package Fomoxa.Attributes</span>
+using Fomoxa;
+
+namespace Game.Models
+{
+    [Network]
+    [Codec("game")]
+    public class Player
+    {
+        [Network("u32")]
+        [Codec("game")]
+        public uint Id { get; set; }
+
+        [Network("string")]
+        [Codec("game")]
+        public string Name { get; set; }
+    }
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-go" aria-labelledby="m-go">
+<pre class="code"><span class="c">// models/player.go          không cần gì - comment và struct tag vốn là Go hợp lệ</span>
+package models
+
+//fomoxa:model codec=game
+type Player struct {
+	ID   uint32 `fomoxa:"u32" codec:"game"`
+	Name string `fomoxa:"string" codec:"game"`
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-ts" aria-labelledby="m-ts">
+<pre class="code"><span class="c">// src/models/player.ts      không cần gì - directive chỉ là comment</span>
+// FOMOXA_MODEL
+// FOMOXA_CODEC("game")
+export class Player {
+    // FOMOXA_FIELD(u32)
+    // FOMOXA_CODEC("game")
+    id: number = 0;
+
+    // FOMOXA_FIELD(string)
+    // FOMOXA_CODEC("game")
+    name: string = "";
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-js" aria-labelledby="m-js">
+<pre class="code"><span class="c">// src/models/player.js      không cần gì - directive chỉ là comment</span>
+// FOMOXA_MODEL
+// FOMOXA_CODEC("game")
+export class Player {
+    // FOMOXA_FIELD(u32)
+    // FOMOXA_CODEC("game")
+    id = 0;
+
+    // FOMOXA_FIELD(string)
+    // FOMOXA_CODEC("game")
+    name = "";
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-c" aria-labelledby="m-c">
+<pre class="code"><span class="c">/* include/fomoxa.h - ba marker, mở rộng thành rỗng */</span>
+#define FOMOXA_MODEL
+#define FOMOXA_FIELD(type)
+#define FOMOXA_CODEC(...)
+
+<span class="c">/* src/models/player.h */</span>
+#pragma once
+#include "fomoxa.h"
+#include &lt;stdint.h&gt;
+
+FOMOXA_MODEL
+FOMOXA_CODEC("game")
+struct Player
+{
+    FOMOXA_FIELD(u32)
+    FOMOXA_CODEC("game")
+    uint32_t id;
+
+    FOMOXA_FIELD(string)
+    FOMOXA_CODEC("game")
+    const char *name;
+};</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-cpp" aria-labelledby="m-cpp">
+<pre class="code"><span class="c">// src/models/player.hpp     cần: cùng file fomoxa.h như C</span>
+#pragma once
+#include "fomoxa.h"
+#include &lt;cstdint&gt;
+#include &lt;string&gt;
+
+FOMOXA_MODEL
+FOMOXA_CODEC("game")
+struct Player
+{
+    FOMOXA_FIELD(u32)
+    FOMOXA_CODEC("game")
+    uint32_t id = 0;
+
+    FOMOXA_FIELD(string)
+    FOMOXA_CODEC("game")
+    std::string name;
+};</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="mp-gd" aria-labelledby="m-gd">
+<pre class="code"><span class="c"># models/player.gd           không cần gì - directive chỉ là comment</span>
+# fomoxa:model codec=game
+class_name Player
+
+# fomoxa:u32 codec=game
+var id: int = 0
+
+# fomoxa:string codec=game
+var name: String = ""</pre>
+          </div>
+        </div>
+
+        <p class="note-line">
+          <strong>Hai quy tắc cần nhớ.</strong> Wire type lấy từ annotation, không bao giờ lấy từ type
+          của ngôn ngữ: <code>u32</code> là bốn byte kể cả trên field 64-bit. Và field lên wire theo thứ tự
+          khai báo: đổi tên field thì miễn phí, đổi thứ tự là breaking change.
+        </p>
+      </div>
+
+      <div class="gs-step" id="generate">
+        <h2 class="h3">Cấu hình và sinh code</h2>
+        <p class="body">
+          Đặt <code>fomoxa.toml</code> ở thư mục gốc project, cạnh <code>Cargo.toml</code>,
+          <code>go.mod</code>, <code>package.json</code> hoặc <code>.csproj</code>, rồi chạy công cụ sinh code.
+          Mỗi lần chạy đọc một ngôn ngữ.
+        </p>
+<pre class="code"><span class="c"># fomoxa.toml</span>
+src = "src"             <span class="c"># ví dụ Go / GDScript ở trên: "models"</span>
+out = "src/generated"   <span class="c"># ví dụ Go / GDScript ở trên: "generated"</span></pre>
+<pre class="code">fomoxac generate
+<span class="c">fomoxac: src/generated/runtime.rs
+fomoxac: src/generated/handshake.rs
+fomoxac: src/generated/player_game.rs
+fomoxac: src/generated/mod.rs
+fomoxac: .fomoxa/schema.json
+fomoxac: .fomoxa/build-graph.json</span></pre>
+        <p class="body">
+          Bạn có một file cho mỗi codec (<code>PlayerGameCodec</code>), một runtime nhỏ được chép vào
+          (<code>Writer</code>, <code>Reader</code>), và <code>.fomoxa/schema.json</code>. Hãy commit file schema:
+          các lần chạy sau so sánh với nó và báo breaking change.
+          <code>fomoxac generate --watch</code> sinh lại mỗi khi lưu file.
+        </p>
+      </div>
+
+      <div class="gs-step" id="run">
+        <h2 class="h3">Encode và decode</h2>
+        <p class="body">Cùng giá trị, cùng byte, ở mọi ngôn ngữ.</p>
+
+        <div class="tabs" data-sync="lang">
+          <div class="tab-list" role="tablist" aria-label="Ngôn ngữ">
+            <button role="tab" type="button" data-key="rust" id="r-rust" aria-controls="rp-rust">Rust</button>
+            <button role="tab" type="button" data-key="csharp" id="r-csharp" aria-controls="rp-csharp">C#</button>
+            <button role="tab" type="button" data-key="go" id="r-go" aria-controls="rp-go">Go</button>
+            <button role="tab" type="button" data-key="ts" id="r-ts" aria-controls="rp-ts">TypeScript</button>
+            <button role="tab" type="button" data-key="js" id="r-js" aria-controls="rp-js">JavaScript</button>
+            <button role="tab" type="button" data-key="c" id="r-c" aria-controls="rp-c">C</button>
+            <button role="tab" type="button" data-key="cpp" id="r-cpp" aria-controls="rp-cpp">C++</button>
+            <button role="tab" type="button" data-key="gd" id="r-gd" aria-controls="rp-gd">GDScript</button>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-rust" aria-labelledby="r-rust">
+<pre class="code"><span class="c">// src/main.rs               run: cargo run</span>
+mod generated;
+mod models;
+
+use generated::{PlayerGameCodec, Reader, Writer};
+use models::player::Player;
+
+fn main() {
+    let player = Player { id: 100, name: "Alice".to_string() };
+
+    let mut writer = Writer::new();
+    PlayerGameCodec::encode(&amp;mut writer, &amp;player);
+    let bytes = writer.into_bytes();
+    println!("{:02X?}", bytes);
+
+    let mut decoded = Player { id: 0, name: String::new() };
+    PlayerGameCodec::decode(&amp;mut Reader::new(&amp;bytes), &amp;mut decoded).unwrap();
+    println!("id={} name={}", decoded.id, decoded.name);
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-csharp" aria-labelledby="r-csharp">
+<pre class="code"><span class="c">// Program.cs                run: dotnet run</span>
+using System;
+using Game.Models;
+using Generated;
+
+var player = new Player { Id = 100, Name = "Alice" };
+
+var writer = new Writer();
+PlayerGameCodec.Encode(writer, player);
+byte[] bytes = writer.ToArray();
+Console.WriteLine(BitConverter.ToString(bytes));
+
+var reader = new Reader(bytes);
+var decoded = new Player();
+PlayerGameCodec.Decode(ref reader, ref decoded);
+Console.WriteLine($"{decoded.Id} {decoded.Name}");</pre>
+            <p class="code-note">Namespace sinh ra lấy theo tên thư mục <code>out</code>. <code>Decode</code> ném <code>DecodeException</code> khi payload hỏng.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-go" aria-labelledby="r-go">
+<pre class="code"><span class="c">// main.go                   run: go run .      (module: example.com/game)</span>
+package main
+
+import (
+	"fmt"
+
+	"example.com/game/generated"
+	"example.com/game/models"
+)
+
+func main() {
+	player := models.Player{ID: 100, Name: "Alice"}
+
+	w := generated.NewWriter()
+	generated.PlayerGameCodec{}.Encode(w, &amp;player)
+	bytes := w.Bytes()
+	fmt.Printf("% X\n", bytes)
+
+	var decoded models.Player
+	if err := (generated.PlayerGameCodec{}).Decode(generated.NewReader(bytes), &amp;decoded); err != nil {
+		panic(err)
+	}
+	fmt.Println(decoded.ID, decoded.Name)
+}</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-ts" aria-labelledby="r-ts">
+<pre class="code"><span class="c">// src/main.ts               run: npx tsc &amp;&amp; node dist/src/main.js</span>
+import { Player } from "./models/player";
+import { Reader, Writer } from "./generated/runtime";
+import { PlayerGameCodec } from "./generated/player_game";
+
+const player = new Player();
+player.id = 100;
+player.name = "Alice";
+
+const writer = new Writer();
+PlayerGameCodec.encode(writer, player);
+const bytes = writer.toUint8Array();
+console.log(Buffer.from(bytes).toString("hex"));
+
+const decoded = new Player();
+PlayerGameCodec.decode(new Reader(bytes), decoded);
+console.log(decoded.id, decoded.name);</pre>
+            <p class="code-note">Import sinh ra không có đuôi file, nên cần biên dịch bằng <code>tsc</code> (hoặc bundler) trước khi chạy.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-js" aria-labelledby="r-js">
+<pre class="code"><span class="c">// src/main.js               run: node src/main.js   (package.json: "type": "module")</span>
+import { Player } from "./models/player.js";
+import { Reader, Writer } from "./generated/runtime.js";
+import { PlayerGameCodec } from "./generated/player_game.js";
+
+const player = new Player();
+player.id = 100;
+player.name = "Alice";
+
+const writer = new Writer();
+PlayerGameCodec.encode(writer, player);
+const bytes = writer.toUint8Array();
+console.log(Buffer.from(bytes).toString("hex"));
+
+const decoded = new Player();
+PlayerGameCodec.decode(new Reader(bytes), decoded);
+console.log(decoded.id, decoded.name);</pre>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-c" aria-labelledby="r-c">
+<pre class="code"><span class="c">/* src/main.c                build: cc -std=c99 -I . -I include -I src src/main.c */</span>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#include "generated/player_game.h"
+#include "generated/player_fomoxa.h"
+
+int main(void)
+{
+    struct Player player = { 100, "Alice" };
+
+    FomoxaWriter writer;
+    fomoxa_writer_init(&amp;writer);
+    if (!PlayerGameCodec_encode(&amp;writer, &amp;player)) return 1;
+    for (size_t i = 0; i &lt; writer.len; i++) printf("%02X ", writer.data[i]);
+    printf("\n");
+
+    FomoxaReader reader;
+    fomoxa_reader_init(&amp;reader, writer.data, writer.len, fomoxa_limits_unlimited());
+    struct Player decoded;
+    memset(&amp;decoded, 0, sizeof(decoded));
+    FomoxaDecodeError error = PlayerGameCodec_decode(&amp;reader, &amp;decoded);
+    if (!fomoxa_decode_error_ok(&amp;error)) return 1;
+    printf("%u %s\n", decoded.id, decoded.name);
+
+    Player_free(&amp;decoded);
+    fomoxa_writer_free(&amp;writer);
+    return 0;
+}</pre>
+            <p class="code-note"><code>string</code> sau khi decode được cấp phát trên heap: gọi <code>Player_free</code> đúng một lần cho mỗi giá trị đã decode.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-cpp" aria-labelledby="r-cpp">
+<pre class="code"><span class="c">// src/main.cpp              build: c++ -std=c++17 -I . -I include -I src src/main.cpp</span>
+#include &lt;cstdio&gt;
+
+#include "generated/player_game.hpp"
+
+int main()
+{
+    Player player;
+    player.id = 100;
+    player.name = "Alice";
+
+    generated::Writer writer;
+    generated::PlayerGameCodec::encode(writer, player);
+    const auto&amp; bytes = writer.bytes();
+    for (auto b : bytes) std::printf("%02X ", b);
+    std::printf("\n");
+
+    generated::Reader reader(bytes.data(), bytes.size());
+    Player decoded;
+    if (!generated::PlayerGameCodec::decode(reader, decoded).ok()) return 1;
+    std::printf("%u %s\n", decoded.id, decoded.name.c_str());
+}</pre>
+            <p class="code-note">Header-only, C++17, chạy được với <code>-fno-exceptions</code>: lỗi trả về dưới dạng giá trị <code>DecodeError</code>.</p>
+          </div>
+          <div class="tab-panel" role="tabpanel" id="rp-gd" aria-labelledby="r-gd">
+<pre class="code"><span class="c"># main.gd                   Godot 4.3</span>
+extends Node
+
+func _ready() -> void:
+	var player := Player.new()
+	player.id = 100
+	player.name = "Alice"
+
+	var writer := FomoxaRuntime.Writer.new()
+	PlayerGameCodec.encode(writer, player)
+	var bytes := writer.bytes()
+	print(bytes.hex_encode())
+
+	var decoded := Player.new()
+	var err := PlayerGameCodec.decode(FomoxaRuntime.Reader.new(bytes), decoded)
+	if err != null:
+		push_error(str(err))
+		return
+	print(decoded.id, " ", decoded.name)</pre>
+            <p class="code-note">
+              Codec là các <code>static func</code> và <code>decode</code> trả lỗi về (GDScript không có
+              <code>try</code>/<code>catch</code>). Đoạn này theo đúng API được sinh ra nhưng chưa được chạy cho hướng dẫn này;
+              các <a href="https://github.com/fomoxa/godot/tree/main/examples">ví dụ Godot</a> thì đã chạy.
+            </p>
+          </div>
+        </div>
+
+<pre class="code"><span class="c"># output (cách in khác nhau theo ngôn ngữ, byte thì không)</span>
+<span class="by">64 00 00 00</span> <span class="by">05 00 00 00</span> <span class="by">41 6C 69 63 65</span>
+id = 100    độ dài = 5  A  l  i  c  e
+100 Alice</pre>
+      </div>
+
+      <div class="gs-step" id="inspect">
+        <h2 class="h3">Xem các byte</h2>
+        <p class="body">
+          Mười ba byte, không byte metadata nào. Mở chúng trong
+          <a href="/vi/inspector/#preset=player">inspector tương tác</a>, hoặc decode một payload bắt được
+          theo schema của bạn bằng dòng lệnh:
+        </p>
+<pre class="code">fomoxa-inspect --schema .fomoxa/schema.json --message Player.game \
+  --hex '64000000 05000000 416c696365'
+
+<span class="c">id      : u32 = 100
+          offset: 0
+          bytes: 64 00 00 00
+
+name    : string = "Alice" (5 bytes)
+          offset: 4
+          bytes: 05 00 00 00 41 6C 69 63 65</span></pre>
+      </div>
+
+      <div class="gs-step" id="next">
+        <h2 class="h3">Tiếp theo</h2>
+        <div class="cards cards-3">
+          <div class="card">
+            <span class="card-k">Transport</span>
+            <span class="card-t">Gửi qua mạng</span>
+            <span class="card-d">Fomoxa dừng ở byte. Các runtime mẫu thêm framing, schema handshake và heartbeat trên TCP hoặc UDP.</span>
+            <a class="card-a" href="/vi/ecosystem/#runtimes">Hệ sinh thái →</a>
+          </div>
+          <div class="card">
+            <span class="card-k">CI</span>
+            <span class="card-t">Bảo vệ schema</span>
+            <span class="card-d"><code>fomoxac ci --base-ref origin/main</code> làm build thất bại khi một thay đổi sẽ làm hỏng các peer còn dùng schema cũ.</span>
+            <a class="card-a" href="https://github.com/fomoxa/fomoxac#fomoxac-ci">Tài liệu fomoxac ↗</a>
+          </div>
+          <div class="card">
+            <span class="card-k">Specification</span>
+            <span class="card-t">Nắm chính xác các quy tắc</span>
+            <span class="card-d">RFC-0002 ngắn. Hãy đọc trước khi phát hành: nó giải thích vì sao đổi thứ tự thì hỏng còn thêm vào cuối thì không.</span>
+            <a class="card-a" href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0002.md">RFC-0002 ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Tác giả <strong>Hà Duy Thắng</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Cấp phép theo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+
+
+</body>
+</html>

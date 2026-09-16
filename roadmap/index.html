@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>
+(function(){try{var t=localStorage.getItem('fomoxa_theme');if(!t){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadmap - Fomoxa Protocol</title>
+<meta name="description" content="What is done, what comes next, and the estimated timeline for Fomoxa’s Unity and Unreal Engine work.">
+<link rel="canonical" href="https://fomoxa.github.io/roadmap/">
+<link rel="alternate" hreflang="en" href="https://fomoxa.github.io/roadmap/">
+<link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/roadmap/">
+<link rel="alternate" hreflang="x-default" href="https://fomoxa.github.io/roadmap/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="/">
+      <img src="/assets/logo.svg" alt="" class="brand-logo" />
+      Fomoxa
+    </a>
+    <nav class="topnav" aria-label="Site">
+      <a href="/">Protocol</a>
+      <a href="/getting-started/">Get started</a>
+      <a href="/inspector/">Inspector</a>
+      <a href="/ecosystem/">Ecosystem</a>
+      <a href="/comparison/">Compare</a>
+      <a href="/use-cases/">Use cases</a>
+      <a href="/roadmap/" aria-current="page">Roadmap</a>
+      <a href="https://github.com/fomoxa">GitHub ↗</a>
+    </nav>
+    <div class="topbar-actions">
+      <p class="lang-switch" aria-label="Language">
+        <span aria-current="true">EN</span><span class="sep">/</span><a href="/vi/roadmap/" hreflang="vi" lang="vi">VI</a>
+      </p>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">Theme</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Roadmap · updated September 2026</p>
+    <h1 class="h1">What is done, and what comes next</h1>
+    <p class="hero-sub">
+      The specification is final. The work ahead is about the engines people build games with:
+      Unity first, then Unreal Engine.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Timeline</p>
+    <div class="col">
+      <div class="timeline">
+
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Done · 2026</span>
+            <span class="phase-t">Specification and foundations</span>
+            <ul class="card-list">
+              <li>RFC-0001, RFC-0002 and RFC-0003 at v1.1.0, Final, in English and Vietnamese.</li>
+              <li>Version skew rules: fields appended or removed at the end of a Model (RFC-0002 §9.1).</li>
+              <li><code>fomoxac</code> 0.2.0: codecs for Rust, Go, C#, GDScript, C, C++, TypeScript and JavaScript, plus <code>compat</code>, <code>ci</code>, <code>--watch</code> and <code>fomoxa-inspect</code>.</li>
+              <li>Sample runtimes: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> and <code>Fomoxa.Reliability</code> (C#), Go, C/C++, <code>@fomoxa/net</code> (Node.js) and Godot.</li>
+              <li>The implementation guide, the cross-language <code>interop</code> suite, and <code>fomoxa.unity</code> codecs for Unity types.</li>
+              <li><code>fomoxa-example-game</code>: Unity, Unreal, Godot and Go clients against a Rust server, with a benchmark.</li>
+              <li>This site: getting started guide, byte inspector, ecosystem and comparison pages.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase phase-now">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Next 12 months · to around Q3 2027</span>
+            <span class="phase-t">Complete Unity libraries</span>
+            <p class="body">
+              Finish the set of libraries a Unity project needs to use Fomoxa end to end, building on what already
+              runs in Unity today: <code>Fomoxa.Net</code> under IL2CPP, <code>Fomoxa.Reliability</code>, and
+              <code>fomoxa.unity</code> codecs for built-in types.
+            </p>
+            <span class="status s-next inline">In progress</span>
+          </div>
+        </div>
+
+        <div class="phase">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">The following 2 years · to around Q3 2029</span>
+            <span class="phase-t">Deep Unreal Engine integration</span>
+            <p class="body">
+              Integrate Fomoxa closely with Unreal Engine, starting from the C++ codec backend and the Unreal client
+              already running in the example game.
+            </p>
+            <span class="status s-plan inline">Planned</span>
+          </div>
+        </div>
+
+      </div>
+      <p class="note-line note-warn">
+        Dates are estimates, not commitments. The specification does not depend on any of this work:
+        a Unity or Unreal library is an implementation, and the wire format stays exactly as RFC-0002 defines it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">Not planned</p>
+    <div class="col">
+      <h2 class="h2">What the roadmap will not add</h2>
+      <p class="lede">
+        These are the cost of Fomoxa's guarantees, not missing features. None of them is scheduled.
+      </p>
+      <div class="cards cards-2">
+        <div class="card">
+          <ul class="card-list neg">
+            <li>Field tags, field numbers or names on the wire.</li>
+            <li>Optional, nullable or default-valued fields.</li>
+            <li>Varints or any other variable-width integer.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <ul class="card-list neg">
+            <li>A mandatory IDL or schema file format.</li>
+            <li>Transport, framing, RPC, compression or encryption in the specification.</li>
+            <li>Version markers inside the byte stream.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="body">
+        The reasoning for each is on the <a href="/#tradeoffs">home page</a> and in
+        <a href="https://github.com/fomoxa/specification/blob/main/en/RFC-0001.md">RFC-0001</a>.
+        Suggestions and questions are welcome as
+        <a href="https://github.com/fomoxa/specification/issues">issues</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <span class="foot-brand">Fomoxa Protocol</span>
+    <span>Created by <strong>Ha Duy Thang</strong></span>
+  </div>
+  <p class="foot-copy">
+    Specification v1.1.0 · Final · Copyright © 2026 Ha Duy Thang ·
+    Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+  </p>
+</footer>
+
+<script src="/assets/site.js"></script>
+
+
+</body>
+</html>
