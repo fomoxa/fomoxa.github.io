@@ -212,6 +212,27 @@ Vietnamese is the source of record; English is a translation. The workflow is de
     └── RFC-0003.md
 ```
 
+## Building the site pages
+
+The site is static HTML with no build step at deploy time. The home pages (`index.html`, `vi/index.html`) are edited by hand. Every other page is generated from a content fragment by a small script, so the shared header, navigation and footer stay identical across pages:
+
+```
+_build/
+├── build.py             wraps each fragment in the shared header/footer, writes sitemap.xml
+└── pages/
+    ├── en/<page>.html   English content  → /<page>/index.html
+    └── vi/<page>.html   Vietnamese content → /vi/<page>/index.html
+```
+
+After editing a fragment, or the navigation and page titles in `build.py`, regenerate and commit the output:
+
+```bash
+python3 _build/build.py           # rewrite the generated pages and sitemap.xml
+python3 _build/build.py --check   # write nothing; exit 1 if any generated file is stale
+```
+
+Python 3.8+ with the standard library only. GitHub Pages (Jekyll) does not publish directories that start with `_`, so `_build/` is never served. A new page needs an entry in `PAGES` and `NAV` in `build.py`, both fragments, and the matching link in the navigation of the two hand-written home pages.
+
 ## License
 
 This entire repository is under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) - see [`LICENSE`](LICENSE).

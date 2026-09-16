@@ -1,0 +1,277 @@
+<section class="hero hero-page" id="top">
+  <div class="hero-in">
+    <p class="eyebrow">Ecosystem · September 2026</p>
+    <h1 class="h1">One specification. Many implementations.</h1>
+    <p class="hero-sub">
+      The specification is Fomoxa. Everything else on this page is a tool that helps you use it,
+      or a sample of how it can be implemented. All of it is stable and usable today.
+    </p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Layers</p>
+    <div class="col">
+      <h2 class="h2">What is the protocol, and what is not</h2>
+      <div class="tiers">
+        <div class="tier tier-spec">
+          <span class="tier-k">Protocol</span>
+          <span class="tier-t">Specification · RFC-0001, 0002, 0003</span>
+          <span class="tier-d">The only definition of Fomoxa. v1.1.0, Final. If anything below disagrees with it, the specification wins.</span>
+        </div>
+        <div class="tier">
+          <span class="tier-k">Tool</span>
+          <span class="tier-t">fomoxac · fomoxa-inspect</span>
+          <span class="tier-d">Generates codecs from annotated types in eight languages, checks schema compatibility, and decodes payloads for debugging.</span>
+        </div>
+        <div class="tier">
+          <span class="tier-k">Samples</span>
+          <span class="tier-t">Runtime implementations</span>
+          <span class="tier-d">Framing, schema handshake and heartbeat over TCP/UDP, following the implementation guide. Examples of how Fomoxa can be carried, not part of the specification.</span>
+        </div>
+      </div>
+      <p class="disclaimer">
+        Replace any of these with your own and the wire format holds. A hand-written codec that passes
+        100% of the RFC-0003 vectors is exactly as Fomoxa Compatible as a generated one.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Specification</p>
+    <div class="col">
+      <h2 class="h2">The documents</h2>
+      <div class="docs">
+        <a class="doc" href="https://github.com/fomoxa/specification">
+          <span class="id">fomoxa/specification</span>
+          <span class="t">RFC-0001 · 0002 · 0003</span>
+          <span class="d">What Fomoxa is, the wire format, and conformance. English and Vietnamese; Vietnamese is the source of record.</span>
+          <span class="status s-ok inline">v1.1.0 · Final</span>
+        </a>
+        <a class="doc" href="https://github.com/fomoxa/implementation-guide">
+          <span class="id">fomoxa/implementation-guide</span>
+          <span class="t">Implementation guide</span>
+          <span class="d">Transport contract, framing, handshake and heartbeat for anyone writing a runtime in a new language.</span>
+          <span class="status s-ok inline">Published</span>
+        </a>
+        <a class="doc" href="/inspector/">
+          <span class="id">fomoxa.github.io</span>
+          <span class="t">Byte inspector</span>
+          <span class="d">Encode, decode and compare Fomoxa bytes in the browser.</span>
+          <span class="status s-ok inline">Live</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Tools</p>
+    <div class="col">
+      <h2 class="h2">fomoxac</h2>
+      <p class="lede">
+        One source generator for eight languages. It reads annotations, writes plain source,
+        and exits. The generated code has no runtime dependency.
+      </p>
+      <div class="table-scroll">
+        <table class="eco">
+          <thead><tr><th scope="col">Package</th><th scope="col">Version</th><th scope="col">Install</th><th scope="col">Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="https://github.com/fomoxa/fomoxac">fomoxac</a><span class="sub">generator · fomoxa-inspect</span></td>
+              <td class="num">0.2.0</td>
+              <td><span class="pkg">cargo install fomoxac</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/attributes-rust">fomoxa-attributes</a><span class="sub">Rust annotations</span></td>
+              <td class="num">0.1.1</td>
+              <td><span class="pkg">cargo add fomoxa-attributes</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/attributes-csharp">Fomoxa.Attributes</a><span class="sub">C# annotations</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">dotnet add package Fomoxa.Attributes</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/unity-codecs">fomoxa.unity</a><span class="sub">Unity type codecs</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">Package Manager · add from disk</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll">
+        <table class="eco">
+          <thead><tr><th scope="col">Codec backend</th><th scope="col">Model annotation</th><th scope="col">Needs</th><th scope="col">Checked in fomoxac CI</th></tr></thead>
+          <tbody>
+            <tr><td>Rust</td><td><span class="pkg">#[network] #[codec(...)]</span></td><td>fomoxa-attributes</td><td><span class="yes">✓</span> cargo test</td></tr>
+            <tr><td>C#</td><td><span class="pkg">[Network] [Codec(...)]</span></td><td>Fomoxa.Attributes</td><td><span class="yes">✓</span> build</td></tr>
+            <tr><td>Go</td><td><span class="pkg">//fomoxa:model · struct tags</span></td><td>nothing</td><td><span class="yes">✓</span> build + vet</td></tr>
+            <tr><td>TypeScript</td><td><span class="pkg">// FOMOXA_MODEL</span></td><td>nothing</td><td><span class="yes">✓</span> build + smoke test</td></tr>
+            <tr><td>JavaScript</td><td><span class="pkg">// FOMOXA_MODEL</span></td><td>nothing</td><td><span class="yes">✓</span> smoke test</td></tr>
+            <tr><td>C</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macros)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
+            <tr><td>C++</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macros)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
+            <tr><td>GDScript</td><td><span class="pkg"># fomoxa:model</span></td><td>nothing</td><td><span class="dash">generate --check only</span><span class="sub">compiled in the Godot editor</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        <code>tests/vectors/fomoxa-vectors.json</code> is the cross-language reference: fixed bytes and fixed
+        fingerprints every backend is expected to reproduce. The Rust backend checks it byte for byte in CI, and
+        cross-language tests pin the same fingerprint for the same model written in different languages.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="runtimes">
+  <div class="band-in">
+    <p class="offset">Samples</p>
+    <div class="col">
+      <h2 class="h2">Runtime implementations</h2>
+      <p class="lede">
+        Each one carries opaque payloads: framing, schema handshake, heartbeat and a non-blocking tick
+        loop over TCP or UDP. None contains a codec. Codecs come from <code>fomoxac</code>.
+      </p>
+      <div class="table-scroll">
+        <table class="eco">
+          <thead>
+            <tr>
+              <th scope="col">Language</th>
+              <th scope="col">Package</th>
+              <th scope="col">Version</th>
+              <th scope="col">Install</th>
+              <th scope="col">Interop</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rust</td>
+              <td><a href="https://github.com/fomoxa/rust">fomoxa-net</a><span class="sub">no runtime deps, no async</span></td>
+              <td class="num">0.1.1</td>
+              <td><span class="pkg">cargo add fomoxa-net</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td>C# · Unity</td>
+              <td><a href="https://github.com/fomoxa/csharp">Fomoxa.Net</a><span class="sub">netstandard2.1 · Unity 2021+ IL2CPP</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">dotnet add package Fomoxa.Net</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td>C# · Unity</td>
+              <td><a href="https://github.com/fomoxa/csharp">Fomoxa.Reliability</a><span class="sub">per-message reliable / unreliable delivery on one session</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">dotnet add package Fomoxa.Reliability</span></td>
+              <td><span class="dash">-</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td>Go</td>
+              <td><a href="https://github.com/fomoxa/go">github.com/fomoxa/go</a><span class="sub">standard library only, no goroutines</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">go get github.com/fomoxa/go</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td>C · C++</td>
+              <td><a href="https://github.com/fomoxa/c">fomoxa</a><span class="sub">C99, no deps, no threads · C++17 header wrapper</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">CMake FetchContent</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td>TypeScript · JavaScript</td>
+              <td><a href="https://github.com/fomoxa/typescript">@fomoxa/net</a><span class="sub">Node.js 22+, ESM, no runtime deps</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">npm install @fomoxa/net</span></td>
+              <td><span class="yes">✓</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td>GDScript · Godot</td>
+              <td><a href="https://github.com/fomoxa/godot">fomoxa-godot</a><span class="sub">pure GDScript, Godot 4.3</span></td>
+              <td class="num">0.1.0</td>
+              <td><span class="pkg">copy addons/fomoxa</span></td>
+              <td><span class="dash">not yet</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        <strong>Interop</strong> means the runtime is part of
+        <a href="https://github.com/fomoxa/interop">fomoxa/interop</a>: two processes in different languages
+        complete a handshake over a real TCP or UDP socket and exchange a message. The Godot runtime has its
+        own test suite and CI, but is not yet in that matrix.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="band-in">
+    <p class="offset">Proof</p>
+    <div class="col">
+      <h2 class="h2">Seen working together</h2>
+      <div class="cards cards-2">
+        <a class="card" href="https://github.com/fomoxa/fomoxa-example-game">
+          <span class="card-k">fomoxa-example-game</span>
+          <span class="card-t">One Rust server, five kinds of client</span>
+          <span class="card-d">Unity (C#), Unreal (C++), Godot (GDScript), Kaiju (Go) and a headless Rust bot in the same match. Includes a benchmark to 2000 players.</span>
+          <span class="card-a">Repository ↗</span>
+        </a>
+        <a class="card" href="https://github.com/fomoxa/interop">
+          <span class="card-k">fomoxa/interop</span>
+          <span class="card-t">Every runtime against every other</span>
+          <span class="card-d">Rust, C#, Go, C, C++ and JavaScript peers, each depending on its published package, handshaking over TCP and UDP.</span>
+          <span class="card-a">Repository ↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band band-close">
+  <div class="band-in">
+    <p class="offset">People</p>
+    <div class="col">
+      <h2 class="h2">Who builds it</h2>
+      <div class="cards cards-3">
+        <div class="card">
+          <span class="card-k">Maintainer</span>
+          <span class="card-t">Ha Duy Thang</span>
+          <span class="card-d">Author of the specification and maintainer of every repository on this page.</span>
+          <a class="card-a" href="https://github.com/fomoxa">github.com/fomoxa ↗</a>
+        </div>
+        <div class="card">
+          <span class="card-k">Contribute</span>
+          <span class="card-t">Issues and pull requests</span>
+          <span class="card-d">Spec questions go to the specification repository. Bugs in a tool or runtime go to that tool's repository.</span>
+          <a class="card-a" href="https://github.com/fomoxa/specification/issues">Open an issue ↗</a>
+        </div>
+        <div class="card card-accent">
+          <span class="card-k">Using Fomoxa?</span>
+          <span class="card-t">Tell us, or list your implementation</span>
+          <span class="card-d">Projects and independent implementations that pass 100% of RFC-0003 can be listed here. Open a pull request against this site.</span>
+          <a class="card-a" href="https://github.com/fomoxa/fomoxa.github.io">fomoxa.github.io ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
