@@ -224,11 +224,12 @@ _build/
     └── vi/<page>.html   Vietnamese content → /vi/<page>/index.html
 ```
 
-After editing a fragment, or the navigation and page titles in `build.py`, regenerate and commit the output:
+Edit the fragments, never the generated `index.html` files: those are overwritten on the next build. After editing a fragment, or the navigation and page titles in `build.py`, regenerate and commit the output by hand:
 
 ```bash
 python3 _build/build.py           # rewrite the generated pages and sitemap.xml
 python3 _build/build.py --check   # write nothing; exit 1 if any generated file is stale
+python3 -m http.server 8000       # preview at http://localhost:8000
 ```
 
 Python 3.8+ with the standard library only. GitHub Pages (Jekyll) does not publish directories that start with `_`, so `_build/` is never served. A new page needs an entry in `PAGES` and `NAV` in `build.py`, both fragments, and the matching link in the navigation of the two hand-written home pages.
