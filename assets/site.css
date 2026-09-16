@@ -394,6 +394,8 @@
   .chain-vert { flex-direction: column; align-items: flex-start; gap: .4rem; }
   .chain-vert li { flex-direction: column; align-items: flex-start; gap: .4rem; }
   .chain-vert li + li::before { content: "↓"; }
+  .chain-vert li { flex-direction: column; align-items: center; gap: .4rem; }
+  .chain-vert li + li::before { content: "↓"; text-align: center; }
   .chain-vert .node { min-width: 9rem; text-align: center; }
   .node-accent { color: var(--accent); border-color: var(--accent); background: var(--accent-wash); }
 
@@ -1068,9 +1070,14 @@
   .card-d { font-size: .875rem; color: var(--ink-2); line-height: 1.6; }
   .card-d code { font-size: .8125em; }
   .card-list { display: flex; flex-direction: column; gap: .4rem; font-size: .875rem; color: var(--ink-2); line-height: 1.55; }
-  .card-list li { display: grid; grid-template-columns: 1rem minmax(0,1fr); gap: .4rem; }
-  .card-list li::before { content: "→"; font-family: var(--font-mono); color: var(--accent); font-size: .8125rem; }
+  .card-list li { position: relative; padding-left: 1.35rem; }
+  .card-list li::before {
+    position: absolute; left: 0; top: 0;
+    content: "→"; font-family: var(--font-mono); color: var(--accent); font-size: .8125rem; line-height: inherit;
+  }
   .card-list.neg li::before { content: "×"; color: var(--todo); font-weight: 700; }
+  .card-list a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); transition: border-color .15s; }
+  .card-list a:hover { border-bottom-color: var(--accent); }
   .card-a { margin-top: auto; padding-top: .4rem; font-family: var(--font-mono); font-size: .6875rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
   .card-a:hover { color: var(--accent-2); }
   .card-accent { background: var(--accent-wash); }
