@@ -69,7 +69,7 @@
         Code sinh ra không có dependency lúc chạy, kể cả với <code>fomoxac</code>. Codec viết tay cũng hợp lệ
         như vậy, miễn là pass các
         <a href="https://github.com/fomoxa/specification/blob/main/vi/RFC-0003.md">test vector của RFC-0003</a>.
-        Mọi đoạn code trên trang này đều được sinh bằng <code>fomoxac 0.2.1</code>, và tất cả trừ GDScript đã được chạy thật.
+        Mọi đoạn code trên trang này đều được sinh bằng <code>fomoxac 0.2.1</code> và đã được chạy thật.
       </p>
     </div>
   </div>
@@ -109,7 +109,6 @@ fomoxac --version
             <button role="tab" type="button" data-key="js" id="m-js" aria-controls="mp-js">JavaScript</button>
             <button role="tab" type="button" data-key="c" id="m-c" aria-controls="mp-c">C</button>
             <button role="tab" type="button" data-key="cpp" id="m-cpp" aria-controls="mp-cpp">C++</button>
-            <button role="tab" type="button" data-key="gd" id="m-gd" aria-controls="mp-gd">GDScript</button>
           </div>
           <div class="tab-panel" role="tabpanel" id="mp-rust" aria-labelledby="m-rust">
 <pre class="code"><span class="c">// src/models/player.rs      cần: cargo add fomoxa-attributes</span>
@@ -230,17 +229,6 @@ struct Player
     std::string name;
 };</pre>
           </div>
-          <div class="tab-panel" role="tabpanel" id="mp-gd" aria-labelledby="m-gd">
-<pre class="code"><span class="c"># models/player.gd           không cần gì - directive chỉ là comment</span>
-# fomoxa:model codec=game
-class_name Player
-
-# fomoxa:u32 codec=game
-var id: int = 0
-
-# fomoxa:string codec=game
-var name: String = ""</pre>
-          </div>
         </div>
 
         <p class="note-line">
@@ -264,8 +252,8 @@ var name: String = ""</pre>
           Mỗi lần chạy đọc một ngôn ngữ.
         </p>
 <pre class="code"><span class="c"># fomoxa.toml</span>
-src = "src"             <span class="c"># ví dụ Go / GDScript ở trên: "models"</span>
-out = "src/generated"   <span class="c"># ví dụ Go / GDScript ở trên: "generated"</span></pre>
+src = "src"             <span class="c"># ví dụ Go ở trên: "models"</span>
+out = "src/generated"   <span class="c"># ví dụ Go ở trên: "generated"</span></pre>
 <pre class="code">fomoxac generate
 <span class="c">fomoxac: src/generated/runtime.rs
 fomoxac: src/generated/handshake.rs
@@ -294,7 +282,6 @@ fomoxac: .fomoxa/build-graph.json</span></pre>
             <button role="tab" type="button" data-key="js" id="r-js" aria-controls="rp-js">JavaScript</button>
             <button role="tab" type="button" data-key="c" id="r-c" aria-controls="rp-c">C</button>
             <button role="tab" type="button" data-key="cpp" id="r-cpp" aria-controls="rp-cpp">C++</button>
-            <button role="tab" type="button" data-key="gd" id="r-gd" aria-controls="rp-gd">GDScript</button>
           </div>
           <div class="tab-panel" role="tabpanel" id="rp-rust" aria-labelledby="r-rust">
 <pre class="code"><span class="c">// src/main.rs               run: cargo run</span>
@@ -457,32 +444,6 @@ int main()
     std::printf("%u %s\n", decoded.id, decoded.name.c_str());
 }</pre>
             <p class="code-note">Header-only, C++17, chạy được với <code>-fno-exceptions</code>: lỗi trả về dưới dạng giá trị <code>DecodeError</code>.</p>
-          </div>
-          <div class="tab-panel" role="tabpanel" id="rp-gd" aria-labelledby="r-gd">
-<pre class="code"><span class="c"># main.gd                   Godot 4.3</span>
-extends Node
-
-func _ready() -> void:
-	var player := Player.new()
-	player.id = 100
-	player.name = "Alice"
-
-	var writer := FomoxaRuntime.Writer.new()
-	PlayerGameCodec.encode(writer, player)
-	var bytes := writer.bytes()
-	print(bytes.hex_encode())
-
-	var decoded := Player.new()
-	var err := PlayerGameCodec.decode(FomoxaRuntime.Reader.new(bytes), decoded)
-	if err != null:
-		push_error(str(err))
-		return
-	print(decoded.id, " ", decoded.name)</pre>
-            <p class="code-note">
-              Codec là các <code>static func</code> và <code>decode</code> trả lỗi về (GDScript không có
-              <code>try</code>/<code>catch</code>). Đoạn này theo đúng API được sinh ra nhưng chưa được chạy cho hướng dẫn này;
-              các <a href="https://github.com/fomoxa/godot/tree/main/examples">ví dụ Godot</a> thì đã chạy.
-            </p>
           </div>
         </div>
 

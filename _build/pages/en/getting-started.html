@@ -21,7 +21,7 @@
         The generated code has no runtime dependency, not even on <code>fomoxac</code>. Hand-written
         codecs are equally valid, as long as they pass the
         <a href="https://github.com/fomoxa/specification/blob/main/en/RFC-0003.md">RFC-0003 test vectors</a>.
-        Every snippet on this page was generated with <code>fomoxac 0.2.1</code>, and all but the GDScript one were run.
+        Every snippet on this page was generated with <code>fomoxac 0.2.1</code> and run.
       </p>
     </div>
   </div>
@@ -61,7 +61,6 @@ fomoxac --version
             <button role="tab" type="button" data-key="js" id="m-js" aria-controls="mp-js">JavaScript</button>
             <button role="tab" type="button" data-key="c" id="m-c" aria-controls="mp-c">C</button>
             <button role="tab" type="button" data-key="cpp" id="m-cpp" aria-controls="mp-cpp">C++</button>
-            <button role="tab" type="button" data-key="gd" id="m-gd" aria-controls="mp-gd">GDScript</button>
           </div>
           <div class="tab-panel" role="tabpanel" id="mp-rust" aria-labelledby="m-rust">
 <pre class="code"><span class="c">// src/models/player.rs      needs: cargo add fomoxa-attributes</span>
@@ -182,17 +181,6 @@ struct Player
     std::string name;
 };</pre>
           </div>
-          <div class="tab-panel" role="tabpanel" id="mp-gd" aria-labelledby="m-gd">
-<pre class="code"><span class="c"># models/player.gd           needs: nothing - directives are comments</span>
-# fomoxa:model codec=game
-class_name Player
-
-# fomoxa:u32 codec=game
-var id: int = 0
-
-# fomoxa:string codec=game
-var name: String = ""</pre>
-          </div>
         </div>
 
         <p class="note-line">
@@ -216,8 +204,8 @@ var name: String = ""</pre>
           One run reads one language.
         </p>
 <pre class="code"><span class="c"># fomoxa.toml</span>
-src = "src"             <span class="c"># Go / GDScript example above: "models"</span>
-out = "src/generated"   <span class="c"># Go / GDScript example above: "generated"</span></pre>
+src = "src"             <span class="c"># Go example above: "models"</span>
+out = "src/generated"   <span class="c"># Go example above: "generated"</span></pre>
 <pre class="code">fomoxac generate
 <span class="c">fomoxac: src/generated/runtime.rs
 fomoxac: src/generated/handshake.rs
@@ -246,7 +234,6 @@ fomoxac: .fomoxa/build-graph.json</span></pre>
             <button role="tab" type="button" data-key="js" id="r-js" aria-controls="rp-js">JavaScript</button>
             <button role="tab" type="button" data-key="c" id="r-c" aria-controls="rp-c">C</button>
             <button role="tab" type="button" data-key="cpp" id="r-cpp" aria-controls="rp-cpp">C++</button>
-            <button role="tab" type="button" data-key="gd" id="r-gd" aria-controls="rp-gd">GDScript</button>
           </div>
           <div class="tab-panel" role="tabpanel" id="rp-rust" aria-labelledby="r-rust">
 <pre class="code"><span class="c">// src/main.rs               run: cargo run</span>
@@ -409,32 +396,6 @@ int main()
     std::printf("%u %s\n", decoded.id, decoded.name.c_str());
 }</pre>
             <p class="code-note">Header-only, C++17, works with <code>-fno-exceptions</code>: errors come back as a <code>DecodeError</code> value.</p>
-          </div>
-          <div class="tab-panel" role="tabpanel" id="rp-gd" aria-labelledby="r-gd">
-<pre class="code"><span class="c"># main.gd                   Godot 4.3</span>
-extends Node
-
-func _ready() -> void:
-	var player := Player.new()
-	player.id = 100
-	player.name = "Alice"
-
-	var writer := FomoxaRuntime.Writer.new()
-	PlayerGameCodec.encode(writer, player)
-	var bytes := writer.bytes()
-	print(bytes.hex_encode())
-
-	var decoded := Player.new()
-	var err := PlayerGameCodec.decode(FomoxaRuntime.Reader.new(bytes), decoded)
-	if err != null:
-		push_error(str(err))
-		return
-	print(decoded.id, " ", decoded.name)</pre>
-            <p class="code-note">
-              Codecs are <code>static func</code>s and <code>decode</code> returns its error (GDScript has no
-              <code>try</code>/<code>catch</code>). This snippet follows the generated API but was not run for this
-              guide; the <a href="https://github.com/fomoxa/godot/tree/main/examples">Godot examples</a> are.
-            </p>
           </div>
         </div>
 

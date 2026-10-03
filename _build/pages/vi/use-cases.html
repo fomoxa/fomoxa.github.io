@@ -15,7 +15,7 @@
     <div class="col">
       <h2 class="h2">Game multiplayer đa engine</h2>
       <p class="lede">
-        Server bằng Rust hoặc C#, client Unity bằng C#, client Unreal bằng C++, client Godot bằng GDScript.
+        Server bằng Rust hoặc C#, client Unity bằng C#, client Unreal bằng C++.
         Một schema, và mọi engine đọc ghi cùng một chuỗi byte.
       </p>
       <div class="cards cards-2">
@@ -54,7 +54,7 @@ public class PlayerState
       </p>
       <p class="note-line">
         <strong>Đã chạy thật:</strong> <a href="https://github.com/fomoxa/fomoxa-example-game">fomoxa-example-game</a> đưa
-        client Unity, Unreal, Godot và Go vào cùng một trận với server Rust. Server một luồng giữ vững 30 Hz với
+        client Unity, Unreal và Go vào cùng một trận với server Rust. Server một luồng giữ vững 30 Hz với
         1000 bot, mỗi bot nhận trạng thái của 999 bot khác, và phần encode chỉ tốn 0.02 ms trong tick 33.3 ms.
       </p>
     </div>

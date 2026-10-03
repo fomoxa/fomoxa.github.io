@@ -1,10 +1,10 @@
 <section class="hero hero-page" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Roadmap · updated September 2026</p>
+    <p class="eyebrow">Roadmap · updated October 2026</p>
     <h1 class="h1">What is done, and what comes next</h1>
     <p class="hero-sub">
-      The specification is final. The work ahead is about the engines people build games with:
-      Unity first, then Unreal Engine.
+      The specification is final. The work ahead is on Unity: the first package, <code>com.fomoxa.unity</code>,
+      is out, and the next steps add physics backends and a server that runs outside the Unity player.
     </p>
   </div>
 </section>
@@ -23,11 +23,27 @@
             <ul class="card-list">
               <li>RFC-0001, RFC-0002 and RFC-0003 at v1.1.0, Final, in English and Vietnamese.</li>
               <li>Version skew rules: fields appended or removed at the end of a Model (RFC-0002 §9.1).</li>
-              <li><code>fomoxac</code> 0.2.1: codecs for Rust, Go, C#, GDScript, C, C++, TypeScript and JavaScript, plus <code>compat</code>, <code>ci</code>, <code>--watch</code> and <code>fomoxa-inspect</code>.</li>
-              <li>Sample runtimes: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> and <code>Fomoxa.Reliability</code> (C#), Go, C/C++, <code>@fomoxa/net</code> (Node.js) and Godot.</li>
+              <li><code>fomoxac</code> 0.2.1: codecs for Rust, Go, C#, C, C++, TypeScript and JavaScript, plus <code>compat</code>, <code>ci</code>, <code>--watch</code> and <code>fomoxa-inspect</code>.</li>
+              <li>Sample runtimes: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> and <code>Fomoxa.Reliability</code> (C#), Go, C/C++ and <code>@fomoxa/net</code> (Node.js).</li>
               <li>The implementation guide, the cross-language <code>interop</code> suite, and <code>fomoxa.unity</code> codecs for Unity types.</li>
-              <li><code>fomoxa-example-game</code>: Unity, Unreal, Godot and Go clients against a Rust server, with a benchmark.</li>
+              <li><code>fomoxa-example-game</code>: Unity and Go clients against a Rust server, with a benchmark.</li>
               <li>This site: getting started guide, byte inspector, ecosystem and comparison pages.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Done · October 2026</span>
+            <span class="phase-t">Unity, stage one: com.fomoxa.unity</span>
+            <ul class="card-list">
+              <li><a href="https://github.com/fomoxa/com.fomoxa.unity"><code>com.fomoxa.unity</code></a> 0.1.0, a server-authoritative networking package for Unity 6 built on <code>Fomoxa.Net</code>.</li>
+              <li>UDP, TCP and WebSocket transports, host mode, and WebGL clients.</li>
+              <li>Network objects, RPCs, per-behaviour state, <code>NetworkTransform</code>, <code>NetworkAnimator</code> and network scenes.</li>
+              <li>Client-side prediction with reconciliation and rollback of Unity's 3D and 2D physics.</li>
+              <li>Codecs for Unity types generated in the Editor, in the same package.</li>
+              <li>Red Runner, a single-player platformer, ported to an online game as a step-by-step example.</li>
             </ul>
           </div>
         </div>
@@ -35,25 +51,37 @@
         <div class="phase phase-now">
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
-            <span class="phase-when">Next 12 months · to around Q3 2027</span>
-            <span class="phase-t">Complete Unity libraries</span>
+            <span class="phase-when">Next</span>
+            <span class="phase-t">Physics backends</span>
             <p class="body">
-              Finish the set of libraries a Unity project needs to use Fomoxa end to end, building on what already
-              runs in Unity today: <code>Fomoxa.Net</code> under IL2CPP, <code>Fomoxa.Reliability</code>, and
-              <code>fomoxa.unity</code> codecs for built-in types.
+              Prediction currently rolls back Unity's built-in 3D and 2D physics. This step adds more physics
+              backends behind the same interface, starting with Rapier, for which the package already reserves
+              <code>PhysicsBackend.Rapier</code>.
             </p>
-            <span class="status s-next inline">In progress</span>
+            <span class="status s-plan inline">Planned</span>
           </div>
         </div>
 
         <div class="phase">
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
-            <span class="phase-when">The following 2 years · to around Q3 2029</span>
-            <span class="phase-t">Deep Unreal Engine integration</span>
+            <span class="phase-when">Then</span>
+            <span class="phase-t">Server console</span>
             <p class="body">
-              Integrate Fomoxa closely with Unreal Engine, starting from the C++ codec backend and the Unreal client
-              already running in the example game.
+              Build the authoritative server as a console application that runs without the Unity player, and
+              export Unity scenes so that the console server can load them.
+            </p>
+            <span class="status s-plan inline">Planned</span>
+          </div>
+        </div>
+
+        <div class="phase">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Then</span>
+            <span class="phase-t">Server scene builds in the Editor</span>
+            <p class="body">
+              Build the server's scenes from inside the Unity Editor, from the same project as the game client.
             </p>
             <span class="status s-plan inline">Planned</span>
           </div>
@@ -61,8 +89,8 @@
 
       </div>
       <p class="note-line note-warn">
-        Dates are estimates, not commitments. The specification does not depend on any of this work:
-        a Unity or Unreal library is an implementation, and the wire format stays exactly as RFC-0002 defines it.
+        The order of the next steps may change. The specification does not depend on any of this work:
+        a Unity library is an implementation, and the wire format stays exactly as RFC-0002 defines it.
       </p>
     </div>
   </div>

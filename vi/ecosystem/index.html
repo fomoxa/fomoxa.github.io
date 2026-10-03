@@ -7,7 +7,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hệ sinh thái - Fomoxa Protocol</title>
-<meta name="description" content="Specification của Fomoxa, công cụ sinh code fomoxac, và các runtime implementation mẫu cho Rust, C#, Go, GDScript, C, C++, TypeScript và JavaScript.">
+<meta name="description" content="Specification của Fomoxa, công cụ sinh code fomoxac, và các runtime implementation mẫu cho Rust, C#, Go, C, C++, TypeScript và JavaScript.">
 <link rel="canonical" href="https://fomoxa.github.io/vi/ecosystem/">
 <link rel="alternate" hreflang="en" href="https://fomoxa.github.io/ecosystem/">
 <link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/ecosystem/">
@@ -71,7 +71,7 @@
         <div class="tier">
           <span class="tier-k">Công cụ</span>
           <span class="tier-t">fomoxac · fomoxa-inspect</span>
-          <span class="tier-d">Sinh codec từ type có annotation ở tám ngôn ngữ, kiểm tra tương thích schema, và decode payload để debug.</span>
+          <span class="tier-d">Sinh codec từ type có annotation ở bảy ngôn ngữ, kiểm tra tương thích schema, và decode payload để debug.</span>
         </div>
         <div class="tier">
           <span class="tier-k">Hàng mẫu</span>
@@ -122,14 +122,14 @@
     <div class="col">
       <h2 class="h2">fomoxac</h2>
       <p class="lede">
-        Một công cụ sinh code cho tám ngôn ngữ. Nó đọc annotation, ghi ra source thuần,
+        Một công cụ sinh code cho bảy ngôn ngữ. Nó đọc annotation, ghi ra source thuần,
         rồi thoát. Code sinh ra không có dependency lúc chạy.
       </p>
       <div class="cards cards-2">
         <div class="card">
           <span class="card-k">fomoxac generate</span>
           <span class="card-t">Đọc annotation, sinh ra codec</span>
-          <span class="card-d">Đọc các model đã được annotation bằng một trong tám ngôn ngữ, ghi ra codec, một schema.json và một build-graph.json. Lệnh này không fail vì breaking change; nó báo cáo thay đổi rồi vẫn sinh code.</span>
+          <span class="card-d">Đọc các model đã được annotation bằng một trong bảy ngôn ngữ, ghi ra codec, một schema.json và một build-graph.json. Lệnh này không fail vì breaking change; nó báo cáo thay đổi rồi vẫn sinh code.</span>
         </div>
         <div class="card">
           <span class="card-k">fomoxac compat</span>
@@ -190,7 +190,6 @@
             <tr><td>JavaScript</td><td><span class="pkg">// FOMOXA_MODEL</span></td><td>không cần gì</td><td><span class="yes">✓</span> smoke test</td></tr>
             <tr><td>C</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macro)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
             <tr><td>C++</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macro)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
-            <tr><td>GDScript</td><td><span class="pkg"># fomoxa:model</span></td><td>không cần gì</td><td><span class="dash">chỉ generate --check</span><span class="sub">biên dịch trong Godot editor</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -273,22 +272,13 @@
               <td><span class="yes">✓</span></td>
               <td><span class="status s-ok inline">Ổn định</span></td>
             </tr>
-            <tr>
-              <td>GDScript · Godot</td>
-              <td><a href="https://github.com/fomoxa/godot">fomoxa-godot</a><span class="sub">GDScript thuần, Godot 4.3</span></td>
-              <td class="num">0.1.0</td>
-              <td><span class="pkg">chép addons/fomoxa</span></td>
-              <td><span class="dash">chưa có</span></td>
-              <td><span class="status s-ok inline">Ổn định</span></td>
-            </tr>
           </tbody>
         </table>
       </div>
       <p class="tv-note">
         <strong>Interop</strong> nghĩa là runtime nằm trong
         <a href="https://github.com/fomoxa/interop">fomoxa/interop</a>: hai process viết bằng hai ngôn ngữ khác nhau
-        hoàn tất handshake qua socket TCP hoặc UDP thật và trao đổi một message. Runtime Godot có bộ test và CI
-        riêng, nhưng chưa nằm trong ma trận đó.
+        hoàn tất handshake qua socket TCP hoặc UDP thật và trao đổi một message.
       </p>
     </div>
   </div>
@@ -302,8 +292,8 @@
       <div class="cards cards-2">
         <a class="card" href="https://github.com/fomoxa/fomoxa-example-game">
           <span class="card-k">fomoxa-example-game</span>
-          <span class="card-t">Một server Rust, năm loại client</span>
-          <span class="card-d">Unity (C#), Unreal (C++), Godot (GDScript), Kaiju (Go) và bot Rust headless trong cùng một trận. Có benchmark tới 2000 người chơi.</span>
+          <span class="card-t">Một server Rust, bốn loại client</span>
+          <span class="card-d">Unity (C#), Unreal (C++), Kaiju (Go) và bot Rust headless trong cùng một trận. Có benchmark tới 2000 người chơi.</span>
           <span class="card-a">Repository ↗</span>
         </a>
         <a class="card" href="https://github.com/fomoxa/interop">

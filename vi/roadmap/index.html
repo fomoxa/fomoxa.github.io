@@ -7,7 +7,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lộ trình - Fomoxa Protocol</title>
-<meta name="description" content="Những gì đã xong, những gì sẽ làm, và mốc thời gian ước lượng cho Unity và Unreal Engine.">
+<meta name="description" content="Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.unity, các backend physics và server console.">
 <link rel="canonical" href="https://fomoxa.github.io/vi/roadmap/">
 <link rel="alternate" hreflang="en" href="https://fomoxa.github.io/roadmap/">
 <link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/roadmap/">
@@ -48,11 +48,11 @@
 
 <section class="hero hero-page" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Lộ trình · cập nhật tháng 9/2026</p>
+    <p class="eyebrow">Lộ trình · cập nhật tháng 10/2026</p>
     <h1 class="h1">Đã xong gì, và tiếp theo là gì</h1>
     <p class="hero-sub">
-      Specification đã final. Việc phía trước xoay quanh các engine mà người ta dùng để làm game:
-      Unity trước, rồi đến Unreal Engine.
+      Specification đã final. Việc phía trước tập trung vào Unity: package đầu tiên, <code>com.fomoxa.unity</code>,
+      đã phát hành, và các bước tiếp theo thêm backend physics và một server chạy ngoài Unity player.
     </p>
   </div>
 </section>
@@ -71,11 +71,27 @@
             <ul class="card-list">
               <li>RFC-0001, RFC-0002 và RFC-0003 ở v1.1.0, Final, bằng tiếng Anh và tiếng Việt.</li>
               <li>Quy tắc version skew: field thêm hoặc bỏ ở cuối Model (RFC-0002 §9.1).</li>
-              <li><code>fomoxac</code> 0.2.1: codec cho Rust, Go, C#, GDScript, C, C++, TypeScript và JavaScript, cùng <code>compat</code>, <code>ci</code>, <code>--watch</code> và <code>fomoxa-inspect</code>.</li>
-              <li>Các runtime mẫu: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> và <code>Fomoxa.Reliability</code> (C#), Go, C/C++, <code>@fomoxa/net</code> (Node.js) và Godot.</li>
+              <li><code>fomoxac</code> 0.2.1: codec cho Rust, Go, C#, C, C++, TypeScript và JavaScript, cùng <code>compat</code>, <code>ci</code>, <code>--watch</code> và <code>fomoxa-inspect</code>.</li>
+              <li>Các runtime mẫu: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> và <code>Fomoxa.Reliability</code> (C#), Go, C/C++ và <code>@fomoxa/net</code> (Node.js).</li>
               <li>Implementation guide, bộ kiểm tra <code>interop</code> đa ngôn ngữ, và codec <code>fomoxa.unity</code> cho các type của Unity.</li>
-              <li><code>fomoxa-example-game</code>: client Unity, Unreal, Godot và Go với server Rust, kèm benchmark.</li>
+              <li><code>fomoxa-example-game</code>: client Unity và Go với server Rust, kèm benchmark.</li>
               <li>Trang web này: hướng dẫn bắt đầu, byte inspector, trang hệ sinh thái và so sánh.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Đã xong · tháng 10/2026</span>
+            <span class="phase-t">Unity, giai đoạn đầu: com.fomoxa.unity</span>
+            <ul class="card-list">
+              <li><a href="https://github.com/fomoxa/com.fomoxa.unity"><code>com.fomoxa.unity</code></a> 0.1.0, package networking server-authoritative cho Unity 6, xây trên <code>Fomoxa.Net</code>.</li>
+              <li>Transport UDP, TCP và WebSocket, host mode, và client WebGL.</li>
+              <li>Network object, RPC, state theo từng behaviour, <code>NetworkTransform</code>, <code>NetworkAnimator</code> và network scene.</li>
+              <li>Client-side prediction với reconciliation và rollback cho physics 3D và 2D có sẵn của Unity.</li>
+              <li>Codec cho các type của Unity, sinh trong Editor, nằm ngay trong package.</li>
+              <li>Red Runner, một game platformer chơi một người, được port thành game online làm ví dụ từng bước.</li>
             </ul>
           </div>
         </div>
@@ -83,25 +99,37 @@
         <div class="phase phase-now">
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
-            <span class="phase-when">12 tháng tới · đến khoảng Q3/2027</span>
-            <span class="phase-t">Hoàn thiện các thư viện cho Unity</span>
+            <span class="phase-when">Tiếp theo</span>
+            <span class="phase-t">Các backend physics</span>
             <p class="body">
-              Hoàn thiện bộ thư viện mà một project Unity cần để dùng Fomoxa từ đầu đến cuối, dựa trên những gì
-              đã chạy trong Unity hôm nay: <code>Fomoxa.Net</code> dưới IL2CPP, <code>Fomoxa.Reliability</code>, và
-              codec <code>fomoxa.unity</code> cho các type có sẵn.
+              Hiện prediction rollback physics 3D và 2D có sẵn của Unity. Bước này thêm các backend physics khác
+              sau cùng một interface, bắt đầu từ Rapier, và package đã giữ sẵn chỗ cho nó là
+              <code>PhysicsBackend.Rapier</code>.
             </p>
-            <span class="status s-next inline">Đang làm</span>
+            <span class="status s-plan inline">Dự kiến</span>
           </div>
         </div>
 
         <div class="phase">
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
-            <span class="phase-when">2 năm tiếp theo · đến khoảng Q3/2029</span>
-            <span class="phase-t">Tích hợp sâu với Unreal Engine</span>
+            <span class="phase-when">Sau đó</span>
+            <span class="phase-t">Server console</span>
             <p class="body">
-              Tích hợp Fomoxa chặt chẽ với Unreal Engine, bắt đầu từ backend codec C++ và client Unreal
-              đang chạy trong example game.
+              Build server authoritative thành một ứng dụng console chạy không cần Unity player, và xuất scene
+              Unity để server console tải được.
+            </p>
+            <span class="status s-plan inline">Dự kiến</span>
+          </div>
+        </div>
+
+        <div class="phase">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Sau đó</span>
+            <span class="phase-t">Build scene cho server trong Editor</span>
+            <p class="body">
+              Build các scene của server ngay trong Unity Editor, từ cùng một project với client game.
             </p>
             <span class="status s-plan inline">Dự kiến</span>
           </div>
@@ -109,8 +137,8 @@
 
       </div>
       <p class="note-line note-warn">
-        Mốc thời gian là ước lượng, không phải cam kết. Specification không phụ thuộc vào bất kỳ việc nào ở đây:
-        thư viện cho Unity hay Unreal là implementation, và wire format giữ đúng như RFC-0002 định nghĩa.
+        Thứ tự các bước tiếp theo có thể thay đổi. Specification không phụ thuộc vào bất kỳ việc nào ở đây:
+        thư viện cho Unity là implementation, và wire format giữ đúng như RFC-0002 định nghĩa.
       </p>
     </div>
   </div>

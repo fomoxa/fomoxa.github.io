@@ -23,7 +23,7 @@
         <div class="tier">
           <span class="tier-k">Tool</span>
           <span class="tier-t">fomoxac · fomoxa-inspect</span>
-          <span class="tier-d">Generates codecs from annotated types in eight languages, checks schema compatibility, and decodes payloads for debugging.</span>
+          <span class="tier-d">Generates codecs from annotated types in seven languages, checks schema compatibility, and decodes payloads for debugging.</span>
         </div>
         <div class="tier">
           <span class="tier-k">Samples</span>
@@ -74,14 +74,14 @@
     <div class="col">
       <h2 class="h2">fomoxac</h2>
       <p class="lede">
-        One source generator for eight languages. It reads annotations, writes plain source,
+        One source generator for seven languages. It reads annotations, writes plain source,
         and exits. The generated code has no runtime dependency.
       </p>
       <div class="cards cards-2">
         <div class="card">
           <span class="card-k">fomoxac generate</span>
           <span class="card-t">Annotations in, codec source out</span>
-          <span class="card-d">Reads annotated model types in one of eight languages and writes the generated codec, a schema.json, and a build-graph.json. It does not fail on a breaking change; it reports the change and generates the code anyway.</span>
+          <span class="card-d">Reads annotated model types in one of seven languages and writes the generated codec, a schema.json, and a build-graph.json. It does not fail on a breaking change; it reports the change and generates the code anyway.</span>
         </div>
         <div class="card">
           <span class="card-k">fomoxac compat</span>
@@ -142,7 +142,6 @@
             <tr><td>JavaScript</td><td><span class="pkg">// FOMOXA_MODEL</span></td><td>nothing</td><td><span class="yes">✓</span> smoke test</td></tr>
             <tr><td>C</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macros)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
             <tr><td>C++</td><td><span class="pkg">FOMOXA_MODEL</span></td><td>fomoxa.h (3 macros)</td><td><span class="yes">✓</span> build + smoke test</td></tr>
-            <tr><td>GDScript</td><td><span class="pkg"># fomoxa:model</span></td><td>nothing</td><td><span class="dash">generate --check only</span><span class="sub">compiled in the Godot editor</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -225,22 +224,13 @@
               <td><span class="yes">✓</span></td>
               <td><span class="status s-ok inline">Stable</span></td>
             </tr>
-            <tr>
-              <td>GDScript · Godot</td>
-              <td><a href="https://github.com/fomoxa/godot">fomoxa-godot</a><span class="sub">pure GDScript, Godot 4.3</span></td>
-              <td class="num">0.1.0</td>
-              <td><span class="pkg">copy addons/fomoxa</span></td>
-              <td><span class="dash">not yet</span></td>
-              <td><span class="status s-ok inline">Stable</span></td>
-            </tr>
           </tbody>
         </table>
       </div>
       <p class="tv-note">
         <strong>Interop</strong> means the runtime is part of
         <a href="https://github.com/fomoxa/interop">fomoxa/interop</a>: two processes in different languages
-        complete a handshake over a real TCP or UDP socket and exchange a message. The Godot runtime has its
-        own test suite and CI, but is not yet in that matrix.
+        complete a handshake over a real TCP or UDP socket and exchange a message.
       </p>
     </div>
   </div>
@@ -254,8 +244,8 @@
       <div class="cards cards-2">
         <a class="card" href="https://github.com/fomoxa/fomoxa-example-game">
           <span class="card-k">fomoxa-example-game</span>
-          <span class="card-t">One Rust server, five kinds of client</span>
-          <span class="card-d">Unity (C#), Unreal (C++), Godot (GDScript), Kaiju (Go) and a headless Rust bot in the same match. Includes a benchmark to 2000 players.</span>
+          <span class="card-t">One Rust server, four kinds of client</span>
+          <span class="card-d">Unity (C#), Unreal (C++), Kaiju (Go) and a headless Rust bot in the same match. Includes a benchmark to 2000 players.</span>
           <span class="card-a">Repository ↗</span>
         </a>
         <a class="card" href="https://github.com/fomoxa/interop">

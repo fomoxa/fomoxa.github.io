@@ -19,6 +19,10 @@ NAV = [
 ]
 
 PAGES = {
+    '': {
+        'en': ('Fomoxa Protocol - Same value, same bytes, in every language', 'Fomoxa is a deterministic binary wire format: one value has exactly one valid encoding, so implementations in Rust, C#, Go, C, C++ and TypeScript agree byte for byte.'),
+        'vi': ('Fomoxa Protocol - Cùng giá trị, cùng byte, ở mọi ngôn ngữ', 'Fomoxa là một binary wire format xác định: mỗi giá trị có đúng một encoding hợp lệ, nên các implementation bằng Rust, C#, Go, C, C++ và TypeScript khớp nhau từng byte.'),
+    },
     'why': {
         'en': ('Why Fomoxa', 'Why a wire format with no encoder choices, where identical bytes matter, and what the annotation workflow saves and costs compared with an IDL.'),
         'vi': ('Vì sao Fomoxa', 'Vì sao cần một wire format không để encoder lựa chọn, khi nào byte giống hệt nhau là quan trọng, và cách dùng annotation được gì, mất gì so với IDL.'),
@@ -32,8 +36,8 @@ PAGES = {
         'vi': ('Byte inspector', 'Nhập giá trị, xem đúng các byte Fomoxa. Decode một payload, hoặc so sánh với các lỗi implementation hay gặp và output của chính bạn.'),
     },
     'ecosystem': {
-        'en': ('Ecosystem', 'The Fomoxa specification, the fomoxac generator, and the sample runtime implementations for Rust, C#, Go, GDScript, C, C++, TypeScript and JavaScript.'),
-        'vi': ('Hệ sinh thái', 'Specification của Fomoxa, công cụ sinh code fomoxac, và các runtime implementation mẫu cho Rust, C#, Go, GDScript, C, C++, TypeScript và JavaScript.'),
+        'en': ('Ecosystem', 'The Fomoxa specification, the fomoxac generator, and the sample runtime implementations for Rust, C#, Go, C, C++, TypeScript and JavaScript.'),
+        'vi': ('Hệ sinh thái', 'Specification của Fomoxa, công cụ sinh code fomoxac, và các runtime implementation mẫu cho Rust, C#, Go, C, C++, TypeScript và JavaScript.'),
     },
     'comparison': {
         'en': ('Comparison', 'How Fomoxa differs from Protocol Buffers, FlatBuffers, Cap’n Proto, Borsh, BCS, JSON and MessagePack, with measured numbers. Differences, not rankings.'),
@@ -44,8 +48,8 @@ PAGES = {
         'vi': ('Ứng dụng', 'Một binary wire format xác định phù hợp ở đâu: game multiplayer, backend service, hệ nhúng và công cụ đa engine.'),
     },
     'roadmap': {
-        'en': ('Roadmap', 'What is done, what comes next, and the estimated timeline for Fomoxa’s Unity and Unreal Engine work.'),
-        'vi': ('Lộ trình', 'Những gì đã xong, những gì sẽ làm, và mốc thời gian ước lượng cho Unity và Unreal Engine.'),
+        'en': ('Roadmap', 'What is done and what comes next for Fomoxa on Unity: the com.fomoxa.unity package, physics backends and a console server.'),
+        'vi': ('Lộ trình', 'Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.unity, các backend physics và server console.'),
     },
 }
 
@@ -61,6 +65,7 @@ def path_for(lang, slug):
 
 def render(lang, slug, body, scripts):
     title, desc = PAGES[slug][lang]
+    page_title = title if not slug else f'{title} - Fomoxa Protocol'
     other = 'vi' if lang == 'en' else 'en'
     nav = '\n'.join(
         '      <a href="%s"%s>%s</a>' % (path_for(lang, s), ' aria-current="page"' if s == slug else '', labels[lang])
@@ -83,7 +88,7 @@ def render(lang, slug, body, scripts):
 <meta charset="utf-8">
 {THEME}
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} - Fomoxa Protocol</title>
+<title>{page_title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{ORIGIN}{path_for(lang, slug)}">
 <link rel="alternate" hreflang="en" href="{ORIGIN}{path_for('en', slug)}">
@@ -156,7 +161,7 @@ def sitemap():
 def outputs():
     for slug in PAGES:
         for lang in ('en', 'vi'):
-            frag = FRAG / lang / f'{slug}.html'
+            frag = FRAG / lang / f'{slug or "home"}.html'
             if not frag.exists():
                 sys.exit(f'missing fragment: {frag.relative_to(SITE)}')
             scripts = ['/assets/inspector.js', '/assets/inspector-ui.js'] if slug == 'inspector' else []
