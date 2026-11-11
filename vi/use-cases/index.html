@@ -73,7 +73,7 @@
             <li>Snapshot giống hệt từng byte giúp lockstep, replay và checksum phát hiện desync so sánh được giữa các nền tảng.</li>
             <li>Không tag hay tên trên wire: trạng thái người chơi chỉ tốn đúng các field của nó. Example game dùng 29 byte cho mỗi người chơi.</li>
             <li>Code sinh ra không dùng reflection, nên chạy được dưới Unity IL2CPP và các target AOT khác.</li>
-            <li>Runtime C# nhắm netstandard2.1 và chạy trong Unity 2021+; <code>fomoxa.unity</code> cho phép dùng <code>Vector3</code>, <code>Quaternion</code>, <code>Color</code>… làm kiểu field.</li>
+            <li>Runtime C# nhắm netstandard2.1 và chạy trong Unity 2021+. Trong Unity 6, package <a href="/vi/ecosystem/#unity"><code>com.fomoxa.networking</code></a> nhận <code>Vector3</code>, <code>Quaternion</code>, <code>Color</code> và các kiểu khác của Unity làm kiểu field, và tự sinh codec cho chúng.</li>
           </ul>
         </div>
         <div class="card">
@@ -85,7 +85,7 @@
           </ul>
         </div>
       </div>
-<pre class="code"><span class="c">// Unity · model dùng các kiểu của fomoxa.unity</span>
+<pre class="code"><span class="c">// Unity · model có kiểu của Unity, cho com.fomoxa.networking</span>
 [Network]
 [Codec("game")]
 public class PlayerState

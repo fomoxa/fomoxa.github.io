@@ -25,7 +25,7 @@
             <li>Byte-identical snapshots make lockstep, replays and desync checksums comparable across platforms.</li>
             <li>No tags or names on the wire: a player state costs only its fields. The example game spends 29 bytes per player.</li>
             <li>Generated code uses no reflection, so it runs under Unity IL2CPP and other AOT targets.</li>
-            <li>The C# runtime targets netstandard2.1 and runs in Unity 2021+; <code>fomoxa.unity</code> adds <code>Vector3</code>, <code>Quaternion</code>, <code>Color</code> and friends as field types.</li>
+            <li>The C# runtime targets netstandard2.1 and runs in Unity 2021+. In Unity 6, the <a href="/ecosystem/#unity"><code>com.fomoxa.networking</code></a> package takes <code>Vector3</code>, <code>Quaternion</code>, <code>Color</code> and other Unity types as field types and generates their codecs.</li>
           </ul>
         </div>
         <div class="card">
@@ -37,7 +37,7 @@
           </ul>
         </div>
       </div>
-<pre class="code"><span class="c">// Unity · a model using fomoxa.unity types</span>
+<pre class="code"><span class="c">// Unity · a model with Unity types, for com.fomoxa.networking</span>
 [Network]
 [Codec("game")]
 public class PlayerState
