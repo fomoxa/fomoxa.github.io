@@ -36,8 +36,8 @@ PAGES = {
         'vi': ('Byte inspector', 'Nhập giá trị, xem đúng các byte Fomoxa. Decode một payload, hoặc so sánh với các lỗi implementation hay gặp và output của chính bạn.'),
     },
     'ecosystem': {
-        'en': ('Ecosystem', 'The Fomoxa specification, the fomoxac generator, and the sample runtime implementations for Rust, C#, Go, C, C++, TypeScript and JavaScript.'),
-        'vi': ('Hệ sinh thái', 'Specification của Fomoxa, công cụ sinh code fomoxac, và các runtime implementation mẫu cho Rust, C#, Go, C, C++, TypeScript và JavaScript.'),
+        'en': ('Ecosystem', 'The Fomoxa specification, the fomoxac generator, the sample runtime implementations for Rust, C#, Go, C, C++, TypeScript and JavaScript, and Fomoxa for Unity.'),
+        'vi': ('Hệ sinh thái', 'Specification của Fomoxa, công cụ sinh code fomoxac, các runtime implementation mẫu cho Rust, C#, Go, C, C++, TypeScript và JavaScript, và Fomoxa for Unity.'),
     },
     'comparison': {
         'en': ('Comparison', 'How Fomoxa differs from Protocol Buffers, FlatBuffers, Cap’n Proto, Borsh, BCS, JSON and MessagePack, with measured numbers. Differences, not rankings.'),
@@ -48,8 +48,8 @@ PAGES = {
         'vi': ('Ứng dụng', 'Một binary wire format xác định phù hợp ở đâu: game multiplayer, backend service, hệ nhúng và công cụ đa engine.'),
     },
     'roadmap': {
-        'en': ('Roadmap', 'What is done and what comes next for Fomoxa on Unity: the com.fomoxa.unity package, physics backends and a console server.'),
-        'vi': ('Lộ trình', 'Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.unity, các backend physics và server console.'),
+        'en': ('Roadmap', 'What is done and what comes next for Fomoxa on Unity: the com.fomoxa.networking package, the Rapier backend, fRPC, a console server and the next steps.'),
+        'vi': ('Lộ trình', 'Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.networking, backend Rapier, fRPC, server console và các bước tiếp theo.'),
     },
 }
 

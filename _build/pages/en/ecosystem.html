@@ -1,10 +1,10 @@
 <section class="hero hero-page" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Ecosystem · September 2026</p>
+    <p class="eyebrow">Ecosystem · November 2026</p>
     <h1 class="h1">One specification, many implementations</h1>
     <p class="hero-sub">
       The specification is Fomoxa. Everything else on this page is a tool that helps you use it,
-      or a sample of how it can be implemented. All of it is stable and usable today.
+      a sample of how it can be implemented, or a package built on it. All of it is stable and usable today.
     </p>
   </div>
 </section>
@@ -29,6 +29,11 @@
           <span class="tier-k">Samples</span>
           <span class="tier-t">Runtime implementations</span>
           <span class="tier-d">Framing, schema handshake and heartbeat over TCP/UDP, following the implementation guide. Examples of how Fomoxa can be carried, not part of the specification.</span>
+        </div>
+        <div class="tier">
+          <span class="tier-k">Built on Fomoxa</span>
+          <span class="tier-t">Fomoxa for Unity</span>
+          <span class="tier-d">Networking packages for Unity and a game backend template, built on the Fomoxa.Net sample runtime. Like the samples, they sit outside the specification.</span>
         </div>
       </div>
       <p class="disclaimer">
@@ -223,6 +228,57 @@
         <strong>Interop</strong> means the runtime is part of
         <a href="https://github.com/fomoxa/interop">fomoxa/interop</a>: two processes in different languages
         complete a handshake over a real TCP or UDP socket and exchange a message.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="unity">
+  <div class="band-in">
+    <p class="offset">Built on Fomoxa</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa for Unity</h2>
+      <p class="lede">
+        A server-authoritative networking package for Unity 6, with a Rapier physics backend, fRPC services
+        and a template for the game backend. The package runs on <code>Fomoxa.Net</code> and generates its
+        codecs with the <code>fomoxac</code> it bundles.
+      </p>
+      <div class="table-scroll">
+        <table class="eco">
+          <thead><tr><th scope="col">Package</th><th scope="col">Version</th><th scope="col">Install</th><th scope="col">Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="https://github.com/fomoxa/com.fomoxa.networking">com.fomoxa.networking</a><span class="sub">networking · Unity 6000.5+</span></td>
+              <td class="num">0.3.3</td>
+              <td><span class="pkg">Package Manager · Git URL</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/networking-rapier">com.fomoxa.networking.rapier</a><span class="sub">Rapier physics backend</span></td>
+              <td class="num">0.2.3</td>
+              <td><span class="pkg">Package Manager · Git URL</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/com.fomoxa.rpc">com.fomoxa.rpc</a><span class="sub">fRPC services · directory pod</span></td>
+              <td class="num">0.1.4</td>
+              <td><span class="pkg">Package Manager · Git URL</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://www.nuget.org/packages/Fomoxa.Backend.Templates">Fomoxa.Backend.Templates</a><span class="sub">game backend template</span></td>
+              <td class="num">0.1.1</td>
+              <td><span class="pkg">dotnet new install Fomoxa.Backend.Templates</span></td>
+              <td><span class="status s-ok inline">Stable</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        The <a href="https://github.com/fomoxa/unity-docs">documentation</a>, in English and Vietnamese, covers
+        installation, a first multiplayer game, the console server, deployment and the Red Runner example. The
+        <a href="https://github.com/fomoxa/unity-docs/blob/main/release-notes.md">release notes</a> list which
+        versions of the four parts go together.
       </p>
     </div>
   </div>

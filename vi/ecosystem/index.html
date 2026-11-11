@@ -7,7 +7,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hệ sinh thái - Fomoxa Protocol</title>
-<meta name="description" content="Specification của Fomoxa, công cụ sinh code fomoxac, và các runtime implementation mẫu cho Rust, C#, Go, C, C++, TypeScript và JavaScript.">
+<meta name="description" content="Specification của Fomoxa, công cụ sinh code fomoxac, các runtime implementation mẫu cho Rust, C#, Go, C, C++, TypeScript và JavaScript, và Fomoxa for Unity.">
 <link rel="canonical" href="https://fomoxa.github.io/vi/ecosystem/">
 <link rel="alternate" hreflang="en" href="https://fomoxa.github.io/ecosystem/">
 <link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/ecosystem/">
@@ -48,11 +48,11 @@
 
 <section class="hero hero-page" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Hệ sinh thái · Tháng 9/2026</p>
+    <p class="eyebrow">Hệ sinh thái · Tháng 11/2026</p>
     <h1 class="h1">Một specification, nhiều implementation</h1>
     <p class="hero-sub">
       Specification chính là Fomoxa. Mọi thứ khác trên trang này là công cụ giúp bạn dùng nó,
-      hoặc hàng mẫu cho cách hiện thực nó. Tất cả đều ổn định và dùng được ngay hôm nay.
+      hàng mẫu cho cách hiện thực nó, hoặc package xây trên nó. Tất cả đều ổn định và dùng được ngay hôm nay.
     </p>
   </div>
 </section>
@@ -77,6 +77,11 @@
           <span class="tier-k">Hàng mẫu</span>
           <span class="tier-t">Runtime implementation</span>
           <span class="tier-d">Framing, schema handshake và heartbeat trên TCP/UDP, theo implementation guide. Ví dụ về cách vận chuyển Fomoxa, không thuộc specification.</span>
+        </div>
+        <div class="tier">
+          <span class="tier-k">Xây trên Fomoxa</span>
+          <span class="tier-t">Fomoxa for Unity</span>
+          <span class="tier-d">Các package networking cho Unity và một template backend cho game, xây trên runtime mẫu Fomoxa.Net. Cũng như hàng mẫu, chúng nằm ngoài specification.</span>
         </div>
       </div>
       <p class="disclaimer">
@@ -271,6 +276,57 @@
         <strong>Interop</strong> nghĩa là runtime nằm trong
         <a href="https://github.com/fomoxa/interop">fomoxa/interop</a>: hai process viết bằng hai ngôn ngữ khác nhau
         hoàn tất handshake qua socket TCP hoặc UDP thật và trao đổi một message.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="unity">
+  <div class="band-in">
+    <p class="offset">Xây trên Fomoxa</p>
+    <div class="col">
+      <h2 class="h2">Fomoxa for Unity</h2>
+      <p class="lede">
+        Package networking server-authoritative cho Unity 6, kèm backend physics Rapier, dịch vụ fRPC và một
+        template cho backend của game. Package chạy trên <code>Fomoxa.Net</code> và sinh codec bằng
+        <code>fomoxac</code> đóng kèm.
+      </p>
+      <div class="table-scroll">
+        <table class="eco">
+          <thead><tr><th scope="col">Package</th><th scope="col">Phiên bản</th><th scope="col">Cài đặt</th><th scope="col">Trạng thái</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="https://github.com/fomoxa/com.fomoxa.networking">com.fomoxa.networking</a><span class="sub">networking · Unity 6000.5+</span></td>
+              <td class="num">0.3.3</td>
+              <td><span class="pkg">Package Manager · Git URL</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/networking-rapier">com.fomoxa.networking.rapier</a><span class="sub">backend physics Rapier</span></td>
+              <td class="num">0.2.3</td>
+              <td><span class="pkg">Package Manager · Git URL</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://github.com/fomoxa/com.fomoxa.rpc">com.fomoxa.rpc</a><span class="sub">dịch vụ fRPC · pod của directory</span></td>
+              <td class="num">0.1.4</td>
+              <td><span class="pkg">Package Manager · Git URL</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+            <tr>
+              <td><a href="https://www.nuget.org/packages/Fomoxa.Backend.Templates">Fomoxa.Backend.Templates</a><span class="sub">template backend của game</span></td>
+              <td class="num">0.1.1</td>
+              <td><span class="pkg">dotnet new install Fomoxa.Backend.Templates</span></td>
+              <td><span class="status s-ok inline">Ổn định</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tv-note">
+        <a href="https://github.com/fomoxa/unity-docs">Tài liệu</a>, bằng tiếng Anh và tiếng Việt, gồm cài đặt,
+        game multiplayer đầu tiên, server console, triển khai và ví dụ Red Runner.
+        <a href="https://github.com/fomoxa/unity-docs/blob/main/release-notes.md">Release notes</a> ghi phiên bản
+        nào của bốn phần đi cùng nhau.
       </p>
     </div>
   </div>

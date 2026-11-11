@@ -1,10 +1,11 @@
 <section class="hero hero-page" id="top">
   <div class="hero-in">
-    <p class="eyebrow">Roadmap · updated October 2026</p>
+    <p class="eyebrow">Roadmap · updated November 2026</p>
     <h1 class="h1">What is done, and what comes next</h1>
     <p class="hero-sub">
-      The specification is final. The work ahead is on Unity: the first package, <code>com.fomoxa.unity</code>,
-      is out, and the next steps add physics backends and a server that runs outside the Unity player.
+      The specification is final. The work since then has been on Unity: <code>com.fomoxa.networking</code> 0.3.3
+      is out with a Rapier physics backend, fRPC services, a console server and a game backend template.
+      What comes next follows what games need.
     </p>
   </div>
 </section>
@@ -23,8 +24,8 @@
             <ul class="card-list">
               <li>RFC-0001, RFC-0002 and RFC-0003 at v1.1.0, Final, in English and Vietnamese.</li>
               <li>Version skew rules: fields appended or removed at the end of a Model (RFC-0002 §9.1).</li>
-              <li><code>fomoxac</code> 0.2.1: codecs for Rust, Go, C#, C, C++, TypeScript and JavaScript, plus <code>compat</code>, <code>ci</code>, <code>--watch</code> and <code>fomoxa-inspect</code>.</li>
-              <li>Sample runtimes: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> and <code>Fomoxa.Reliability</code> (C#), Go, C/C++ and <code>@fomoxa/net</code> (Node.js).</li>
+              <li><code>fomoxac</code>, now 0.2.3: codecs for Rust, Go, C#, C, C++, TypeScript and JavaScript, plus <code>compat</code>, <code>ci</code>, <code>--watch</code> and <code>fomoxa-inspect</code>.</li>
+              <li>Sample runtimes: <code>fomoxa-net</code> (Rust), <code>Fomoxa.Net</code> (C#), Go, C/C++ and <code>@fomoxa/net</code> (Node.js).</li>
               <li>The implementation guide, the cross-language <code>interop</code> suite, and <code>fomoxa.unity</code> codecs for Unity types.</li>
               <li><code>fomoxa-example-game</code>: Unity and Go clients against a Rust server, with a benchmark.</li>
               <li>This site: getting started guide, byte inspector, ecosystem and comparison pages.</li>
@@ -36,14 +37,46 @@
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
             <span class="phase-when">Done · October 2026</span>
-            <span class="phase-t">Unity, stage one: com.fomoxa.unity</span>
+            <span class="phase-t">Unity, stage one: com.fomoxa.networking 0.1.0</span>
             <ul class="card-list">
-              <li><a href="https://github.com/fomoxa/com.fomoxa.unity"><code>com.fomoxa.unity</code></a> 0.1.0, a server-authoritative networking package for Unity 6 built on <code>Fomoxa.Net</code>.</li>
+              <li><a href="https://github.com/fomoxa/com.fomoxa.networking"><code>com.fomoxa.networking</code></a> 0.1.0, a server-authoritative networking package for Unity 6 built on <code>Fomoxa.Net</code>. Its first builds were published as <code>com.fomoxa.unity</code>.</li>
               <li>UDP, TCP and WebSocket transports, host mode, and WebGL clients.</li>
               <li>Network objects, RPCs, per-behaviour state, <code>NetworkTransform</code>, <code>NetworkAnimator</code> and network scenes.</li>
               <li>Client-side prediction with reconciliation and rollback of Unity's 3D and 2D physics.</li>
               <li>Codecs for Unity types generated in the Editor, in the same package.</li>
+              <li>A Rapier physics backend, <a href="https://github.com/fomoxa/networking-rapier"><code>com.fomoxa.networking.rapier</code></a>, behind the same interface as Unity physics.</li>
+              <li>A console server that runs the authoritative game without the Unity player and loads scene files exported from the Editor.</li>
               <li>Red Runner, a single-player platformer, ported to an online game as a step-by-step example.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Done · October 2026</span>
+            <span class="phase-t">Release 0.2.0: connections and a cluster</span>
+            <ul class="card-list">
+              <li>Authentication before a peer starts, kicks with a reason, and transfers of a client to another server.</li>
+              <li>Encrypted UDP with connect grants, the same datagrams over WebSocket for WebGL, and client TLS on TCP and WebSocket.</li>
+              <li>Synchronized lists, dictionaries and sets, and reliable messages up to 1 MiB.</li>
+              <li><a href="https://github.com/fomoxa/com.fomoxa.rpc"><code>com.fomoxa.rpc</code></a>: fRPC services for Unity and the pod side of the directory.</li>
+              <li>The <code>Fomoxa.Backend.Templates</code> game backend template, and the directory and gateway as source.</li>
+              <li>Guides for running the cluster on Kubernetes with Agones.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Done · November 2026</span>
+            <span class="phase-t">Releases 0.3.0 to 0.3.3: physics and large schemas</span>
+            <ul class="card-list">
+              <li>Physics queries with filters, forces and torques, continuous collision, contact points and several bodies per network object.</li>
+              <li>Rapier 0.2: native libraries for Windows, Linux, macOS, Android, iOS and Web, joints, a character controller and Unity's 2D effectors.</li>
+              <li>Handshakes of large schemas sent in several packets over packet transports, in the package and in every sample runtime.</li>
+              <li>Code generation in the macOS Editor, and one <code>fomoxac</code> version across the package, the backend template, the gateway and the directory.</li>
             </ul>
           </div>
         </div>
@@ -52,11 +85,11 @@
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
             <span class="phase-when">Next</span>
-            <span class="phase-t">Physics backends</span>
+            <span class="phase-t">Unity on CoreCLR</span>
             <p class="body">
-              Prediction currently rolls back Unity's built-in 3D and 2D physics. This step adds more physics
-              backends behind the same interface, starting with Rapier, for which the package already reserves
-              <code>PhysicsBackend.Rapier</code>.
+              When Unity runs scripts on CoreCLR, which Unity plans from Unity 6.8, a version of the package moves to
+              .NET's own <code>AesGcm</code>, <code>X509Chain</code> and <code>Socket.Send</code> and drops the parts that work
+              around Mono.
             </p>
             <span class="status s-plan inline">Planned</span>
           </div>
@@ -66,22 +99,12 @@
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
             <span class="phase-when">Then</span>
-            <span class="phase-t">Server console</span>
+            <span class="phase-t">Features as games need them</span>
             <p class="body">
-              Build the authoritative server as a console application that runs without the Unity player, and
-              export Unity scenes so that the console server can load them.
-            </p>
-            <span class="status s-plan inline">Planned</span>
-          </div>
-        </div>
-
-        <div class="phase">
-          <span class="phase-dot" aria-hidden="true"></span>
-          <div class="phase-body">
-            <span class="phase-when">Then</span>
-            <span class="phase-t">Server scene builds in the Editor</span>
-            <p class="body">
-              Build the server's scenes from inside the Unity Editor, from the same project as the game client.
+              Observer rules that combine several conditions, several copies of one scene, nested network objects,
+              network statistics, relay transports such as Steam, Epic and Unity Relay, a client-authoritative
+              <code>NetworkTransform</code>, a built-in object pool, more RPC options, predicted spawning and ownership,
+              and IPv6. Each one starts when a game needs it.
             </p>
             <span class="status s-plan inline">Planned</span>
           </div>
