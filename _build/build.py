@@ -48,8 +48,8 @@ PAGES = {
         'vi': ('Ứng dụng', 'Một binary wire format xác định phù hợp ở đâu: game multiplayer, backend service, hệ nhúng và công cụ đa engine.'),
     },
     'roadmap': {
-        'en': ('Roadmap', 'What is done and what comes next for Fomoxa on Unity: the com.fomoxa.networking package, the Rapier backend, fRPC, a console server and the next steps.'),
-        'vi': ('Lộ trình', 'Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.networking, backend Rapier, fRPC, server console và các bước tiếp theo.'),
+        'en': ('Roadmap', 'What is done and what comes next for Fomoxa on Unity: the com.fomoxa.networking package, the Rapier backend, the Steam transport, fRPC, a console server and the next steps.'),
+        'vi': ('Lộ trình', 'Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.networking, backend Rapier, transport Steam, fRPC, server console và các bước tiếp theo.'),
     },
 }
 

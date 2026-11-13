@@ -7,7 +7,7 @@
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lộ trình - Fomoxa Protocol</title>
-<meta name="description" content="Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.networking, backend Rapier, fRPC, server console và các bước tiếp theo.">
+<meta name="description" content="Những gì đã xong và những gì sẽ làm cho Fomoxa trên Unity: package com.fomoxa.networking, backend Rapier, transport Steam, fRPC, server console và các bước tiếp theo.">
 <link rel="canonical" href="https://fomoxa.github.io/vi/roadmap/">
 <link rel="alternate" hreflang="en" href="https://fomoxa.github.io/roadmap/">
 <link rel="alternate" hreflang="vi" href="https://fomoxa.github.io/vi/roadmap/">
@@ -51,8 +51,8 @@
     <p class="eyebrow">Lộ trình · cập nhật tháng 11/2026</p>
     <h1 class="h1">Đã xong gì, và tiếp theo là gì</h1>
     <p class="hero-sub">
-      Specification đã final. Từ đó việc tập trung vào Unity: <code>com.fomoxa.networking</code> 0.3.3 đã phát
-      hành, kèm backend physics Rapier, dịch vụ fRPC, server console và template backend cho game.
+      Specification đã final. Từ đó việc tập trung vào Unity: <code>com.fomoxa.networking</code> 0.3.4 đã phát
+      hành, kèm backend physics Rapier, transport Steam, dịch vụ fRPC, server console và template backend cho game.
       Các bước tiếp theo đi theo nhu cầu của game.
     </p>
   </div>
@@ -129,6 +129,19 @@
           </div>
         </div>
 
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Đã xong · tháng 11/2026</span>
+            <span class="phase-t">Bản 0.3.4 và transport Steam</span>
+            <ul class="card-list">
+              <li>Công cụ debug: bộ đếm lưu lượng theo bundle và theo message, <code>NetworkStatsDisplay</code> hiện số liệu kết nối, lưu lượng, tick và prediction, và mạng giả lập có độ trễ, jitter, mất gói, gói trùng và sai thứ tự.</li>
+              <li>Độ lớn của mỗi lần sửa prediction, vẽ trong Scene view, và số input server bỏ của từng client.</li>
+              <li><a href="https://github.com/fomoxa/com.fomoxa.networking.steam"><code>com.fomoxa.networking.steam</code></a> 0.1.0: người chơi nối với nhau bằng SteamID, qua mạng relay của Valve khi hai máy không tới thẳng được nhau, nên người chơi có thể làm host sau NAT. Đã kiểm giữa hai máy ở hai mạng khác nhau.</li>
+            </ul>
+          </div>
+        </div>
+
         <div class="phase phase-now">
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
@@ -149,8 +162,8 @@
             <span class="phase-when">Sau đó</span>
             <span class="phase-t">Tính năng theo nhu cầu của game</span>
             <p class="body">
-              Luật observer ghép nhiều điều kiện, nhiều bản của cùng một scene, network object lồng nhau, chỉ số mạng,
-              transport relay như Steam, Epic và Unity Relay, <code>NetworkTransform</code> do client quyết định, pool object
+              Luật observer ghép nhiều điều kiện, nhiều bản của cùng một scene, network object lồng nhau,
+              transport relay như Epic và Unity Relay, <code>NetworkTransform</code> do client quyết định, pool object
               dựng sẵn, thêm tuỳ chọn RPC, spawn và ownership dự đoán, và IPv6. Mỗi việc bắt đầu khi có game cần.
             </p>
             <span class="status s-plan inline">Dự kiến</span>

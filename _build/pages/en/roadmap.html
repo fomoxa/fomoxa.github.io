@@ -3,8 +3,8 @@
     <p class="eyebrow">Roadmap · updated November 2026</p>
     <h1 class="h1">What is done, and what comes next</h1>
     <p class="hero-sub">
-      The specification is final. The work since then has been on Unity: <code>com.fomoxa.networking</code> 0.3.3
-      is out with a Rapier physics backend, fRPC services, a console server and a game backend template.
+      The specification is final. The work since then has been on Unity: <code>com.fomoxa.networking</code> 0.3.4
+      is out with a Rapier physics backend, a Steam transport, fRPC services, a console server and a game backend template.
       What comes next follows what games need.
     </p>
   </div>
@@ -81,6 +81,19 @@
           </div>
         </div>
 
+        <div class="phase phase-done">
+          <span class="phase-dot" aria-hidden="true"></span>
+          <div class="phase-body">
+            <span class="phase-when">Done · November 2026</span>
+            <span class="phase-t">Release 0.3.4 and the Steam transport</span>
+            <ul class="card-list">
+              <li>Debug tools: traffic counters per bundle and per message, <code>NetworkStatsDisplay</code> for connection, traffic, tick and prediction numbers, and a simulated network with latency, jitter, loss, duplicates and reordering.</li>
+              <li>The size of every prediction correction, drawn in the Scene view, and a count of the inputs the server drops for each client.</li>
+              <li><a href="https://github.com/fomoxa/com.fomoxa.networking.steam"><code>com.fomoxa.networking.steam</code></a> 0.1.0: players connect by SteamID, through Valve's relay network when they cannot reach each other directly, so a player can host from behind NAT. Tested between two computers on different networks.</li>
+            </ul>
+          </div>
+        </div>
+
         <div class="phase phase-now">
           <span class="phase-dot" aria-hidden="true"></span>
           <div class="phase-body">
@@ -102,7 +115,7 @@
             <span class="phase-t">Features as games need them</span>
             <p class="body">
               Observer rules that combine several conditions, several copies of one scene, nested network objects,
-              network statistics, relay transports such as Steam, Epic and Unity Relay, a client-authoritative
+              relay transports such as Epic and Unity Relay, a client-authoritative
               <code>NetworkTransform</code>, a built-in object pool, more RPC options, predicted spawning and ownership,
               and IPv6. Each one starts when a game needs it.
             </p>
